@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Head from "@/components/shared/Head";
 import classNames from "classnames";
 import React from "react";

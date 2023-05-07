@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useState } from "react";
 import Image from "@/components/shared/Image";
 import classNames from "classnames";

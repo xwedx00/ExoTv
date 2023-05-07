@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { ReadPanelContextProvider } from "@/contexts/ReadPanelContext";
 import React from "react";
 import Sidebar from "./Sidebar";

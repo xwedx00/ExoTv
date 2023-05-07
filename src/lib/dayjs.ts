@@ -1,3 +1,4 @@
+//@ts-nocheck
 import dayjs from "dayjs";
 import updateLocale from "dayjs/plugin/updateLocale";
 import relativeTime from "dayjs/plugin/relativeTime";

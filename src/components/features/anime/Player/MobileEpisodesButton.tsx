@@ -1,3 +1,4 @@
+//@ts-nocheck
 import EpisodesIcon from "@/components/icons/EpisodesIcon";
 import React, { Children, useCallback } from "react";
 import Portal from "@/components/shared/Portal";

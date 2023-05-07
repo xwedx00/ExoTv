@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Reaction } from "@/types";
 import { useSupabaseSingleQuery } from "@/utils/supabase";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";

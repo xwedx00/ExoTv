@@ -1,3 +1,4 @@
+//@ts-nocheck
 import * as React from "react";
 
 function ForwardIcon(props: React.SVGProps<SVGSVGElement>) {

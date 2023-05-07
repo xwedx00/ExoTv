@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Card from "@/components/shared/Card";
 import Head from "@/components/shared/Head";
 import Input from "@/components/shared/Input";

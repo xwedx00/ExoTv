@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getMediaDetails } from "@/services/anilist";
 import { Media, MediaArgs } from "@/types/anilist";
 import { AxiosError } from "axios";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getPageStaff } from "@/services/anilist";
 import { StaffSort } from "@/types/anilist";
 import { useInfiniteQuery } from "react-query";

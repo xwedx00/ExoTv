@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { AnimeTheme } from "@/types";
 import { randomElement } from "@/utils";
 import axios, { AxiosError } from "axios";

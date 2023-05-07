@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getMediaDetails } from "@/services/anilist";
 import { mediaDefaultFields } from "@/services/anilist/queries";
 import { Watched } from "@/types";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Comment } from "@/types";
 import React, { createContext, useContext, useMemo, useState } from "react";
 

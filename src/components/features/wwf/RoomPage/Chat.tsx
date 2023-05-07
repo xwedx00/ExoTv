@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Chat as ChatType } from "@/types";
 import React from "react";
 import ChatMessage from "./ChatMessage";

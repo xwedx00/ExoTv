@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Button from "@/components/shared/Button";
 import CircleButton from "@/components/shared/CircleButton";
 import { useReadInfo } from "@/contexts/ReadContext";

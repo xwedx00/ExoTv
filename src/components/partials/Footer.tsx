@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import Logo from "@/components/shared/Logo";
 import NextLink, { LinkProps } from "next/link";

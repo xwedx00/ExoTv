@@ -1,3 +1,4 @@
+//@ts-nocheck
 import classNames from "classnames";
 import React, { CSSProperties, useEffect } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";

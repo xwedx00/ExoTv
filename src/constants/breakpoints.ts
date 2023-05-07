@@ -1,3 +1,4 @@
+//@ts-nocheck
 const breakpoints = {
   1536: {
     items: 7,

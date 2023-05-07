@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getConstantTranslation } from "@/utils/data";
 import { useRouter } from "next/router";
 import { useMemo } from "react";

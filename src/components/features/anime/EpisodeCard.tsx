@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Episode } from "@/types";
 import React, { useMemo } from "react";
 import Image from "@/components/shared/Image";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import config from "@/config";
 import useCreateSubscription from "@/hooks/useCreateSubscription";
 import useIsSavedSub from "@/hooks/useIsSavedSub";

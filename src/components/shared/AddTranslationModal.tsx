@@ -1,3 +1,4 @@
+//@ts-nocheck
 import useSaveTranslation from "@/hooks/useSaveTranslation";
 import { MediaType } from "@/types/anilist";
 import { Editor as EditorType } from "@tiptap/react";

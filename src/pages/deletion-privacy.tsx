@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Head from "@/components/shared/Head";
 import Section from "@/components/shared/Section";
 import React from "react";

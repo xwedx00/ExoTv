@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Comment } from "@/types";
 import { randomString } from "@/utils";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";

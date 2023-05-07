@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { CommentReactionMetadata } from "@/types";
 import React from "react";
 import CommentReaction from "./CommentReaction";

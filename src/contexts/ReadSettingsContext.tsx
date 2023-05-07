@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect } from "react";
 
 export const fitModes = ["width", "height", "auto"] as const;

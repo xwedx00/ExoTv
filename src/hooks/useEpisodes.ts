@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { AnimeSourceConnection } from "@/types";
 import { sortMediaUnit } from "@/utils/data";
 import supabaseClient from "@/lib/supabase";

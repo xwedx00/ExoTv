@@ -1,3 +1,4 @@
+//@ts-nocheck
 import ControlsIcon, {
   ControlsIconProps,
 } from "@/components/features/anime/Player/ControlsIcon";

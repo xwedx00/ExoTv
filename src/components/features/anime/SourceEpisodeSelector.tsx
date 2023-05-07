@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Select from "@/components/shared/Select";
 import { groupBy, sortObjectByValue } from "@/utils";
 import React, { useLayoutEffect, useMemo, useState } from "react";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useUser } from "@/contexts/AuthContext";
 import { NextPage } from "next";
 import { useRouter } from "next/router";

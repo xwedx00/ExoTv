@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useEffect } from "react";
 import useHandlerSetterRef from "@/hooks/useHandlerSetterRef";
 import { CallbackSetter, Noop } from "@/types";

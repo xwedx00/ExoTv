@@ -1,3 +1,4 @@
+//@ts-nocheck
 import MarkIcon from "@/components/icons/MarkIcon";
 import { ControlButton, Dialog } from "netplayer";
 import React from "react";

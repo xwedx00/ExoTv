@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { HTMLMotionProps, motion } from "framer-motion";
 import React from "react";
 

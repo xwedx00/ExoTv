@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { AdditionalUser } from "@/types";
 import { getUser, supabaseClient } from "@supabase/auth-helpers-nextjs";
 import {

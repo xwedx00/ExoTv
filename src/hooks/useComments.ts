@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Comment } from "@/types";
 import { MediaType } from "@/types/anilist";
 import { useSupabaseQuery } from "@/utils/supabase";

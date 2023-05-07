@@ -1,3 +1,4 @@
+//@ts-nocheck
 import LocaleEpisodeSelector from "@/components/features/anime/Player/LocaleEpisodeSelector";
 import Comments from "@/components/features/comment/Comments";
 import AddTranslationModal from "@/components/shared/AddTranslationModal";

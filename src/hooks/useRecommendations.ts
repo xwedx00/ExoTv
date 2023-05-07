@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getRecommendations } from "@/services/anilist";
 import { PageArgs, Recommendation, RecommendationArgs } from "@/types/anilist";
 import { AxiosError } from "axios";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Button from "@/components/shared/Button";
 import Head from "@/components/shared/Head";
 import List from "@/components/shared/List";

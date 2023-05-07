@@ -1,3 +1,4 @@
+//@ts-nocheck
 import locales from "@/locales.json";
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";

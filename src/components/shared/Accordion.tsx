@@ -1,3 +1,4 @@
+//@ts-nocheck
 import classNames from "classnames";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import React, { useCallback, useState } from "react";

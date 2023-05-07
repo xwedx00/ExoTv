@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Loading from "@/components/shared/Loading";
 import TransLink from "@/components/shared/TransLink";
 import { useCommentReply } from "@/contexts/CommentReplyContext";

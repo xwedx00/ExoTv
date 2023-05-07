@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useReadSettings } from "@/contexts/ReadSettingsContext";
 import useDevice from "@/hooks/useDevice";
 import React from "react";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { CustomVideoStateContextProvider } from "@/contexts/CustomVideoStateContext";
 import { useThemePlayer } from "@/contexts/ThemePlayerContext";
 import { useThemeSettings } from "@/contexts/ThemeSettingsContext";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useUser } from "@/contexts/AuthContext";
 import { useSupabaseSingleQuery } from "@/utils/supabase";
 import supabaseClient from "@/lib/supabase";

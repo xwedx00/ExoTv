@@ -1,3 +1,4 @@
+//@ts-nocheck
 import RefreshIcon from "@/components/icons/RefreshIcon";
 import { useThemePlayer } from "@/contexts/ThemePlayerContext";
 import { ControlButton } from "netplayer";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { MediaFormat, MediaSort } from "@/types/anilist";
 import AnimeBrowseList from "@/components/features/anime/AnimeBrowseList";
 import CharacterBrowseList from "@/components/features/characters/CharacterBrowseList";

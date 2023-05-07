@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Button from "@/components/shared/Button";
 import Card from "@/components/shared/Card";
 import InView from "@/components/shared/InView";

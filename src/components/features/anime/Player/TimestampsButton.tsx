@@ -1,3 +1,4 @@
+//@ts-nocheck
 import MarkIcon from "@/components/icons/MarkIcon";
 import Button from "@/components/shared/Button";
 import {

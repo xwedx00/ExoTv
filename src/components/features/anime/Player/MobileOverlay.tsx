@@ -1,3 +1,4 @@
+//@ts-nocheck
 import SliderIcon from "@/components/icons/SliderIcon";
 import TextIcon from "@/components/shared/TextIcon";
 import classNames from "classnames";

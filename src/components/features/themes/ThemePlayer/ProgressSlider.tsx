@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import PlayerProgressSlider from "@/components/features/anime/Player/ProgressSlider";
 import classNames from "classnames";

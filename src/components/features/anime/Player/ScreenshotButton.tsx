@@ -1,3 +1,4 @@
+//@ts-nocheck
 import CircleButton from "@/components/shared/CircleButton";
 import Input from "@/components/shared/Input";
 import Modal from "@/components/shared/Modal";

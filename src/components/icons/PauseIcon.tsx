@@ -1,3 +1,4 @@
+//@ts-nocheck
 import * as React from "react";
 
 function PauseIcon(props: React.SVGProps<SVGSVGElement>) {

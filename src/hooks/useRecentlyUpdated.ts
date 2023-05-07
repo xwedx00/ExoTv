@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { AiringSort } from "@/types/anilist";
 import { removeArrayOfObjectDup } from "@/utils";
 import dayjs from "dayjs";

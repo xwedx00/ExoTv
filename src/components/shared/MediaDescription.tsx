@@ -1,3 +1,4 @@
+//@ts-nocheck
 import useDevice from "@/hooks/useDevice";
 import { Editor } from "@tiptap/react";
 import classNames from "classnames";

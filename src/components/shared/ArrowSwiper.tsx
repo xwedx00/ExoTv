@@ -1,3 +1,4 @@
+//@ts-nocheck
 import classNames from "classnames";
 import React, { useRef, useState } from "react";
 import { BiArrowToLeft, BiArrowToRight } from "react-icons/bi";

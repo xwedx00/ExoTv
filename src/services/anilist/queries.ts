@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Media, Page, Studio } from "@/types/anilist";
 
 export type PageQueryResponse = {

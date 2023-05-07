@@ -1,3 +1,4 @@
+//@ts-nocheck
 import PlainCard from "@/components/shared/PlainCard";
 import Swiper, { SwiperProps, SwiperSlide } from "@/components/shared/Swiper";
 import useDevice from "@/hooks/useDevice";

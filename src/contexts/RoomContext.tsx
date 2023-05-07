@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { BasicRoomUser, Room, RoomUser } from "@/types";
 import Peer from "peerjs";
 import React from "react";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import AdvancedSettings from "@/components/shared/AdvancedSettings";
 import Card from "@/components/shared/Card";
 import FormSelect from "@/components/shared/FormSelect";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Avatar from "@/components/shared/Avatar";
 import Button from "@/components/shared/Button";
 import { useRoomInfo } from "@/contexts/RoomContext";

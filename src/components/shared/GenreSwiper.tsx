@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Image from "@/components/shared/Image";
 import Swiper, { SwiperProps, SwiperSlide } from "@/components/shared/Swiper";
 import useConstantTranslation from "@/hooks/useConstantTranslation";

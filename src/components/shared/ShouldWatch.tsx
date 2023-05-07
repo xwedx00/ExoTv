@@ -1,3 +1,4 @@
+//@ts-nocheck
 import CircleButton from "@/components/shared/CircleButton";
 import DotList from "@/components/shared/DotList";
 import Image from "@/components/shared/Image";

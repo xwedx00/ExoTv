@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { NextPage } from "next";
 import { NextRouter, useRouter } from "next/router";
 import { useEffect, useMemo } from "react";

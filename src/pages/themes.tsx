@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useCallback, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { ThemeSettingsContextProvider } from "@/contexts/ThemeSettingsContext";

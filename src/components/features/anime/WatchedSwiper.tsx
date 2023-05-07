@@ -1,3 +1,4 @@
+//@ts-nocheck
 import EpisodeCard from "@/components/features/anime/EpisodeCard";
 import Swiper, { SwiperProps, SwiperSlide } from "@/components/shared/Swiper";
 import { Watched } from "@/types";

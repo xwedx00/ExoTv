@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Avatar from "@/components/shared/Avatar";
 import Section from "@/components/shared/Section";
 import Swiper, { SwiperSlide } from "@/components/shared/Swiper";

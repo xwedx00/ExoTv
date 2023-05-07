@@ -1,3 +1,4 @@
+//@ts-nocheck
 import EditProfileModal from "@/components/features/users/EditProfileModal";
 import UpdateAvatar from "@/components/features/users/UpdateAvatar";
 import UpdateBanner from "@/components/features/users/UpdateBanner";

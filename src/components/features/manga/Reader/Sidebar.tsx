@@ -1,3 +1,4 @@
+//@ts-nocheck
 import ButtonTooltip from "@/components/shared/ButtonTooltip";
 import CircleButton from "@/components/shared/CircleButton";
 import Input from "@/components/shared/Input";

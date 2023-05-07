@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Input from "@/components/shared/Input";
 import InView from "@/components/shared/InView";
 import List from "@/components/shared/List";

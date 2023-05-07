@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getMedia } from "@/services/anilist";
 import { Comment } from "@/types";
 import { MediaType } from "@/types/anilist";

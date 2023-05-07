@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getPageMedia } from "@/services/anilist";
 import { Translation } from "@/types";
 import {

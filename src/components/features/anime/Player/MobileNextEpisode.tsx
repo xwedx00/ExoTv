@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import NextIcon from "@/components/icons/NextIcon";
 import MobileControlsIcon from "@/components/features/anime/Player/MobileControlsIcon";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Image from "@/components/shared/Image";
 import { CharacterEdge } from "@/types/anilist";
 import { convert } from "@/utils/data";

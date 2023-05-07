@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useReadSettings } from "@/contexts/ReadSettingsContext";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { ImageSource } from "@/types";

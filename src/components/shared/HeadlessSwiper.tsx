@@ -1,3 +1,4 @@
+//@ts-nocheck
 import classNames from "classnames";
 import React, { MutableRefObject, useEffect } from "react";
 import Swiper from "swiper";

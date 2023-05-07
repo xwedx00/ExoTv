@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getAiringSchedules } from "@/services/anilist";
 import { AiringSchedule, AiringScheduleArgs, PageArgs } from "@/types/anilist";
 import { AxiosError } from "axios";

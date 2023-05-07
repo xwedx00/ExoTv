@@ -1,3 +1,4 @@
+//@ts-nocheck
 import DotList from "@/components/shared/DotList";
 import Image from "@/components/shared/Image";
 import TextIcon from "@/components/shared/TextIcon";

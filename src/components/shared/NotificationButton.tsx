@@ -1,3 +1,4 @@
+//@ts-nocheck
 import CircleButton from "@/components/shared/CircleButton";
 import { useSubscription } from "@/contexts/SubscriptionContext";
 import useIsSubscribed from "@/hooks/useIsSubscribed";

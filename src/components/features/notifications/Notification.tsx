@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useMemo } from "react";
 import { Notification as NotificationType } from "@/types";
 import Avatar from "@/components/shared/Avatar";

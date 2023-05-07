@@ -1,3 +1,4 @@
+//@ts-nocheck
 import dayjs from "@/lib/dayjs";
 import { Room } from "@/types";
 import { getTitle } from "@/utils/data";

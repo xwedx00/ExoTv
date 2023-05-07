@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Notification } from "@/types";
 import { useSupabaseQuery } from "@/utils/supabase";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";

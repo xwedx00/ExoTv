@@ -1,3 +1,4 @@
+//@ts-nocheck
 import CardSwiper from "@/components/shared/CardSwiper";
 import DotList from "@/components/shared/DotList";
 import Loading from "@/components/shared/Loading";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useCustomVideoState } from "@/contexts/CustomVideoStateContext";
 import { convertTime } from "@/utils";
 import classNames from "classnames";

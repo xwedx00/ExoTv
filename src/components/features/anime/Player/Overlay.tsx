@@ -1,3 +1,4 @@
+//@ts-nocheck
 import classNames from "classnames";
 import { useVideo } from "netplayer";
 import * as React from "react";

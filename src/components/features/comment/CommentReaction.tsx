@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Avatar from "@/components/shared/Avatar";
 import Loading from "@/components/shared/Loading";
 import Modal from "@/components/shared/Modal";

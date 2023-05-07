@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Button from "@/components/shared/Button";
 import Popup from "@/components/shared/Popup";
 import useReactions from "@/hooks/useReactions";

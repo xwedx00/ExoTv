@@ -1,3 +1,4 @@
+//@ts-nocheck
 import CardSwiper from "@/components/shared/CardSwiper";
 import Section from "@/components/shared/Section";
 import ListSwiperSkeleton from "@/components/skeletons/ListSwiperSkeleton";

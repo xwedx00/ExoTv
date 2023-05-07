@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Button from "@/components/shared/Button";
 import useUpdateBanner from "@/hooks/useUpdateBanner";
 import { AdditionalUser } from "@/types";

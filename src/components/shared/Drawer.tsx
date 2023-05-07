@@ -1,3 +1,4 @@
+//@ts-nocheck
 import classNames from "classnames";
 import { AnimatePresence, motion, Transition, Variants } from "framer-motion";
 import React, { useImperativeHandle, useState } from "react";

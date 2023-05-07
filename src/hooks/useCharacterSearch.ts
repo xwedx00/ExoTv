@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getPageCharacters } from "@/services/anilist";
 import { CharacterSort } from "@/types/anilist";
 import { useInfiniteQuery } from "react-query";

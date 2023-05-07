@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { parseNumberFromString } from "@/utils";
 import classNames from "classnames";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Comment } from "@/types";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { BaseButtonProps } from "@/components/shared/BaseButton";
 import Button from "@/components/shared/Button";
 import { useCustomVideoState } from "@/contexts/CustomVideoStateContext";

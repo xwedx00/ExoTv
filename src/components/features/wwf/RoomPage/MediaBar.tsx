@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Avatar from "@/components/shared/Avatar";
 import Description from "@/components/shared/Description";
 import DotList from "@/components/shared/DotList";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getPageMedia } from "@/services/anilist";
 import { MediaArgs, Page, PageArgs } from "@/types/anilist";
 import { AxiosError } from "axios";

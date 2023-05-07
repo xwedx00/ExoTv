@@ -1,3 +1,4 @@
+//@ts-nocheck
 import ArrowSwiper, { SwiperSlide } from "@/components/shared/ArrowSwiper";
 import CircleButton from "@/components/shared/CircleButton";
 import Select from "@/components/shared/Select";

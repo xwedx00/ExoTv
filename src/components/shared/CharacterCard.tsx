@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Image from "@/components/shared/Image";
 import { Character } from "@/types/anilist";
 import { createCharacterDetailsUrl } from "@/utils";

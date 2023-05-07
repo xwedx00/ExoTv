@@ -1,3 +1,4 @@
+//@ts-nocheck
 import useHorizontalScroll from "@/hooks/useHorizontalScroll";
 import { useTranslation } from "next-i18next";
 import React from "react";

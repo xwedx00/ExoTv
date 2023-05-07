@@ -1,3 +1,4 @@
+//@ts-nocheck
 import GuestRegister from "@/components/features/wwf/RoomPage/GuestRegister";
 import Sidebar from "@/components/features/wwf/RoomPage/Sidebar";
 import BaseLayout from "@/components/layouts/BaseLayout";

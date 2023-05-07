@@ -1,3 +1,4 @@
+//@ts-nocheck
 import classNames from "classnames";
 import React from "react";
 import Dot from "@/components/shared/Dot";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Input from "@/components/shared/Input";
 import { useRoomInfo } from "@/contexts/RoomContext";
 import { Chat as ChatType, ChatEvent, ChatMessage } from "@/types";

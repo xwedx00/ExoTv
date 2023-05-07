@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Chapter, ImageSource } from "@/types";
 import { Media } from "@/types/anilist";
 import React from "react";

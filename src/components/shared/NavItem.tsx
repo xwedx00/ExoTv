@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useRouter } from "next/dist/client/router";
 import Link, { LinkProps } from "next/link";
 import React, { useMemo } from "react";

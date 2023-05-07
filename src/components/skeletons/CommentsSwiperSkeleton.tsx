@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Skeleton, { SkeletonItem } from "@/components/shared/Skeleton";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import React from "react";

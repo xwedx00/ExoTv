@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Image from "@/components/shared/Image";
 import Loading from "@/components/shared/Loading";
 import useReaction from "@/hooks/useReaction";

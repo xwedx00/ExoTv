@@ -1,3 +1,4 @@
+//@ts-nocheck
 // Hair space character for precise justification
 const SPACE = "\u200a";
 

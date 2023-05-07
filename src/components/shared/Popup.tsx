@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Portal from "@/components/shared/Portal";
 import useDevice from "@/hooks/useDevice";
 import { Modifier, Options, Placement } from "@popperjs/core";

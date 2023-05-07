@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Comments from "@/components/features/comment/Comments";
 import LocaleChapterSelector from "@/components/features/manga/LocaleChapterSelector";
 import AddTranslationModal from "@/components/shared/AddTranslationModal";

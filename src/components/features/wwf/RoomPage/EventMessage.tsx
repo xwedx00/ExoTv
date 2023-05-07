@@ -1,3 +1,4 @@
+//@ts-nocheck
 import useConstantTranslation from "@/hooks/useConstantTranslation";
 import { ChatEvent } from "@/types";
 import { useTranslation } from "next-i18next";

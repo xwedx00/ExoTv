@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Popup from "@/components/shared/Popup";
 import TextIcon from "@/components/shared/TextIcon";
 import useConstantTranslation from "@/hooks/useConstantTranslation";

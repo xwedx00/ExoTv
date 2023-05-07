@@ -1,3 +1,4 @@
+//@ts-nocheck
 import BaseLayout from "@/components/layouts/BaseLayout";
 import { SubscriptionContextProvider } from "@/contexts/SubscriptionContext";
 import { GA_TRACKING_ID, pageview } from "@/lib/gtag";

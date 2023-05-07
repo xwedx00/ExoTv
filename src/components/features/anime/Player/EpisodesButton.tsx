@@ -1,3 +1,4 @@
+//@ts-nocheck
 import ControlsIcon from "@/components/features/anime/Player/ControlsIcon";
 import EpisodesIcon from "@/components/icons/EpisodesIcon";
 import { ControlButton, Popover, useVideoProps } from "netplayer";

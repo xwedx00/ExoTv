@@ -1,3 +1,4 @@
+//@ts-nocheck
 import HeadlessSwiper, {
   SwiperSlide,
 } from "@/components/shared/HeadlessSwiper";

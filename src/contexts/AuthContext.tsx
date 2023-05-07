@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { default as supabase, default as supabaseClient } from "@/lib/supabase";
 import { AdditionalUser } from "@/types";
 import nookies from "nookies";

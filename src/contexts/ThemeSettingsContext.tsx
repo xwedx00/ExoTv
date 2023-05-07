@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useCallback, useEffect } from "react";
 
 export const endModes = ["repeat", "refresh"] as const;

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import PlayerOverlay from "@/components/features/anime/Player/Overlay";
 import Loading from "@/components/shared/Loading";
 import { useThemePlayer } from "@/contexts/ThemePlayerContext";

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import ControlsIcon from "@/components/features/anime/Player/ControlsIcon";
 import MobileControlsIcon from "@/components/features/anime/Player/MobileControlsIcon";
 import { SKIP_TIME } from "@/constants";

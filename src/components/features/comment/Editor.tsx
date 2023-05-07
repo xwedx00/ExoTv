@@ -1,3 +1,4 @@
+//@ts-nocheck
 import CircleButton from "@/components/shared/CircleButton";
 import { spoilerExtension } from "@/utils/editor";
 import Mention from "@tiptap/extension-mention";

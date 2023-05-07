@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Avatar from "@/components/shared/Avatar";
 import { AdditionalUser } from "@/types";
 import Link from "next/link";

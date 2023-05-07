@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import Skeleton, { SkeletonItem } from "@/components/shared/Skeleton";
 

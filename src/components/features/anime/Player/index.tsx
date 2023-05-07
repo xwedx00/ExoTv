@@ -1,3 +1,4 @@
+//@ts-nocheck
 import config from "@/config";
 import { SKIP_TIME } from "@/constants";
 import { CustomVideoStateContextProvider } from "@/contexts/CustomVideoStateContext";

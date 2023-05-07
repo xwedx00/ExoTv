@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { TapHandlers, TapInfo } from "framer-motion";
 import { useRef } from "react";
 

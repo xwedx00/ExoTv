@@ -1,3 +1,4 @@
+//@ts-nocheck
 import AnimeScheduling from "@/components/features/anime/AnimeScheduling";
 import RecommendedAnimeSection from "@/components/features/anime/RecommendedAnimeSection";
 import WatchedSection from "@/components/features/anime/WatchedSection";

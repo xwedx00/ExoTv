@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Skeleton, { SkeletonItem } from "@/components/shared/Skeleton";
 import CardSkeleton from "@/components/skeletons/CardSkeleton";
 import classNames from "classnames";

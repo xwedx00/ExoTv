@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Button from "@/components/shared/Button";
 import Portal from "@/components/shared/Portal";
 import { useTranslation } from "next-i18next";

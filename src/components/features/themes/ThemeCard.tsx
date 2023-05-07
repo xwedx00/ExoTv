@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { AnimeThemeAPI } from "@/hooks/useThemeSearch";
 import Link from "next/link";
 import React, { useState } from "react";

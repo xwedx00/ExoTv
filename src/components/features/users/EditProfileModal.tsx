@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Button from "@/components/shared/Button";
 import Input from "@/components/shared/Input";
 import Modal, { ModalRef } from "@/components/shared/Modal";

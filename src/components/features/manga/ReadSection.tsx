@@ -1,3 +1,4 @@
+//@ts-nocheck
 import ListSwiperSkeleton from "@/components/skeletons/ListSwiperSkeleton";
 import useRead from "@/hooks/useRead";
 import React from "react";

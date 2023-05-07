@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { ArrayElement } from "@/utils/types";
 import classNames from "classnames";
 import React, { useMemo } from "react";

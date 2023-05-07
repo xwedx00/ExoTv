@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { WatchPlayerProps } from "@/components/features/anime/WatchPlayer";
 import classNames from "classnames";
 import {

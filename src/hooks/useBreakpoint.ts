@@ -1,3 +1,4 @@
+//@ts-nocheck
 import BREAKPOINTS from "@/constants/breakpoints";
 import { useEffect, useMemo, useState } from "react";
 

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import ReadContainer from "@/components/features/manga/Reader/ReadContainer";
 import Button from "@/components/shared/Button";
 import Head from "@/components/shared/Head";

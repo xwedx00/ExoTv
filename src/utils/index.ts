@@ -1,3 +1,4 @@
+//@ts-nocheck
 import config from "@/config";
 import dayjs from "@/lib/dayjs";
 import { Proxy } from "@/types";

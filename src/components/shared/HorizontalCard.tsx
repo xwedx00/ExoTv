@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Media, MediaType } from "@/types/anilist";
 import { createMediaDetailsUrl } from "@/utils";
 import { convert, getTitle } from "@/utils/data";

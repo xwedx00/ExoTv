@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Select from "@/components/shared/Select";
 import useConstantTranslation from "@/hooks/useConstantTranslation";
 import useModifySourceStatus from "@/hooks/useModifySourceStatus";

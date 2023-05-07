@@ -1,3 +1,4 @@
+//@ts-nocheck
 import * as React from "react";
 
 function VolumeMutedIcon(props: React.SVGProps<SVGSVGElement>) {

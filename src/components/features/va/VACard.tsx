@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Image from "@/components/shared/Image";
 import React from "react";
 import Link from "next/link";

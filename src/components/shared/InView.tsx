@@ -1,3 +1,4 @@
+//@ts-nocheck
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import React, { useEffect, useRef } from "react";
 

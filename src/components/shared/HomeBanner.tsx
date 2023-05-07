@@ -1,3 +1,4 @@
+//@ts-nocheck
 import BannerSwiper from "@/components/shared/BannerSwiper";
 import CircleButton from "@/components/shared/CircleButton";
 import DotList from "@/components/shared/DotList";

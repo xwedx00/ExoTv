@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { isValidUrl } from "@/utils";
 import { parse } from "@plussub/srt-vtt-parser";

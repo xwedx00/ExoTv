@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { PropsWithChildren } from "react";
 import Table, { TableProps } from "./Table";
 

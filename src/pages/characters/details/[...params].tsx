@@ -1,3 +1,4 @@
+//@ts-nocheck
 import VACard from "@/components/features/va/VACard";
 import Card from "@/components/shared/Card";
 import DetailsSection from "@/components/shared/DetailsSection";

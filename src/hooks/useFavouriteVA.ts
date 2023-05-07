@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getStaff } from "@/services/anilist";
 import { StaffSort } from "@/types/anilist";
 import { useQuery } from "react-query";

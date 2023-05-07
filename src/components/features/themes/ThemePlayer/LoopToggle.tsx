@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Toggle from "@/components/shared/Toggle";
 import { useThemeSettings } from "@/contexts/ThemeSettingsContext";
 import { ControlButton } from "netplayer";

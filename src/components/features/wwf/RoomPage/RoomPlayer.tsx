@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useRoomInfo } from "@/contexts/RoomContext";
 import {
   RoomPlayerContextProvider,

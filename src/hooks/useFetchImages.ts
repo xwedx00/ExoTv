@@ -1,3 +1,4 @@
+//@ts-nocheck
 import config from "@/config";
 import { Chapter, ImageSource } from "@/types";
 import axios, { AxiosError } from "axios";

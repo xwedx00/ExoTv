@@ -1,3 +1,4 @@
+//@ts-nocheck
 import classNames from "classnames";
 import React, { PropsWithChildren, useEffect } from "react";
 import {

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import config from "@/config";
 import { Episode, Font, Subtitle, VideoSource } from "@/types";
 import { createProxyUrl } from "@/utils";

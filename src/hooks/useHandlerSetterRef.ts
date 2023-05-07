@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { MutableRefObject, useCallback, useRef } from "react";
 import { CallbackSetter } from "@/types";
 

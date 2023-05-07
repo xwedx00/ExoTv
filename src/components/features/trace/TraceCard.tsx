@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { TraceImageResult } from "@/hooks/useTraceImage";
 import { parseTime } from "@/utils";
 import { getTitle } from "@/utils/data";

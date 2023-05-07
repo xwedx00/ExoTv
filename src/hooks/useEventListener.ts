@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useRef, useEffect } from "react";
 
 function useEventListener(

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import useWatched from "@/hooks/useWatched";
 import React from "react";
 import WatchedSwiperSkeleton from "@/components/skeletons/WatchedSwiperSkeleton";

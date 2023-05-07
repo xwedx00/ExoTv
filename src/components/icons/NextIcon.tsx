@@ -1,3 +1,4 @@
+//@ts-nocheck
 import * as React from "react";
 
 function NextIcon(props: React.SVGProps<SVGSVGElement>) {

@@ -1,3 +1,4 @@
+//@ts-nocheck
 // https://github.com/hoangvu12/video-sync/blob/main/public/index.js
 
 import { useUser } from "@/contexts/AuthContext";

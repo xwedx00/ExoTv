@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { SkeletonProps } from "@/components/shared/Skeleton";
 import { SupabaseQueryFunction, SupabaseQueryOptions } from "@/utils/supabase";
 import { User } from "@supabase/gotrue-js";

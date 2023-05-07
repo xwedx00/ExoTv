@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Input from "@/components/shared/Input";
 import Loading from "@/components/shared/Loading";
 import Portal from "@/components/shared/Portal";

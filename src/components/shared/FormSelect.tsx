@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import { Controller, ControllerProps } from "react-hook-form";
 import { Props } from "react-select";

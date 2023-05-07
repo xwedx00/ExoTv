@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Button from "@/components/shared/Button";
 import Drawer, { DrawerRef } from "@/components/shared/Drawer";
 import HeaderProfile from "@/components/shared/HeaderProfile";

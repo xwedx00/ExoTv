@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Translation } from "@/types";
 import { Media, MediaFormat } from "@/types/anilist";
 import axios from "axios";

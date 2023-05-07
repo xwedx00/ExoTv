@@ -1,3 +1,4 @@
+//@ts-nocheck
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 

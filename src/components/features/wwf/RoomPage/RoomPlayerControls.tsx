@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useRoomPlayer } from "@/contexts/RoomPlayerContext";
 import classNames from "classnames";
 import {

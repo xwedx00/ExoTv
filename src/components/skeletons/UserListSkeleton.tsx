@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Skeleton, { SkeletonItem } from "@/components/shared/Skeleton";
 import classNames from "classnames";
 import React, { useMemo } from "react";

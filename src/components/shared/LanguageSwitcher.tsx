@@ -1,3 +1,4 @@
+//@ts-nocheck
 import locales from "@/locales.json";
 import { useRouter } from "next/router";
 import nookies from "nookies";

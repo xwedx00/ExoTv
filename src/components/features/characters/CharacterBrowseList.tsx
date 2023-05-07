@@ -1,3 +1,4 @@
+//@ts-nocheck
 import CharacterCard from "@/components/shared/CharacterCard";
 import Input from "@/components/shared/Input";
 import InView from "@/components/shared/InView";

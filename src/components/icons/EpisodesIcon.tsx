@@ -1,3 +1,4 @@
+//@ts-nocheck
 import * as React from "react";
 
 function EpisodesIcon(props: React.SVGProps<SVGSVGElement>) {

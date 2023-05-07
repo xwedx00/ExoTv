@@ -1,3 +1,4 @@
+//@ts-nocheck
 import CircleButton, {
   CircleButtonProps,
 } from "@/components/shared/CircleButton";

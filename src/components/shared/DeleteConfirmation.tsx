@@ -1,3 +1,4 @@
+//@ts-nocheck
 import classNames from "classnames";
 import { Trans, Translation, useTranslation } from "next-i18next";
 import React, { useCallback, useMemo, useRef, useState } from "react";

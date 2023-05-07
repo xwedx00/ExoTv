@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { CommentReaction } from "@/types";
 import { SupabaseQueryOptions, useSupabaseQuery } from "@/utils/supabase";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";

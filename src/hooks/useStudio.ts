@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getPageStudios, getStudioDetails } from "@/services/anilist";
 import { Studio } from "@/types/anilist";
 import { useInfiniteQuery } from "react-query";

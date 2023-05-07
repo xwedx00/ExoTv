@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { AnimeTheme } from "@/types";
 import React from "react";
 

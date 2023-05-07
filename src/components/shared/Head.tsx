@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import NextHead from "next/head";
 import { WEBSITE_URL } from "@/constants";

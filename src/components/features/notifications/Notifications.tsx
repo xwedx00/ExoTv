@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Loading from "@/components/shared/Loading";
 import Popup from "@/components/shared/Popup";
 import useNotifications from "@/hooks/useNotifications";

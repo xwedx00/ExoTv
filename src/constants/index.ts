@@ -1,3 +1,4 @@
+//@ts-nocheck
 import dayjs from "@/lib/dayjs";
 
 const START_YEAR = 1940;

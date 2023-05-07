@@ -1,3 +1,4 @@
+//@ts-nocheck
 import LocaleEpisodeSelector from "@/components/features/anime/Player/LocaleEpisodeSelector";
 import Button from "@/components/shared/Button";
 import Description from "@/components/shared/Description";

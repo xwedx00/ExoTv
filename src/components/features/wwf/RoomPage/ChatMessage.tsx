@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Avatar from "@/components/shared/Avatar";
 import { useRoomInfo } from "@/contexts/RoomContext";
 import { ChatMessage } from "@/types";

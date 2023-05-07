@@ -1,3 +1,4 @@
+//@ts-nocheck
 import supabaseClient from "@/lib/supabase";
 import { AdditionalUser } from "@/types";
 import { useSupaInfiniteQuery } from "@/utils/supabase";

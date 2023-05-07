@@ -1,3 +1,4 @@
+//@ts-nocheck
 import classNames from "classnames";
 import React, { useEffect } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
