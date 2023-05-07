@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import NextImage, { ImageProps as NextImageProps } from "next/image";
+import NextImage, { ImageProps as NextImageProps } from "next/legacy/image";
 import { motion } from "framer-motion";
 
 const variants = {

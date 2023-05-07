@@ -1,5 +1,5 @@
 import Image from "@/components/shared/Image";
-import { ImageProps } from "next/image";
+import { ImageProps } from "next/legacy/image";
 import React from "react";
 
 const PlainCard: React.FC<ImageProps> = (props) => {
