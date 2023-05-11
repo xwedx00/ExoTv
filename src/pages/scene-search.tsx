@@ -10,7 +10,7 @@ import React, { useCallback, useState } from "react";
 import { CgArrowLongRight } from "react-icons/cg";
 import { MdOutlineRestartAlt } from "react-icons/md";
 import { ImageType } from "react-images-uploading";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import Section from "@/components/shared/Section";
 
 const TracePage = () => {
