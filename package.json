@@ -57,6 +57,7 @@
     "react-toastify": "^9.1.2",
     "socket.io-client": "^4.6.1",
     "swiper": "^6.8.4",
+    "swr": "^2.1.5",
     "traverse": "^0.6.7",
     "url-toolkit": "^2.2.5"
   },

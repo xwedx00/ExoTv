@@ -1,5 +1,4 @@
 //@ts-nocheck
-import { Translation } from "@/types";
 import {
   AiringSchedule,
   AiringScheduleArgs,
@@ -12,9 +11,7 @@ import {
   StudioArgs,
 } from "@/types/anilist";
 import { removeArrayOfObjectDup } from "@/utils";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
-import { getTranslations } from "../tmdb";
 import {
   airingSchedulesQuery,
   charactersDefaultFields,
@@ -56,25 +53,6 @@ export const getPageMedia = async (
     args
   );
 
-  const mediaIdList = response?.Page?.media?.map((media) => media.id);
-
-  const { data: mediaTranslations, error } = await supabaseClient
-    .from<Translation>("Exoexs_translations")
-    .select("*")
-    .in("mediaId", mediaIdList);
-
-  if (error || !mediaTranslations?.length) return response?.Page;
-
-  response?.Page?.media?.forEach((media) => {
-    const translations = mediaTranslations.filter(
-      (translation) => translation.mediaId === media.id
-    );
-
-    if (!translations?.length) return;
-
-    media.translations = translations;
-  });
-
   return response?.Page;
 };
 
@@ -86,25 +64,7 @@ export const getMedia = async (args: MediaArgs & PageArgs, fields?: string) => {
 
   const mediaList = response?.Page?.media || [];
 
-  const mediaIdList = mediaList.map((media) => media.id);
-
-  const { data: mediaTranslations, error } = await supabaseClient
-    .from<Translation>("Exoexs_translations")
-    .select("*")
-    .in("mediaId", mediaIdList);
-
-  if (error || !mediaTranslations?.length) return mediaList;
-
-  return mediaList.map((media) => {
-    const translations = mediaTranslations.filter(
-      (trans) => trans.mediaId === media.id
-    );
-
-    return {
-      ...media,
-      translations,
-    };
-  });
+  return mediaList;
 };
 
 export const getMediaDetails = async (
@@ -116,28 +76,9 @@ export const getMediaDetails = async (
     args
   );
 
-  let translations: Translation[] = [];
-  const media = response?.Media;
-
-  const { data } = await supabaseClient
-    .from<Translation>("Exoexs_translations")
-    .select("*")
-    .eq("mediaId", media.id)
-    .eq("mediaType", args?.type || MediaType.Anime);
-
-  if (data?.length) {
-    translations = data;
-  } else if (args?.type === MediaType.Manga) {
-    translations = null;
-  } else {
-    translations = await getTranslations(media);
-  }
-
-  return {
-    ...media,
-    translations,
-  };
+  return response?.Media;
 };
+
 
 export const getAiringSchedules = async (
   args: AiringScheduleArgs & PageArgs,

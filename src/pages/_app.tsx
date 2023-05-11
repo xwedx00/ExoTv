@@ -1,4 +1,5 @@
 //@ts-nocheck
+import { getStaticProps as nextGetStaticProps } from 'next';
 import BaseLayout from "@/components/layouts/BaseLayout";
 import { SubscriptionContextProvider } from "@/contexts/SubscriptionContext";
 import { GA_TRACKING_ID, pageview } from "@/lib/gtag";
@@ -41,6 +42,18 @@ interface WorkaroundAppProps extends AppProps {
 }
 
 function App({ Component, pageProps, router, err }: WorkaroundAppProps) {
+  App.getStaticProps = async (context) => {
+    const pageGetStaticProps = Component.getStaticProps
+      ? await Component.getStaticProps(context)
+      : {};
+  
+    return {
+      props: {
+        ...pageGetStaticProps.props,
+      },
+      revalidate: 10,
+    };
+  };
   const [errorInfo, setErrorInfo] = useState<React.ErrorInfo>(null);
 
   useEffect(() => {
@@ -121,4 +134,6 @@ function App({ Component, pageProps, router, err }: WorkaroundAppProps) {
   );
 }
 
-export default appWithTranslation(App, nextI18nextConfig);
+const AppWithISR = appWithTranslation(App, nextI18nextConfig);
+AppWithISR.getStaticProps = App.getStaticProps;
+export default AppWithISR;
