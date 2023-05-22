@@ -227,7 +227,7 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
 
           <Description
             description={description}
-            className="mt-2 hidden text-base text-gray-200 md:block md:line-clamp-3"
+            className="text-gray-300 hover:text-gray-100 transition duration-300 line-clamp-4 mb-2"
           />
         </motion.div>
 

@@ -16,7 +16,7 @@ module.exports = {
     minimumCacheTTL: 604800, // a week,
   },
   i18n,
-  webpack5: true,
+  webpack: true,
   webpack: (config) => {
     config.resolve.fallback = { fs: false };
     return config;
