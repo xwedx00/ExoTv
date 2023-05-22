@@ -21,6 +21,7 @@ import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { UserProvider } from "@supabase/auth-helpers-react";
 import GlobalPlayerContextProvider from "@/contexts/GlobalPlayerContext";
 import AuthContext, { AuthContextProvider } from "@/contexts/AuthContext";
+import { Analytics } from '@vercel/analytics/react';
 
 Router.events.on("routeChangeStart", NProgress.start);
 Router.events.on("routeChangeComplete", NProgress.done);
@@ -123,6 +124,7 @@ function App({ Component, pageProps, router, err }: WorkaroundAppProps) {
                 }}
               >
                 {getLayout(<Component {...pageProps} err={err} />)}
+                <Analytics />
               </ErrorBoundary>
             </GlobalPlayerContextProvider>
           </SubscriptionContextProvider>
