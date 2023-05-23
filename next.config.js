@@ -16,9 +16,21 @@ module.exports = {
     minimumCacheTTL: 604800, // a week,
   },
   i18n,
-  webpack: true,
   webpack: (config) => {
     config.resolve.fallback = { fs: false };
     return config;
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
   },
 };

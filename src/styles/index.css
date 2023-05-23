@@ -1,10 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Sans&family=Nunito+Sans&family=Roboto&display=swap");
-
+@import './local-fonts.css';
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 
 body {
-  font-family: "Fira Sans", Arial, sans-serif;
+  font-family: "Manrope", Arial, sans-serif;
   @apply w-full min-h-screen overflow-x-hidden text-typography bg-background;
 }
 
