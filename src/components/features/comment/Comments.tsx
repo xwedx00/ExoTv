@@ -6,7 +6,6 @@ import useComments from "@/hooks/useComments";
 import useCreateComment from "@/hooks/useCreateComment";
 import { getMentionedUserIds } from "@/utils/editor";
 import { useUser } from "@/contexts/AuthContext";
-import { Editor as EditorType } from "@tiptap/react";
 import { Trans, useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";

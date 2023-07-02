@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { NodeViewWrapper, NodeViewContent } from "@tiptap/react";
+
 import classNames from "classnames";
 import React, { useState } from "react";
 

@@ -5,7 +5,6 @@ import Modal, { ModalRef } from "@/components/shared/Modal";
 import { AdditionalUser } from "@/types";
 import React, { useRef } from "react";
 import { BiPencil } from "react-icons/bi";
-import { Editor as EditorType } from "@tiptap/react";
 import Editor from "../comment/Editor";
 import { useQueryClient } from "react-query";
 import useUpdateProfile from "@/hooks/useUpdateProfile";

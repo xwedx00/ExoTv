@@ -1,7 +1,6 @@
 //@ts-nocheck
 import React from "react";
 import Editor, { EditorProps } from "../features/comment/Editor";
-import { Editor as EditorType } from "@tiptap/react";
 
 export interface DescriptionProps extends EditorProps {
   description: string;

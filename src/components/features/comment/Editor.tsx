@@ -1,11 +1,7 @@
 //@ts-nocheck
 import CircleButton from "@/components/shared/CircleButton";
 import { spoilerExtension } from "@/utils/editor";
-import Mention from "@tiptap/extension-mention";
-import Placeholder from "@tiptap/extension-placeholder";
-import Underline from "@tiptap/extension-underline";
-import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+
 import classNames from "classnames";
 import React, { useImperativeHandle } from "react";
 import {
@@ -19,7 +15,6 @@ import {
   AiOutlineUnorderedList,
 } from "react-icons/ai";
 import { GrBlockQuote } from "react-icons/gr";
-import { Editor as EditorType } from "@tiptap/react";
 
 export interface EditorProps extends Partial<EditorOptions> {
   defaultContent?: string;

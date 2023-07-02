@@ -1,6 +1,6 @@
 //@ts-nocheck
 import useDevice from "@/hooks/useDevice";
-import { Editor } from "@tiptap/react";
+
 import classNames from "classnames";
 import { useTranslation } from "next-i18next";
 import React, { useCallback, useEffect, useRef } from "react";
