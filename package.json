@@ -10,9 +10,6 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.7",
-    "@supabase/auth-helpers-nextjs": "^0.2.9",
-    "@supabase/auth-helpers-react": "^0.2.4",
-    "@supabase/supabase-js": "^1.35.7",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tiptap/extension-mention": "^2.0.3",
