@@ -78,9 +78,6 @@ function App({ Component, pageProps, router, err }: WorkaroundAppProps) {
       />
 
       <QueryClientProvider client={queryClient}>
-        <AuthContextProvider>
-          <SubscriptionContextProvider>
-            <GlobalPlayerContextProvider>
               <ErrorBoundary
                 onError={(error, info) => {
                   setErrorInfo(info);
@@ -97,9 +94,7 @@ function App({ Component, pageProps, router, err }: WorkaroundAppProps) {
                 {getLayout(<Component {...pageProps} err={err} />)}
                 <Analytics />
               </ErrorBoundary>
-            </GlobalPlayerContextProvider>
-          </SubscriptionContextProvider>
-        </AuthContextProvider>
+            
 
         {process.env.NODE_ENV === "development" && <ReactQueryDevtools />}
       </QueryClientProvider>
