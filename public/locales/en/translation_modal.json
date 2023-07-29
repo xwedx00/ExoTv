@@ -1,0 +1,9 @@
+{
+  "add_translation_button": "Add translation",
+  "modal_heading": "Add translation",
+  "modal_media-title": "Title",
+  "modal_media-description": "Description",
+  "modal_save": "Save translation",
+  "modal_cancel": "Cancel",
+  "modal_translation-notice": "The translations might take some time to take effect."
+}

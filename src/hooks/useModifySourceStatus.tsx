@@ -1,0 +1,77 @@
+//@ts-nocheck
+import { useUser } from "@/contexts/AuthContext";
+import supabaseClient from "@/lib/supabase";
+
+import { SourceStatus } from "@/types";
+import { Media, MediaType } from "@/types/anilist";
+import { getTitle } from "@/utils/data";
+import { PostgrestError } from "@supabase/supabase-js";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
+import useConstantTranslation from "./useConstantTranslation";
+
+const useModifySourceStatus = <T extends MediaType>(type: T, source: Media) => {
+  const { WATCH_STATUS, READ_STATUS } = useConstantTranslation();
+
+  type StatusInput = T extends MediaType.Anime
+    ? typeof WATCH_STATUS[number]["value"]
+    : typeof READ_STATUS[number]["value"];
+
+  const { locale } = useRouter();
+  const queryClient = useQueryClient();
+  const { t } = useTranslation("source_status");
+  const user = useUser();
+  const mediaTitle = useMemo(() => getTitle(source, locale), [locale, source]);
+
+  const tableName =
+    type === MediaType.Anime ? "kaguya_watch_status" : "kaguya_read_status";
+  const queryKey = [tableName, source.id];
+
+  return useMutation<any, PostgrestError, StatusInput, any>(
+    async (status) => {
+      const upsertValue = {
+        status,
+        userId: user.id,
+        mediaId: source.id,
+      };
+
+      const { data, error } = await supabaseClient
+        .from(tableName)
+        .upsert(upsertValue);
+
+      if (error) throw error;
+
+      return data;
+    },
+
+    {
+      onMutate: (status) => {
+        const oldStatus = queryClient.getQueryData<SourceStatus<T>>(queryKey);
+
+        queryClient.setQueryData(queryKey, {
+          ...oldStatus,
+          status,
+        });
+      },
+      onSuccess: (_, status) => {
+        const { label } =
+          type === MediaType.Anime
+            ? WATCH_STATUS.find(({ value }) => value === status)
+            : READ_STATUS.find(({ value }) => value === status);
+
+        toast.success(t("added_to_list_msg", { mediaTitle, label }));
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(queryKey);
+      },
+    }
+  );
+};
+
+export default useModifySourceStatus;

@@ -1,0 +1,145 @@
+@import './local-fonts.css';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+body {
+  font-family: "Manrope", Arial, sans-serif;
+  @apply w-full min-h-screen overflow-x-hidden text-typography bg-background;
+}
+
+main {
+  @apply overflow-x-hidden;
+}
+
+.banner__overlay--down {
+  background-image: linear-gradient(
+    to bottom,
+    transparent 10%,
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 1)
+  );
+}
+
+.banner__overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+
+
+.reactions img {
+  @apply border rounded-full border-background-800 bg-background-800;
+}
+
+@layer utilities {
+  .snap-x > * {
+    flex-shrink: 0;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .banner__overlay {
+    background-image: linear-gradient(
+      77deg,
+      rgba(0, 0, 0, 0.8) 25%,
+      transparent 85%
+    );
+
+    background-color: transparent;
+  }
+}
+
+@import "tailwindcss/utilities";
+
+.popup__arrow,
+.popup__arrow::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+}
+
+.popup__arrow {
+  visibility: hidden;
+}
+
+.popup__arrow::before {
+  visibility: visible;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.popup[data-popper-placement^="top"] > .popup__arrow {
+  bottom: -4px;
+}
+
+.popup[data-popper-placement^="bottom"] > .popup__arrow {
+  top: -4px;
+}
+
+.popup[data-popper-placement^="left"] > .popup__arrow {
+  right: -4px;
+}
+
+.popup[data-popper-placement^="right"] > .popup__arrow {
+  left: -4px;
+}
+
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  @apply bg-primary-500;
+
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px var(--primary-color), 0 0 5px var(--primary-color);
+  opacity: 1;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+  -ms-transform: rotate(3deg) translate(0px, -4px);
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+.swiper-button {
+  @apply flex items-center justify-center p-2 text-white transition duration-300 border-2 border-white rounded-full cursor-pointer hover:bg-white hover:text-black;
+}
+
+.swiper-button-disabled {
+  @apply cursor-not-allowed opacity-40 hover:text-white hover:bg-transparent;
+}
+
+.app {
+  @apply min-h-screen;
+}
+
+::-webkit-scrollbar {
+  @apply w-2 bg-white/10;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-500 rounded-md;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  @apply hidden;
+}
+
+.controls-container .control-button {
+  @apply w-8 h-8;
+}
