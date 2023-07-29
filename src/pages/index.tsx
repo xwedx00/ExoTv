@@ -31,7 +31,7 @@ const Home = () => {
   const { data: trendingAnime, isLoading: trendingLoading } = useMedia({
     type: MediaType.Anime,
     sort: [MediaSort.Trending_desc, MediaSort.Popularity_desc],
-    perPage: isMobile ? 5 : 10,
+    perPage: isMobile ? 10 : 10,
   });
 
   const { data: popularSeason, isLoading: popularSeasonLoading } = useMedia({
@@ -39,13 +39,13 @@ const Home = () => {
     sort: [MediaSort.Popularity_desc],
     season: currentSeason.season,
     seasonYear: currentSeason.year,
-    perPage: isMobile ? 5 : 10,
+    perPage: isMobile ? 10 : 10,
   });
 
   const { data: popularAllTime, isLoading: popularAllTimeLoading } = useMedia({
     type: MediaType.Anime,
     sort: [MediaSort.Popularity_desc],
-    perPage: isMobile ? 5 : 10,
+    perPage: isMobile ? 10 : 10,
   });
 
   const { data: favouriteSeason, isLoading: favouriteSeasonLoading } = useMedia(
@@ -54,7 +54,7 @@ const Home = () => {
       sort: [MediaSort.Favourites_desc],
       season: currentSeason.season,
       seasonYear: currentSeason.year,
-      perPage: isMobile ? 5 : 10,
+      perPage: isMobile ? 10 : 10,
     }
   );
 
@@ -62,7 +62,7 @@ const Home = () => {
     useMedia({
       type: MediaType.Anime,
       sort: [MediaSort.Favourites_desc],
-      perPage: isMobile ? 5 : 10,
+      perPage: isMobile ? 10 : 10,
     });
 
   const { data: recentlyUpdated, isLoading: recentlyUpdatedLoading } =
@@ -96,9 +96,7 @@ const Home = () => {
           <HomeBanner data={trendingAnime} isLoading={trendingLoading} />
 
           <div className="space-y-8">
-            <WatchedSection />
             
-            <RecommendedAnimeSection />
 
             {recentlyUpdatedLoading ? (
               <ListSwiperSkeleton />
@@ -108,7 +106,7 @@ const Home = () => {
               </Section>
             )}
             
-            <NewestComments type={MediaType.Anime} />
+          
 
             {popularAllTimeLoading ? (
               <ListSwiperSkeleton />
