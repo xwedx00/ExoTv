@@ -26,11 +26,12 @@ import { isMobile } from "react-device-detect";
 const Home = () => {
   const currentSeason = useMemo(getSeason, []);
   const { isDesktop } = useDevice();
+  const { t } = useTranslation();
 
   const { data: trendingAnime, isLoading: trendingLoading } = useMedia({
     type: MediaType.Anime,
     sort: [MediaSort.Trending_desc, MediaSort.Popularity_desc],
-    perPage: isMobile ? 10 : 10,
+    perPage: isMobile ? 5 : 10,
   });
 
   const { data: popularSeason, isLoading: popularSeasonLoading } = useMedia({
@@ -38,13 +39,13 @@ const Home = () => {
     sort: [MediaSort.Popularity_desc],
     season: currentSeason.season,
     seasonYear: currentSeason.year,
-    perPage: isMobile ? 10 : 10,
+    perPage: isMobile ? 5 : 10,
   });
 
   const { data: popularAllTime, isLoading: popularAllTimeLoading } = useMedia({
     type: MediaType.Anime,
     sort: [MediaSort.Popularity_desc],
-    perPage: isMobile ? 10 : 10,
+    perPage: isMobile ? 5 : 10,
   });
 
   const { data: favouriteSeason, isLoading: favouriteSeasonLoading } = useMedia(
@@ -53,7 +54,7 @@ const Home = () => {
       sort: [MediaSort.Favourites_desc],
       season: currentSeason.season,
       seasonYear: currentSeason.year,
-      perPage: isMobile ? 10 : 10,
+      perPage: isMobile ? 5 : 10,
     }
   );
 
@@ -61,7 +62,7 @@ const Home = () => {
     useMedia({
       type: MediaType.Anime,
       sort: [MediaSort.Favourites_desc],
-      perPage: isMobile ? 10 : 10,
+      perPage: isMobile ? 5 : 10,
     });
 
   const { data: recentlyUpdated, isLoading: recentlyUpdatedLoading } =
@@ -95,22 +96,24 @@ const Home = () => {
           <HomeBanner data={trendingAnime} isLoading={trendingLoading} />
 
           <div className="space-y-8">
+            <WatchedSection />
             
+            <RecommendedAnimeSection />
 
             {recentlyUpdatedLoading ? (
               <ListSwiperSkeleton />
             ) : (
-              <Section title="Recently Updated">
+              <Section title={t("newly_added", { ns: "common" })}>
                 <CardSwiper data={recentlyUpdated} />
               </Section>
             )}
             
-          
+            <NewestComments type={MediaType.Anime} />
 
             {popularAllTimeLoading ? (
               <ListSwiperSkeleton />
             ) : (
-              <Section title="Most Popular">
+              <Section title={t("most_popular", { ns: "common" })}>
                 <CardSwiper data={popularAllTime} />
               </Section>
             )}
@@ -118,7 +121,7 @@ const Home = () => {
             {favouriteAllTimeLoading ? (
               <ListSwiperSkeleton />
             ) : (
-              <Section title="Most Favourite">
+              <Section title={t("most_favourite", { ns: "common" })}>
                 <CardSwiper data={favouriteAllTime} />
               </Section>
             )}
@@ -130,7 +133,7 @@ const Home = () => {
               )}
             >
               <Section
-                title="Should Watch Today"
+                title={t("should_watch_today", { ns: "anime_home" })}
                 className="w-full md:w-[80%] md:!pr-0"
               >
                 {randomAnime && (
@@ -139,14 +142,14 @@ const Home = () => {
               </Section>
 
               <Section
-                title="Genres"
+                title={t("genres", { ns: "common" })}
                 className="w-full md:w-[20%] md:!pl-0"
               >
                 <GenreSwiper className="md:h-[500px]" />
               </Section>
             </div>
 
-            <Section title="Airing Schedule">
+            <Section title={t("airing_schedule", { ns: "anime_home" })}>
               <AnimeScheduling />
             </Section>
           </div>

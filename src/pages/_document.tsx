@@ -9,6 +9,7 @@ class MyDocument extends Document {
           <meta httpEquiv="Cache-Control" content="max-age=200" />
           <link rel="shortcut icon" href="/logo.ico" />
           <link rel="icon" href="/logo.ico" type="image/ico" />
+          <link rel="preconnect" href="https://fkkfzyympvouxqdrufts.supabase.co" />
           <link rel="preconnect" href="https://graphql.anilist.co" />
         </Head>
         <body>
