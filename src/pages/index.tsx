@@ -1,14 +1,10 @@
 //@ts-nocheck
 import AnimeScheduling from "@/components/features/anime/AnimeScheduling";
-import RecommendedAnimeSection from "@/components/features/anime/RecommendedAnimeSection";
-import WatchedSection from "@/components/features/anime/WatchedSection";
 import CardSwiper from "@/components/shared/CardSwiper";
 import ClientOnly from "@/components/shared/ClientOnly";
-import ColumnSection from "@/components/shared/ColumnSection";
 import GenreSwiper from "@/components/shared/GenreSwiper";
 import Head from "@/components/shared/Head";
 import HomeBanner from "@/components/shared/HomeBanner";
-import NewestComments from "@/components/shared/NewestComments";
 import Section from "@/components/shared/Section";
 import ShouldWatch from "@/components/shared/ShouldWatch";
 import ListSwiperSkeleton from "@/components/skeletons/ListSwiperSkeleton";
@@ -17,14 +13,12 @@ import useMedia from "@/hooks/useMedia";
 import useRecentlyUpdated from "@/hooks/useRecentlyUpdated";
 import useRecommendations from "@/hooks/useRecommendations";
 import { MediaSort, MediaType } from "@/types/anilist";
-import { getSeason, randomElement } from "@/utils";
+import { randomElement } from "@/utils";
 import classNames from "classnames";
-import { useTranslation } from "next-i18next";
 import React, { useMemo } from "react";
 import { isMobile } from "react-device-detect";
 
 const Home = () => {
-  const currentSeason = useMemo(getSeason, []);
   const { isDesktop } = useDevice();
 
   const { data: trendingAnime, isLoading: trendingLoading } = useMedia({
@@ -33,13 +27,7 @@ const Home = () => {
     perPage: isMobile ? 10 : 10,
   });
 
-  const { data: popularSeason, isLoading: popularSeasonLoading } = useMedia({
-    type: MediaType.Anime,
-    sort: [MediaSort.Popularity_desc],
-    season: currentSeason.season,
-    seasonYear: currentSeason.year,
-    perPage: isMobile ? 10 : 10,
-  });
+  
 
   const { data: popularAllTime, isLoading: popularAllTimeLoading } = useMedia({
     type: MediaType.Anime,
@@ -47,15 +35,7 @@ const Home = () => {
     perPage: isMobile ? 10 : 10,
   });
 
-  const { data: favouriteSeason, isLoading: favouriteSeasonLoading } = useMedia(
-    {
-      type: MediaType.Anime,
-      sort: [MediaSort.Favourites_desc],
-      season: currentSeason.season,
-      seasonYear: currentSeason.year,
-      perPage: isMobile ? 10 : 10,
-    }
-  );
+  
 
   const { data: favouriteAllTime, isLoading: favouriteAllTimeLoading } =
     useMedia({

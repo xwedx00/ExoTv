@@ -1,20 +1,12 @@
 //@ts-nocheck
-import Button from "@/components/shared/Button";
 import Drawer, { DrawerRef } from "@/components/shared/Drawer";
-import HeaderProfile from "@/components/shared/HeaderProfile";
 import Logo from "@/components/shared/Logo";
 import NavItem from "@/components/shared/NavItem";
-import { useUser } from "@/contexts/AuthContext";
 import classNames from "classnames";
-import { useTranslation } from "next-i18next";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
-import Notifications from "../features/notifications/Notifications";
-import PWAInstallPrompt from "../features/pwa/PWAInstallPrompt";
-import LanguageSwitcher from "../shared/LanguageSwitcher";
 import Section from "../shared/Section";
 
 const routes = [
@@ -31,10 +23,6 @@ const routes = [
     href: "/themes",
   },
   {
-    title: "Watch With Friends",
-    href: "/wwf",
-  },
-  {
     title: "Anime Scene Search",
     href: "/scene-search",
   },
@@ -43,9 +31,7 @@ const routes = [
 const Header = () => {
   const [isTop, setIsTop] = useState(true);
   const drawerRef = useRef<DrawerRef>();
-  const user = useUser();
   const router = useRouter();
-  const { t } = useTranslation("header");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -90,7 +76,7 @@ const Header = () => {
                           : "border-background-900 text-typography-secondary"
                       )}
                     >
-                      {t(route.title)}
+                      {route.title}
                     </p>
                   )}
                 </NavItem>
@@ -114,7 +100,7 @@ const Header = () => {
                   isActive && "text-primary-300"
                 )}
               >
-                {t(route.title)}
+                {route.title}
               </p>
             )}
           </NavItem>
@@ -122,10 +108,7 @@ const Header = () => {
       </div>
 
       <div className="flex items-center space-x-4 ml-auto">
-        <PWAInstallPrompt />
-        <LanguageSwitcher />
-        <Notifications />
-
+        
         <NavItem href={searchUrl}>
           {({ isActive }) => (
             <AiOutlineSearch
@@ -136,20 +119,6 @@ const Header = () => {
             />
           )}
         </NavItem>
-
-        {user ? (
-          <HeaderProfile />
-        ) : (
-          <div className="flex items-center space-x-2">
-            <Link href={`/login?redirectedFrom=${router.asPath}`}>
-
-              <Button primary>
-                <p className="line-clamp-1">{t("login")}</p>
-              </Button>
-
-            </Link>
-          </div>
-        )}
       </div>
     </Section>
   );
