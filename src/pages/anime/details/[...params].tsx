@@ -1,7 +1,5 @@
 //@ts-nocheck
 import LocaleEpisodeSelector from "@/components/features/anime/Player/LocaleEpisodeSelector";
-import Comments from "@/components/features/comment/Comments";
-import AddTranslationModal from "@/components/shared/AddTranslationModal";
 import Button from "@/components/shared/Button";
 import Card from "@/components/shared/Card";
 import CharacterConnectionCard from "@/components/shared/CharacterConnectionCard";
@@ -15,11 +13,9 @@ import List from "@/components/shared/List";
 import MediaDescription from "@/components/shared/MediaDescription";
 import NotificationButton from "@/components/shared/NotificationButton";
 import PlainCard from "@/components/shared/PlainCard";
-import Popup from "@/components/shared/Popup";
 import Section from "@/components/shared/Section";
 import SourceStatus from "@/components/shared/SourceStatus";
 import Spinner from "@/components/shared/Spinner";
-import { REVALIDATE_TIME } from "@/constants";
 import { useUser } from "@/contexts/AuthContext";
 import withRedirect from "@/hocs/withRedirect";
 import useEpisodes from "@/hooks/useEpisodes";
@@ -32,16 +28,12 @@ import {
   vietnameseSlug,
 } from "@/utils";
 import { convert, getDescription, getTitle } from "@/utils/data";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import classNames from "classnames";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 import { isMobile } from "react-device-detect";
-import { AiOutlineUpload } from "react-icons/ai";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { BsFillPlayFill } from "react-icons/bs";
 
 interface DetailsPageProps {
@@ -51,7 +43,7 @@ interface DetailsPageProps {
 const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
   const user = useUser();
   const { locale } = useRouter();
-  const { t } = useTranslation("anime_details");
+  
 
   const { data: episodes, isLoading } = useEpisodes(anime.id);
 
@@ -118,19 +110,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
                 <Link href={`/anime/watch/${anime.id}`}>
 
                   <Button primary LeftIcon={BsFillPlayFill}>
-                    <p>{t("common:watch_now")}</p>
-                  </Button>
-
-                </Link>
-
-                <Link href={`/wwf/create/${anime.id}`}>
-
-                  <Button
-                    primary
-                    className="w-full"
-                    LeftIcon={BsFillPlayFill}
-                  >
-                    <p>{t("watch_with_friends")}</p>
+                    <p>Watch Now</p>
                   </Button>
 
                 </Link>
@@ -160,35 +140,35 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
 
             <div className="hidden md:flex gap-x-8 overflow-x-auto md:gap-x-16 [&>*]:shrink-0">
               <InfoItem
-                title={t("common:country")}
+                title="Country"
                 value={convert(anime.countryOfOrigin, "country", { locale })}
               />
               <InfoItem
-                title={t("common:total_episodes")}
+                title="Total Episodes"
                 value={anime.episodes}
               />
 
               {anime.duration && (
                 <InfoItem
-                  title={t("common:duration")}
-                  value={`${anime.duration} ${t("common:minutes")}`}
+                  title="Duration"
+                  value={`${anime.duration} ${"Minutes"}`}
                 />
               )}
 
               <InfoItem
-                title={t("common:status")}
+                title="Status"
                 value={convert(anime.status, "status", { locale })}
               />
               <InfoItem
-                title={t("common:age_rated")}
+                title="Age Rated"
                 value={anime.isAdult ? "18+" : ""}
               />
 
               {nextAiringSchedule && (
                 <InfoItem
                   className="!text-primary-300"
-                  title={t("next_airing_schedule")}
-                  value={`${t("common:episode")} ${
+                  title="Next Airing Schedule"
+                  value={`${"Episode"} ${
                     nextAiringSchedule.episode
                   }: ${nextAiringScheduleTime}`}
                 />
@@ -221,72 +201,45 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
                 className="relative w-full"
               >
                 <p className="!mx-0 absolute left-1/2 -translate-x-1/2">
-                  {t("common:watch_now")}
+                  Watch Now
                 </p>
               </Button>
             )}
 
           </Link>
-
-          {user && isMobile && (
-            <NotificationButton type={MediaType.Anime} source={anime} />
-          )}
-
-          <Popup
-            reference={
-              <CircleButton secondary LeftIcon={BiDotsHorizontalRounded} />
-            }
-            placement="bottom"
-            type="click"
-            className="space-y-2"
-          >
-            <Link href={`/wwf/create/${anime.id}`}>
-
-              <Button
-                secondary
-                className="w-full"
-                LeftIcon={BsFillPlayFill}
-              >
-                <p>{t("watch_with_friends")}</p>
-              </Button>
-
-            </Link>
-
-            
-          </Popup>
         </div>
 
         <div className="md:hidden flex gap-x-8 overflow-x-auto md:gap-x-16 [&>*]:shrink-0">
           <InfoItem
-            title={t("common:country")}
+            title="Country"
             value={convert(anime.countryOfOrigin, "country", { locale })}
           />
           <InfoItem
-            title={t("common:total_episodes")}
+            title="Total Episodes"
             value={anime.episodes}
           />
 
           {anime.duration && (
             <InfoItem
-              title={t("common:duration")}
-              value={`${anime.duration} ${t("common:minutes")}`}
+              title="Duration"
+              value={`${anime.duration} ${"Minutes"}`}
             />
           )}
 
           <InfoItem
-            title={t("common:status")}
+            title="Status"
             value={convert(anime.status, "status", { locale })}
           />
           <InfoItem
-            title={t("common:age_rated")}
+            title="Age Rated"
             value={anime.isAdult ? "18+" : ""}
           />
 
           {nextAiringSchedule && (
             <InfoItem
               className="!text-primary-300"
-              title={t("next_airing_schedule")}
-              value={`${t("common:episode")} ${
+              title="Next Airing Schedule"
+              value={`${"Episode"} ${
                 nextAiringSchedule.episode
               }: ${nextAiringScheduleTime}`}
             />
@@ -298,22 +251,22 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
         <div className="md:col-span-2 xl:h-[max-content] space-y-4 md:no-scrollbar">
           <div className="flex flex-row md:flex-col overflow-x-auto bg-background-900 rounded-md md:p-4 gap-4 [&>*]:shrink-0 md:no-scrollbar">
             <InfoItem
-              title={t("common:format")}
+              title="Format"
               value={convert(anime.format, "format", { locale })}
             />
             <InfoItem title="English" value={anime.title.english} />
             <InfoItem title="Native" value={anime.title.native} />
             <InfoItem title="Romanji" value={anime.title.romaji} />
             <InfoItem
-              title={t("common:popular")}
+              title="Popular"
               value={numberWithCommas(anime.popularity)}
             />
             <InfoItem
-              title={t("common:favourite")}
+              title="Favourite"
               value={numberWithCommas(anime.favourites)}
             />
             <InfoItem
-              title={t("common:trending")}
+              title="Trending"
               value={numberWithCommas(anime.trending)}
             />
 
@@ -333,13 +286,13 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
             />
 
             <InfoItem
-              title={t("common:season")}
+              title="Season"
               value={`${convert(anime.season, "season", { locale })} ${
                 anime.seasonYear
               }`}
             />
             <InfoItem
-              title={t("common:synonyms")}
+              title="Synonyms"
               value={anime.synonyms.map((synomym) => (
                 <p key={synomym}>{synomym}</p>
               ))}
@@ -384,7 +337,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
 
           {!!anime?.characters?.edges?.length && (
             <DetailsSection
-              title={t("characters_section")}
+              title="Character Section"
               className="grid w-full grid-cols-1 gap-4 md:grid-cols-2"
             >
               {anime.characters.edges.map((characterEdge, index) => (
@@ -397,7 +350,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
           )}
 
           {!!anime?.relations?.nodes?.length && (
-            <DetailsSection title={t("relations_section")}>
+            <DetailsSection title="Relations Section">
               <List data={anime.relations.nodes}>
                 {(node) => <Card data={node} />}
               </List>
@@ -405,7 +358,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
           )}
 
           {!!anime?.recommendations?.nodes?.length && (
-            <DetailsSection title={t("recommendations_section")}>
+            <DetailsSection title="Recommendation">
               <List
                 data={anime.recommendations.nodes.map(
                   (node) => node.mediaRecommendation
@@ -415,10 +368,6 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
               </List>
             </DetailsSection>
           )}
-
-          <DetailsSection title={t("comments_section")}>
-            <Comments topic={`anime-${anime.id}`} />
-          </DetailsSection>
         </div>
       </Section>
     </div>
