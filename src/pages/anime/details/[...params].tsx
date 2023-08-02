@@ -16,6 +16,7 @@ import PlainCard from "@/components/shared/PlainCard";
 import Section from "@/components/shared/Section";
 import SourceStatus from "@/components/shared/SourceStatus";
 import Spinner from "@/components/shared/Spinner";
+import { REVALIDATE_TIME } from "@/constants";
 import { useUser } from "@/contexts/AuthContext";
 import withRedirect from "@/hocs/withRedirect";
 import useEpisodes from "@/hooks/useEpisodes";
@@ -28,8 +29,9 @@ import {
   vietnameseSlug,
 } from "@/utils";
 import { convert, getDescription, getTitle } from "@/utils/data";
+import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import classNames from "classnames";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
@@ -374,44 +376,22 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
   </>;
 };
 
-export const getStaticProps: GetStaticProps = async ({
-  params: { params },
-}) => {
+export const getStaticProps: GetStaticProps = async ({ params: { params } }) => {
   try {
-    const { data: isDMCA } = await supabaseClient
-      .from("Exoexs_dmca")
-      .select("id")
-      .eq("mediaId", params[0])
-      .eq("mediaType", MediaType.Anime)
-      .single();
+      const media = await getMediaDetails({
+          type: MediaType.Anime,
+          id: Number(params[0]),
+      });
 
-    if (isDMCA) {
       return {
-        props: null,
-        redirect: {
-          destination: "/got-dmca",
-        },
+          props: {
+              anime: media as Media,
+          },
+          revalidate: REVALIDATE_TIME,
       };
-    }
-
-    const media = await getMediaDetails({
-      type: MediaType.Anime,
-      id: Number(params[0]),
-    });
-
-    return {
-      props: {
-        anime: media as Media,
-      },
-      revalidate: REVALIDATE_TIME,
-    };
   } catch (err) {
-    return { notFound: true, revalidate: REVALIDATE_TIME };
+      return { notFound: true, revalidate: REVALIDATE_TIME };
   }
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return { paths: [], fallback: "blocking" };
 };
 
 export default withRedirect(DetailsPage, (router, props) => {
