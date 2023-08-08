@@ -325,7 +325,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
         </div>
         <div className="space-y-12 md:col-span-8">
           <DetailsSection
-            title={t("episodes_section")}
+            title="Episodes Section"
             className="overflow-hidden"
           >
             {isLoading ? (
@@ -376,22 +376,28 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
   </>;
 };
 
-export const getStaticProps: GetStaticProps = async ({ params: { params } }) => {
+export const getStaticProps: GetStaticProps = async ({
+  params: { params },
+}) => {
   try {
-      const media = await getMediaDetails({
-          type: MediaType.Anime,
-          id: Number(params[0]),
-      });
+    const media = await getMediaDetails({
+      type: MediaType.Anime,
+      id: Number(params[0]),
+    });
 
-      return {
-          props: {
-              anime: media as Media,
-          },
-          revalidate: REVALIDATE_TIME,
-      };
+    return {
+      props: {
+        anime: media as Media,
+      },
+      revalidate: REVALIDATE_TIME,
+    };
   } catch (err) {
-      return { notFound: true, revalidate: REVALIDATE_TIME };
+    return { notFound: true, revalidate: REVALIDATE_TIME };
   }
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return { paths: [], fallback: "blocking" };
 };
 
 export default withRedirect(DetailsPage, (router, props) => {
