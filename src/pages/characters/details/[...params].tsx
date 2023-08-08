@@ -9,7 +9,6 @@ import Section from "@/components/shared/Section";
 import TextIcon from "@/components/shared/TextIcon";
 import { REVALIDATE_TIME } from "@/constants";
 import withRedirect from "@/hocs/withRedirect";
-import useConstantTranslation from "@/hooks/useConstantTranslation";
 import dayjs from "@/lib/dayjs";
 import { getCharacterDetails } from "@/services/anilist";
 import { Character, MediaType } from "@/types/anilist";
@@ -21,7 +20,6 @@ import {
   vietnameseSlug,
 } from "@/utils";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { useTranslation } from "next-i18next";
 import React, { useMemo } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCake } from "react-icons/bi";
@@ -33,7 +31,7 @@ const KeyValue: React.FC<{ property: string; value: string }> = ({
   <div>
     <b>{property}: </b>
 
-    <span>{value || "Không rõ"}</span>
+    <span>{value || "Unclear"}</span>
   </div>
 );
 
@@ -42,12 +40,10 @@ interface DetailsPageProps {
 }
 
 const DetailsPage: NextPage<DetailsPageProps> = ({ character }) => {
-  const { t } = useTranslation("character_details");
-  const { GENDERS } = useConstantTranslation();
 
   const gender = useMemo(
-    () => GENDERS[character.gender?.toLowerCase()] || character.gender,
-    [GENDERS, character.gender]
+    () => character.gender?.toUpperCase() || character.gender,
+    [character.gender]
   );
 
   const birthday = useMemo(() => {
@@ -139,15 +135,15 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ character }) => {
 
                 {isBirthday && (
                   <TextIcon iconClassName="text-primary-300" LeftIcon={BiCake}>
-                    <p>{t("is_today_birthday")}</p>
+                    <p>Birthday Today ?</p>
                   </TextIcon>
                 )}
               </div>
 
               <div className="space-y-4">
-                <KeyValue property={t("gender")} value={gender} />
-                <KeyValue property={t("birthday")} value={birthday} />
-                <KeyValue property={t("age")} value={character.age} />
+                <KeyValue property={"gender"} value={gender} />
+                <KeyValue property={"birthday"} value={birthday} />
+                <KeyValue property={"age"} value={character.age} />
               </div>
             </div>
           </div>
@@ -155,7 +151,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ character }) => {
 
         <Section className="space-y-8">
           {!!voiceActors?.length && (
-            <DetailsSection title={t("voice_actors_section")}>
+            <DetailsSection title="Voice Actors">
               <List data={voiceActors}>
                 {(voiceActor) => <VACard voiceActor={voiceActor} />}
               </List>
@@ -163,13 +159,13 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ character }) => {
           )}
 
           {!!anime?.length && (
-            <DetailsSection title={t("anime_section")}>
+            <DetailsSection title="Anime">
               <List data={anime}>{(anime) => <Card data={anime} />}</List>
             </DetailsSection>
           )}
 
           {!!manga?.length && (
-            <DetailsSection title={t("manga_section")}>
+            <DetailsSection title="Manga">
               <List data={manga}>{(manga) => <Card data={manga} />}</List>
             </DetailsSection>
           )}
