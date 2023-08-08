@@ -207,9 +207,9 @@ export default withRedirect(DetailsPage, (router, props) => {
   if (slug) return null;
 
   return {
-    url: `/characters/details/${id}/${vietnameseSlug(
+    url: `/characters/details/${id}/${
       props.character.name.userPreferred
-    )}`,
+    }`,
     options: {
       shallow: true,
     },

@@ -26,10 +26,8 @@ import { Media, MediaType } from "@/types/anilist";
 import {
   createStudioDetailsUrl,
   numberWithCommas,
-  vietnameseSlug,
 } from "@/utils";
 import { convert, getDescription, getTitle } from "@/utils/data";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import classNames from "classnames";
 import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
@@ -408,7 +406,7 @@ export default withRedirect(DetailsPage, (router, props) => {
   if (slug) return null;
 
   return {
-    url: `/anime/details/${id}/${vietnameseSlug(title)}`,
+    url: `/anime/details/${id}/${title}`,
     options: {
       shallow: true,
     },

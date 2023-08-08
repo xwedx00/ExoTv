@@ -296,21 +296,6 @@ export const getStaticProps: GetStaticProps = async ({
   params: { params },
 }) => {
   try {
-    const { data: isDMCA } = await supabaseClient
-      .from("Exoexs_dmca")
-      .select("id")
-      .eq("mediaId", params[0])
-      .eq("mediaType", MediaType.Manga)
-      .single();
-
-    if (isDMCA) {
-      return {
-        props: null,
-        redirect: {
-          destination: "/got-dmca",
-        },
-      };
-    }
 
     const media = await getMediaDetails({
       type: MediaType.Manga,
