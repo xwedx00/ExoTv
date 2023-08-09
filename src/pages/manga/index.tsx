@@ -3,7 +3,6 @@ import ReadSection from "@/components/features/manga/ReadSection";
 import RecommendedMangaSection from "@/components/features/manga/RecommendedMangaSection";
 import CardSwiper from "@/components/shared/CardSwiper";
 import ClientOnly from "@/components/shared/ClientOnly";
-import ColumnSection from "@/components/shared/ColumnSection";
 import GenreSwiper from "@/components/shared/GenreSwiper";
 import Head from "@/components/shared/Head";
 import HomeBanner from "@/components/shared/HomeBanner";
@@ -17,13 +16,11 @@ import useRecommendations from "@/hooks/useRecommendations";
 import { MediaSort, MediaType } from "@/types/anilist";
 import { randomElement } from "@/utils";
 import classNames from "classnames";
-import { useTranslation } from "next-i18next";
 import React, { useMemo } from "react";
 import { isMobile } from "react-device-detect";
 
 const Home = () => {
   const { isDesktop } = useDevice();
-  const { t } = useTranslation();
 
   const { data: trendingManga, isLoading: trendingLoading } = useMedia({
     type: MediaType.Manga,
@@ -88,7 +85,7 @@ const Home = () => {
             {recentlyUpdatedLoading ? (
               <ListSwiperSkeleton />
             ) : (
-              <Section title={t("common:newly_added")}>
+              <Section title="Recently Updated">
                 <CardSwiper data={recentlyUpdated} />
               </Section>
             )}
@@ -96,7 +93,7 @@ const Home = () => {
             {popularMangaLoading ? (
               <ListSwiperSkeleton />
             ) : (
-              <Section title={t("common:most_popular")}>
+              <Section title="Popular">
                 <CardSwiper data={popularManga} />
               </Section>
             )}
@@ -106,7 +103,7 @@ const Home = () => {
             {favouriteMangaLoading ? (
               <ListSwiperSkeleton />
             ) : (
-              <Section title={t("common:most_favourite")}>
+              <Section title="Most Favourite">
                 <CardSwiper data={favouriteManga} />
               </Section>
             )}
@@ -118,7 +115,7 @@ const Home = () => {
               )}
             >
               <Section
-                title={t("manga_home:should_read_today")}
+                title="Should Read Today"
                 className="w-full md:w-[80%] md:!pr-0"
               >
                 {randomManga && (
@@ -126,7 +123,7 @@ const Home = () => {
                 )}
               </Section>
               <Section
-                title={t("common:genres")}
+                title="Genres"
                 className="w-full md:w-[20%] md:!pl-0"
               >
                 <GenreSwiper className="md:h-[500px]" />

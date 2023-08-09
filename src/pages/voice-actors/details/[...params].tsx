@@ -7,7 +7,6 @@ import Section from "@/components/shared/Section";
 import TextIcon from "@/components/shared/TextIcon";
 import { REVALIDATE_TIME } from "@/constants";
 import withRedirect from "@/hocs/withRedirect";
-import useConstantTranslation from "@/hooks/useConstantTranslation";
 import dayjs from "@/lib/dayjs";
 import { getStaffDetails } from "@/services/anilist";
 import { Staff } from "@/types/anilist";
@@ -18,7 +17,6 @@ import {
   vietnameseSlug,
 } from "@/utils";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { useTranslation } from "next-i18next";
 import React, { useMemo } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCake } from "react-icons/bi";
@@ -30,7 +28,7 @@ const KeyValue: React.FC<{ property: string; value: string }> = ({
   <div>
     <b>{property}: </b>
 
-    <span>{value || "Không rõ"}</span>
+    <span>{value || "Unknown"}</span>
   </div>
 );
 
@@ -39,12 +37,10 @@ interface DetailsPageProps {
 }
 
 const DetailsPage: NextPage<DetailsPageProps> = ({ voiceActor }) => {
-  const { t } = useTranslation("voice_actor_details");
-  const { GENDERS } = useConstantTranslation();
 
   const gender = useMemo(
-    () => GENDERS[voiceActor.gender?.toLowerCase()] || voiceActor.gender,
-    [GENDERS, voiceActor.gender]
+    () => voiceActor.gender?.toLowerCase() || voiceActor.gender,
+    [ voiceActor.gender ]
   );
 
   const birthday = useMemo(() => {
@@ -62,10 +58,10 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ voiceActor }) => {
 
     if (!yearsActive?.length) return null;
 
-    if (!yearsActive[1]) return `${yearsActive[0]} - ${t("common:present")}`;
+    if (!yearsActive[1]) return `${yearsActive[0]} - ${"Present"}`;
 
     return `${yearsActive[0]} - ${yearsActive[1]}`;
-  }, [t, voiceActor.yearsActive]);
+  }, [voiceActor.yearsActive]);
 
   const isDead = useMemo(
     () => !arePropertiesFalsy(voiceActor.dateOfDeath),
@@ -115,7 +111,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ voiceActor }) => {
                       iconClassName="text-primary-300"
                       LeftIcon={BiCake}
                     >
-                      <p>{t("is_today_birthday")}</p>
+                      <p>Birthday Today ?</p>
                     </TextIcon>
                   )}
                 </div>
@@ -123,25 +119,25 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ voiceActor }) => {
               </div>
 
               <div className="space-y-2">
-                <KeyValue property={t("gender")} value={gender} />
-                <KeyValue property={t("birthday")} value={birthday} />
+                <KeyValue property="Gender" value={gender} />
+                <KeyValue property="Birthday" value={birthday} />
                 {isDead && (
                   <KeyValue
-                    property={t("deathday")}
+                    property="Deathday"
                     value={formatDate(voiceActor.dateOfDeath)}
                   />
                 )}
                 <KeyValue
-                  property={t("age")}
+                  property="Age"
                   value={voiceActor.age?.toString()}
                 />
-                <KeyValue property={t("years_active")} value={yearsActive} />
+                <KeyValue property="Years Active" value={yearsActive} />
                 <KeyValue
-                  property={t("blood_type")}
+                  property="Blood Type"
                   value={voiceActor.bloodType}
                 />
                 <KeyValue
-                  property={t("hometown")}
+                  property="Hometown"
                   value={voiceActor.homeTown}
                 />
               </div>
@@ -149,7 +145,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ voiceActor }) => {
           </div>
         </Section>
 
-        <Section title={t("characters_section")}>
+        <Section title="Characters">
           <List data={voiceActor.characters.nodes}>
             {(character) => <CharacterCard character={character} />}
           </List>
