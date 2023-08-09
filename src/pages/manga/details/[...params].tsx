@@ -1,7 +1,4 @@
 //@ts-nocheck
-import Comments from "@/components/features/comment/Comments";
-import LocaleChapterSelector from "@/components/features/manga/LocaleChapterSelector";
-import AddTranslationModal from "@/components/shared/AddTranslationModal";
 import Button from "@/components/shared/Button";
 import Card from "@/components/shared/Card";
 import CharacterConnectionCard from "@/components/shared/CharacterConnectionCard";
@@ -15,28 +12,23 @@ import List from "@/components/shared/List";
 import MediaDescription from "@/components/shared/MediaDescription";
 import NotificationButton from "@/components/shared/NotificationButton";
 import PlainCard from "@/components/shared/PlainCard";
-import Popup from "@/components/shared/Popup";
 import Section from "@/components/shared/Section";
 import SourceStatus from "@/components/shared/SourceStatus";
-import Spinner from "@/components/shared/Spinner";
 import { REVALIDATE_TIME } from "@/constants";
 import { useUser } from "@/contexts/AuthContext";
 import withRedirect from "@/hocs/withRedirect";
-import useChapters from "@/hooks/useChapters";
 import { getMediaDetails } from "@/services/anilist";
 import { Media, MediaType } from "@/types/anilist";
-import { numberWithCommas, vietnameseSlug } from "@/utils";
+import { numberWithCommas } from "@/utils";
 import { convert, getDescription, getTitle } from "@/utils/data";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
+
 import classNames from "classnames";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { isMobile } from "react-device-detect";
-import { AiOutlineUpload } from "react-icons/ai";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
+
 import { BsFillPlayFill } from "react-icons/bs";
 
 interface DetailsPageProps {
@@ -46,8 +38,7 @@ interface DetailsPageProps {
 const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
   const user = useUser();
   const { locale } = useRouter();
-  const { t } = useTranslation("manga_details");
-  const { data: chapters, isLoading } = useChapters(manga.id);
+  
 
   const title = useMemo(() => getTitle(manga, locale), [manga, locale]);
   const description = useMemo(
@@ -84,7 +75,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
                 <Link href={`/manga/read/${manga.id}`}>
 
                   <Button primary LeftIcon={BsFillPlayFill}>
-                    <p>{t("read_now")}</p>
+                    <p>Read Now</p>
                   </Button>
 
                 </Link>
@@ -114,19 +105,19 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
 
             <div className="hidden md:flex gap-x-8 overflow-x-auto md:gap-x-16 [&>*]:shrink-0">
               <InfoItem
-                title={t("common:country")}
+                title="Country"
                 value={manga.countryOfOrigin}
               />
 
               <InfoItem
-                title={t("common:status")}
+                title="Status"
                 value={convert(manga.status, "status", { locale })}
               />
 
-              <InfoItem title={t("total_chapters")} value={manga.chapters} />
+              <InfoItem title="Total Chapters" value={manga.chapters} />
 
               <InfoItem
-                title={t("common:age_rated")}
+                title="Age Rated"
                 value={manga.isAdult ? "18+" : ""}
               />
             </div>
@@ -157,7 +148,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
                 className="relative w-full"
               >
                 <p className="!mx-0 absolute left-1/2 -translate-x-1/2">
-                  {t("read_now")}
+                  "Read Now"
                 </p>
               </Button>
             )}
@@ -172,19 +163,19 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
 
         <div className="md:hidden flex gap-x-8 overflow-x-auto md:gap-x-16 [&>*]:shrink-0">
           <InfoItem
-            title={t("common:country")}
+            title="Country"
             value={manga.countryOfOrigin}
           />
 
           <InfoItem
-            title={t("common:status")}
+            title="Status"
             value={convert(manga.status, "status", { locale })}
           />
 
-          <InfoItem title={t("total_chapters")} value={manga.chapters} />
+          <InfoItem title="Total Chapters" value={manga.chapters} />
 
           <InfoItem
-            title={t("common:age_rated")}
+            title="Age Rated"
             value={manga.isAdult ? "18+" : ""}
           />
         </div>
@@ -197,20 +188,20 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
             <InfoItem title="Native" value={manga.title.native} />
             <InfoItem title="Romanji" value={manga.title.romaji} />
             <InfoItem
-              title={t("common:popular")}
+              title="Popular"
               value={numberWithCommas(manga.popularity)}
             />
             <InfoItem
-              title={t("common:favourite")}
+              title="Favourite"
               value={numberWithCommas(manga.favourites)}
             />
             <InfoItem
-              title={t("common:trending")}
+              title="Trending"
               value={numberWithCommas(manga.trending)}
             />
 
             <InfoItem
-              title={t("common:synonyms")}
+              title="Synonyms"
               value={manga.synonyms.join("\n")}
             />
           </div>
@@ -239,19 +230,11 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
         </div>
 
         <div className="md:col-span-8 space-y-12">
-          <DetailsSection title={t("chapters_section")} className="relative">
-            {isLoading ? (
-              <div className="h-full w-full flex items-center justify-center">
-                <Spinner />
-              </div>
-            ) : (
-              <LocaleChapterSelector mediaId={manga.id} chapters={chapters} />
-            )}
-          </DetailsSection>
+          
 
           {!!manga?.characters?.edges.length && (
             <DetailsSection
-              title={t("characters_section")}
+              title="Characters"
               className="w-full grid md:grid-cols-2 grid-cols-1 gap-4"
             >
               {manga.characters.edges.map((characterEdge, index) => (
@@ -264,7 +247,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
           )}
 
           {!!manga?.relations?.nodes?.length && (
-            <DetailsSection title={t("relations_section")}>
+            <DetailsSection title="Relations">
               <List data={manga.relations.nodes}>
                 {(node) => <Card data={node} />}
               </List>
@@ -272,7 +255,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
           )}
 
           {!!manga?.recommendations?.nodes.length && (
-            <DetailsSection title={t("recommendations_section")}>
+            <DetailsSection title="Recommendations">
               <List
                 data={manga.recommendations.nodes.map(
                   (node) => node.mediaRecommendation
@@ -282,10 +265,6 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
               </List>
             </DetailsSection>
           )}
-
-          <DetailsSection title={t("comments_section")}>
-            <Comments topic={`manga-${manga.id}`} />
-          </DetailsSection>
         </div>
       </Section>
     </div>
@@ -325,7 +304,7 @@ export default withRedirect(DetailsPage, (router, props) => {
   if (slug) return null;
 
   return {
-    url: `/manga/details/${id}/${vietnameseSlug(title)}`,
+    url: `/manga/details/${id}/${title}`,
     options: {
       shallow: true,
     },
