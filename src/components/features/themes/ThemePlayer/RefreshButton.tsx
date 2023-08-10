@@ -3,7 +3,7 @@ import RefreshIcon from "@/components/icons/RefreshIcon";
 import { useThemePlayer } from "@/contexts/ThemePlayerContext";
 import { ControlButton } from "netplayer";
 import React from "react";
-import ControlsIcon from "../../anime/Player/ControlsIcon";
+import ControlsIcon from "../../themes/ControlsIcon";
 
 const RefreshButton = () => {
   const { refresh } = useThemePlayer();
