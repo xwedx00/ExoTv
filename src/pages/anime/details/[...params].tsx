@@ -17,7 +17,6 @@ import SourceStatus from "@/components/shared/SourceStatus";
 import { REVALIDATE_TIME } from "@/constants";
 import { useUser } from "@/contexts/AuthContext";
 import withRedirect from "@/hocs/withRedirect";
-import useEpisodes from "@/hooks/useEpisodes";
 import dayjs from "@/lib/dayjs";
 import { getMediaDetails } from "@/services/anilist";
 import { Media, MediaType } from "@/types/anilist";
