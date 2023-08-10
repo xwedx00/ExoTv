@@ -1,5 +1,4 @@
 //@ts-nocheck
-import LocaleEpisodeSelector from "@/components/features/anime/Player/LocaleEpisodeSelector";
 import Button from "@/components/shared/Button";
 import Card from "@/components/shared/Card";
 import CharacterConnectionCard from "@/components/shared/CharacterConnectionCard";
@@ -15,7 +14,6 @@ import NotificationButton from "@/components/shared/NotificationButton";
 import PlainCard from "@/components/shared/PlainCard";
 import Section from "@/components/shared/Section";
 import SourceStatus from "@/components/shared/SourceStatus";
-import Spinner from "@/components/shared/Spinner";
 import { REVALIDATE_TIME } from "@/constants";
 import { useUser } from "@/contexts/AuthContext";
 import withRedirect from "@/hocs/withRedirect";
@@ -45,7 +43,6 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
   const { locale } = useRouter();
   
 
-  const { data: episodes, isLoading } = useEpisodes(anime.id);
 
   const nextAiringSchedule = useMemo(
     () =>
@@ -107,13 +104,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
           <div className="flex flex-col justify-between md:py-4 ml-4 text-left items-start md:-mt-16 space-y-4">
             <div className="flex flex-col items-start space-y-4 md:no-scrollbar">
               <div className="hidden md:flex items-center flex-wrap gap-2 mb-4">
-                <Link href={`/anime/watch/${anime.id}`}>
-
-                  <Button primary LeftIcon={BsFillPlayFill}>
-                    <p>Watch Now</p>
-                  </Button>
-
-                </Link>
+                
               </div>
 
               <p className="mb-2 text-2xl md:text-3xl font-semibold">
@@ -322,18 +313,6 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
           </div>
         </div>
         <div className="space-y-12 md:col-span-8">
-          <DetailsSection
-            title="Episodes Section"
-            className="overflow-hidden"
-          >
-            {isLoading ? (
-              <div className="h-full w-full flex items-center justify-center">
-                <Spinner />
-              </div>
-            ) : (
-              <LocaleEpisodeSelector mediaId={anime.id} episodes={episodes} />
-            )}
-          </DetailsSection>
 
           {!!anime?.characters?.edges?.length && (
             <DetailsSection

@@ -72,13 +72,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
           <div className="flex flex-col justify-between md:py-4 ml-4 text-left items-start md:-mt-16 space-y-4">
             <div className="flex flex-col items-start space-y-4 md:no-scrollbar">
               <div className="hidden md:flex items-center flex-wrap gap-2 mb-4">
-                <Link href={`/manga/read/${manga.id}`}>
-
-                  <Button primary LeftIcon={BsFillPlayFill}>
-                    <p>Read Now</p>
-                  </Button>
-
-                </Link>
+               
               </div>
 
               <p className="text-2xl md:text-3xl font-semibold mb-2">
@@ -135,25 +129,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
             <SourceStatus type={MediaType.Manga} source={manga} />
           )}
 
-          <Link
-            href={`/manga/read/${manga.id}`}
-            className={classNames(!user && "flex-1")}>
-
-            {user ? (
-              <CircleButton secondary LeftIcon={BsFillPlayFill} />
-            ) : (
-              <Button
-                primary
-                LeftIcon={BsFillPlayFill}
-                className="relative w-full"
-              >
-                <p className="!mx-0 absolute left-1/2 -translate-x-1/2">
-                  "Read Now"
-                </p>
-              </Button>
-            )}
-
-          </Link>
+         
 
           {user && isMobile && (
             <NotificationButton type={MediaType.Manga} source={manga} />
