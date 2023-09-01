@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React from "react";
-import PlayerProgressSlider from "@/components/features/anime/Player/ProgressSlider";
+import PlayerProgressSlider from "@/components/features/themes/ProgressSlider";
 import classNames from "classnames";
 import { isDesktop } from "react-device-detect";
 

@@ -1,5 +1,5 @@
 //@ts-nocheck
-import PlayerOverlay from "@/components/features/anime/Player/Overlay";
+import PlayerOverlay from "@/components/features/themes/Overlay";
 import Loading from "@/components/shared/Loading";
 import { useThemePlayer } from "@/contexts/ThemePlayerContext";
 import { download, getFileNameFromUrl } from "@/utils";

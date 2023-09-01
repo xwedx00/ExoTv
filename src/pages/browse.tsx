@@ -11,14 +11,12 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
 import Section from "@/components/shared/Section";
-import UserBrowseList from "@/components/features/users/UserBrowseList";
 
 const components = {
   anime: AnimeBrowseList,
   manga: MangaBrowseList,
   characters: CharacterBrowseList,
   voice_actors: VABrowseList,
-  users: UserBrowseList,
 };
 
 const convertQueryToArray = <T,>(query: T[]) => {
