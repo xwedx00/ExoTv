@@ -14,7 +14,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { ErrorBoundary } from "react-error-boundary";
 import { AppErrorFallback } from "@/components/shared/AppErrorFallback";
 import { Analytics } from '@vercel/analytics/react';
-import { SettingsContextProvider, useSettings } from "@/contexts/SettingsContext";
 
 
 Router.events.on("routeChangeStart", NProgress.start);
@@ -34,18 +33,6 @@ const queryClient = new QueryClient({
 
 interface WorkaroundAppProps extends AppProps {
   err: any;
-}
-
-// Keying the page by titleLanguage remounts page content (not the header) when
-// the user toggles EN ⇄ native, so getTitle/getDescription re-resolve everywhere.
-function AppBody({ Component, pageProps, err, getLayout }: any) {
-  const { titleLanguage } = useSettings();
-
-  return (
-    <GlobalPlayerContextProvider>
-      {getLayout(<Component key={titleLanguage} {...pageProps} err={err} />)}
-    </GlobalPlayerContextProvider>
-  );
 }
 
 function App({ Component, pageProps, err }: WorkaroundAppProps) {
@@ -97,14 +84,9 @@ function App({ Component, pageProps, err }: WorkaroundAppProps) {
                   );
                 }}
               >
-                <SettingsContextProvider>
-                  <AppBody
-                    Component={Component}
-                    pageProps={pageProps}
-                    err={err}
-                    getLayout={getLayout}
-                  />
-                </SettingsContextProvider>
+                <GlobalPlayerContextProvider>
+                  {getLayout(<Component {...pageProps} err={err} />)}
+                </GlobalPlayerContextProvider>
                 <Analytics />
               </ErrorBoundary>
             

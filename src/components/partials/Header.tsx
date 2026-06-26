@@ -2,7 +2,6 @@
 import Drawer, { DrawerRef } from "@/components/shared/Drawer";
 import Logo from "@/components/shared/Logo";
 import NavItem from "@/components/shared/NavItem";
-import { useSettings } from "@/contexts/SettingsContext";
 import classNames from "classnames";
 import { useRouter } from "next/router";
 import React, { useRef } from "react";
@@ -15,37 +14,6 @@ const routes = [
   { title: "Anime Themes", href: "/themes" },
   { title: "Anime Scene Search", href: "/scene-search" },
 ];
-
-const TitleLanguageToggle: React.FC = () => {
-  const { titleLanguage, toggleTitleLanguage } = useSettings();
-
-  return (
-    <button
-      type="button"
-      onClick={toggleTitleLanguage}
-      title="Title language — English / native"
-      aria-label="Toggle title language"
-      className="flex items-center overflow-hidden rounded-full border border-white/10 bg-white/5 text-xs font-semibold"
-    >
-      <span
-        className={classNames(
-          "px-2 py-1 transition-colors",
-          titleLanguage === "english" ? "bg-primary-500 text-white" : "text-white/55"
-        )}
-      >
-        EN
-      </span>
-      <span
-        className={classNames(
-          "px-2 py-1 transition-colors",
-          titleLanguage === "native" ? "bg-primary-500 text-white" : "text-white/55"
-        )}
-      >
-        原
-      </span>
-    </button>
-  );
-};
 
 const Header = () => {
   const drawerRef = useRef<DrawerRef>();
@@ -120,8 +88,6 @@ const Header = () => {
 
         {/* Right cluster */}
         <div className="ml-auto flex items-center gap-2 md:gap-3">
-          <TitleLanguageToggle />
-
           <NavItem href={searchUrl}>
             {({ isActive }) => (
               <AiOutlineSearch

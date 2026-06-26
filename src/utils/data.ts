@@ -90,25 +90,11 @@ export const convert = (
   return constant[index].label;
 };
 
-// Title language (English ⇄ native), driven globally by SettingsContext so every
-// getTitle/getDescription call reflects the user's choice without threading it
-// through every call site. Defaults to English (fixes the romaji/"Japanese"
-// titles that AniList's `userPreferred` returns by default).
-export type TitleLanguage = "english" | "native";
-
-let currentTitleLanguage: TitleLanguage = "english";
-
-export const setTitleLanguage = (lang: TitleLanguage) => {
-  currentTitleLanguage = lang;
-};
-
-export const getCurrentTitleLanguage = () => currentTitleLanguage;
-
-// Second arg may be the legacy `locale` string (ignored now) or an options object.
-type TitleOptions =
-  | string
-  | { titleLanguage?: TitleLanguage; forceNative?: boolean }
-  | undefined;
+// English-only titles. The second arg may be a legacy `locale` string (ignored)
+// or `{ forceNative }`. Default returns the official English title (instead of
+// AniList's romaji `userPreferred`); details pages pass forceNative to keep the
+// original/canonical name.
+type TitleOptions = string | { forceNative?: boolean } | undefined;
 
 const titleOptions = (opts: TitleOptions) =>
   opts && typeof opts === "object" ? opts : {};
@@ -116,22 +102,11 @@ const titleOptions = (opts: TitleOptions) =>
 export const getTitle = (data: Media, opts?: TitleOptions) => {
   if (!data) return "";
 
-  const o = titleOptions(opts);
   const title = data.title || ({} as any);
 
-  // Details pages pass forceNative to keep the original/canonical AniList title
-  // (exactly what was shown before) regardless of the global English/native toggle.
-  if (o.forceNative) {
+  if (titleOptions(opts).forceNative) {
     return (
       title.userPreferred || title.native || title.romaji || title.english || ""
-    );
-  }
-
-  const lang = o.titleLanguage ?? currentTitleLanguage;
-
-  if (lang === "native") {
-    return (
-      title.native || title.userPreferred || title.romaji || title.english || ""
     );
   }
 
@@ -141,21 +116,10 @@ export const getTitle = (data: Media, opts?: TitleOptions) => {
   );
 };
 
-export const getDescription = (data: Media, opts?: TitleOptions) => {
+export const getDescription = (data: Media) => {
   if (!data) return "";
 
-  const o = titleOptions(opts);
   const translations = data.translations || [];
-  const lang = o.forceNative
-    ? "native"
-    : o.titleLanguage ?? currentTitleLanguage;
-
-  if (lang === "native") {
-    const native = translations.find((t) => t.locale && t.locale !== "en");
-    return native?.description || data.description || "";
-  }
-
-  // English (default) — AniList descriptions are English.
   const en = translations.find((t) => t.locale === "en");
   return en?.description || data.description || "";
 };
