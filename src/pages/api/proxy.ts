@@ -73,7 +73,15 @@ export default async function handler(
     return;
   }
 
-  const url = req.query.url;
+  let url = req.query.url;
+  // hls.js can re-resolve our already-proxied URLs into double-proxied requests
+  // (/api/proxy?url=/api/proxy?url=...). Unwrap to the real upstream target.
+  while (typeof url === "string" && url.startsWith("/api/proxy")) {
+    const qs = url.includes("?") ? url.slice(url.indexOf("?") + 1) : "";
+    const inner = new URLSearchParams(qs).get("url");
+    if (!inner) break;
+    url = inner;
+  }
   if (typeof url !== "string" || !/^https?:\/\//.test(url)) {
     res.status(400).json({ error: "Invalid or missing url" });
     return;

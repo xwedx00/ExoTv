@@ -5,7 +5,6 @@ import Description from "@/components/shared/Description";
 import Head from "@/components/shared/Head";
 import Loading from "@/components/shared/Loading";
 import Portal from "@/components/shared/Portal";
-import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import useDevice from "@/hooks/useDevice";
 import useEventListener from "@/hooks/useEventListener";
 import { useFetchSource } from "@/hooks/useFetchSource";
@@ -284,25 +283,7 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
     [data?.fonts]
   );
 
-  useGlobalPlayer({
-    playerState: {
-      ref: videoRef,
-      sources,
-      subtitles,
-      fonts,
-      thumbnail: data?.thumbnail,
-      className: "object-contain w-full h-full",
-    },
-    playerProps: {
-      anime,
-      currentEpisode,
-      currentEpisodeIndex,
-      episodes: sortedEpisodes,
-      setEpisode: handleNavigateEpisode,
-      sourceId,
-      sources,
-    },
-  });
+  // Player is rendered directly in the page below (no persistent-player indirection).
 
   useEffect(() => {
     if (!anime) return;
@@ -335,6 +316,17 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
         description={`Xem phim ${title} (${currentEpisode.name}) tại ExoTv. Hoàn toàn miễn phí, không quảng cáo`}
         image={anime.bannerImage}
       />
+
+      <div className="netplayer-container relative h-screen w-screen bg-black">
+        <ForwardRefPlayer
+          ref={videoRef}
+          sources={sources}
+          subtitles={subtitles}
+          fonts={fonts}
+          thumbnail={data?.thumbnail}
+          className="h-full w-full"
+        />
+      </div>
 
       {isLoading && (
         <Portal selector=".netplayer-container">

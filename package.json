@@ -15,6 +15,7 @@
     "@tanstack/react-query-devtools": "^5.101.1",
     "@types/react-dom": "19.2.3",
     "@vercel/analytics": "^2.0.1",
+    "@vidstack/react": "^1.15.6",
     "aniwatch": "^2.27.9",
     "axios": "^1.18.1",
     "classnames": "^2.5.1",
