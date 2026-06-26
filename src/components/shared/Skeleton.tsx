@@ -31,7 +31,8 @@ export const SkeletonItem: React.FC<SkeletonItemProps> = ({
   return (
     <div
       className={classNames(
-        !container && "animate-pulse bg-white/20",
+        !container &&
+          "animate-[shimmer_1.4s_infinite_linear] rounded-md bg-gradient-to-r from-white/[0.04] via-white/[0.12] to-white/[0.04] bg-[length:200%_100%]",
         className
       )}
       {...props}

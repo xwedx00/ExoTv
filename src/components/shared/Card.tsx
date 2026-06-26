@@ -112,7 +112,7 @@ const Card: React.FC<CardProps> = (props) => {
         }
         options={popupOptions}
         offset={[0, 10]}
-        className="z-10 relative p-4 rounded-md shadow-[rgba(0,0,0,0.25)_0px_54px_55px,rgba(0,0,0,0.12)_0px_-12px_30px,rgba(0,0,0,0.12)_0px_4px_6px,rgba(0,0,0,0.17)_0px_12px_13px,rgba(0,0,0,0.09)_0px_-3px_5px]"
+        className="relative z-10 overflow-hidden rounded-panel border border-white/10 p-4 shadow-[0_24px_48px_rgba(0,0,0,0.48),0_8px_16px_rgba(0,0,0,0.3)]"
       >
         <Image
           src={data.bannerImage || data.coverImage?.extraLarge}
@@ -122,7 +122,7 @@ const Card: React.FC<CardProps> = (props) => {
           alt={title}
         />
 
-        <div className="absolute inset-0 bg-black/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/25"></div>
 
         <div className="absolute inset-0 p-6 flex flex-col justify-end">
           <p

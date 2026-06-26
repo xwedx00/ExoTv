@@ -6,10 +6,13 @@ import { motion } from "framer-motion";
 const variants = {
   hidden: {
     opacity: 0,
+    scale: 1.04,
   },
 
   visible: {
     opacity: 1,
+    scale: 1,
+    transition: { duration: 0.4, ease: [0.33, 1, 0.68, 1] },
   },
 };
 
