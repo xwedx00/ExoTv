@@ -21,7 +21,9 @@ const BannerSwiper: React.FC<BannerSwiperProps> = ({ data, ...props }) => {
       slidesPerGroup={1}
       centerInsufficientSlides
       centeredSlides
-      loop
+      // Loop needs more slides than the widest slidesPerView (7); enabling it on
+      // a short list triggers Swiper's "not enough slides for loop" warning.
+      loop={(data?.length ?? 0) > 8}
       loopAdditionalSlides={7}
       slidesPerView={2}
       spaceBetween={20}

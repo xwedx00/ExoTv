@@ -188,7 +188,7 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
               animate="animate"
               exit="exit"
               initial="initial"
-              className="h-0 w-full"
+              className="absolute inset-0"
               key={title}
             >
               <Image
@@ -197,6 +197,7 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
                 objectFit="cover"
                 objectPosition="50% 35%"
                 alt={title}
+                priority
               />
             </motion.div>
           )}

@@ -5,8 +5,13 @@ import Swiper, {
 } from "@/components/shared/Swiper";
 import SwiperCard from "@/components/shared/SwiperCard";
 import { Media } from "@/types/anilist";
+import { motion } from "motion/react";
 import React, { useState } from "react";
 import { isMobile } from "react-device-detect";
+
+// Reveal each card right-to-left within the visible row (rightmost first).
+const REVEAL_EASE = [0.33, 1, 0.68, 1];
+const REVEAL_PER_ROW = 7;
 
 interface CardSwiperProps {
   data: Media[];
@@ -240,7 +245,20 @@ const CardSwiper: React.FC<CardSwiperProps> = (props) => {
             }
             key={index}
           >
-            {onEachCard(item, activeIndex === index)}
+            <motion.div
+              className="h-full w-full"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+              transition={{
+                duration: 0.45,
+                ease: REVEAL_EASE,
+                delay:
+                  (REVEAL_PER_ROW - 1 - (index % REVEAL_PER_ROW)) * 0.05,
+              }}
+            >
+              {onEachCard(item, activeIndex === index)}
+            </motion.div>
           </SwiperSlide>
         );
       })}
