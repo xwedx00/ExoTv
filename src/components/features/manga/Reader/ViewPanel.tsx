@@ -4,7 +4,7 @@ import CircleButton from "@/components/shared/CircleButton";
 import { useReadInfo } from "@/contexts/ReadContext";
 import { useReadPanel } from "@/contexts/ReadPanelContext";
 import { useReadSettings } from "@/contexts/ReadSettingsContext";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import React, { useEffect, useRef } from "react";
 import { BrowserView, isMobile } from "react-device-detect";
 import { AiOutlineZoomIn, AiOutlineZoomOut } from "react-icons/ai";

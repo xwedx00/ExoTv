@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { TapHandlers, TapInfo } from "framer-motion";
+import { TapHandlers, TapInfo } from "motion/react";
 import { useRef } from "react";
 
 interface UseHandleTapProps {

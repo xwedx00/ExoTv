@@ -15,7 +15,7 @@ import useDevice from "@/hooks/useDevice";
 import { groupBy, sortObjectByValue } from "@/utils";
 import { getTitle } from "@/utils/data";
 import classNames from "classnames";
-import { motion, Variants } from "framer-motion";
+import { motion, Variants } from "motion/react";
 import { useTranslation } from "@/lib/i18n";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";

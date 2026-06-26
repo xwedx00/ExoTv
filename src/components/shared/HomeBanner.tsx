@@ -8,7 +8,7 @@ import TextIcon from "@/components/shared/TextIcon";
 import { Media } from "@/types/anilist";
 import { createMediaDetailsUrl, isValidUrl, numberWithCommas } from "@/utils";
 import { convert, getDescription, getTitle } from "@/utils/data";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, {

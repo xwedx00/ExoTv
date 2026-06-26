@@ -1,6 +1,6 @@
 //@ts-nocheck
 import classNames from "classnames";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "motion/react";
 import React, { useCallback, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 

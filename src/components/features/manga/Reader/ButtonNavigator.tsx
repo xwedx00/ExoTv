@@ -5,7 +5,7 @@ import { useReadPanel } from "@/contexts/ReadPanelContext";
 import { useReadSettings } from "@/contexts/ReadSettingsContext";
 import useDevice from "@/hooks/useDevice";
 import classNames from "classnames";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 import {
   HiOutlineArrowNarrowLeft,

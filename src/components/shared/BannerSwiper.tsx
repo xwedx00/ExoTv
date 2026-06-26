@@ -4,7 +4,7 @@ import Swiper, { SwiperProps, SwiperSlide } from "@/components/shared/Swiper";
 import useDevice from "@/hooks/useDevice";
 import { Media } from "@/types/anilist";
 import { getTitle } from "@/utils/data";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useRouter } from "next/router";
 import React from "react";
 

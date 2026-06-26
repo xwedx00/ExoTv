@@ -6,7 +6,7 @@ import {
   motion,
   useMotionValue,
   Variants,
-} from "framer-motion";
+} from "motion/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, {
