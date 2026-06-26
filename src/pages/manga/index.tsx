@@ -24,7 +24,9 @@ const Home = () => {
   const { data: trendingManga, isLoading: trendingLoading } = useMedia({
     type: MediaType.Manga,
     sort: [MediaSort.Trending_desc, MediaSort.Popularity_desc],
-    perPage: isMobile ? 5 : 10,
+    // 24 (not 10) so the centered, looping home banner fills without gaps —
+    // especially after titles without a banner image are filtered out.
+    perPage: isMobile ? 5 : 24,
   });
 
   const { data: popularManga, isLoading: popularMangaLoading } = useMedia({

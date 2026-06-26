@@ -35,7 +35,8 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
   const { locale } = useRouter();
   
 
-  const title = useMemo(() => getTitle(manga, locale), [manga, locale]);
+  // Details page always shows the original/canonical name (not the EN/native toggle).
+  const title = useMemo(() => getTitle(manga, { forceNative: true }), [manga]);
   const description = useMemo(
     () => getDescription(manga, locale),
     [manga, locale]
@@ -266,7 +267,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export default withRedirect(DetailsPage, (router, props) => {
   const { params } = router.query;
   const [id, slug] = params as string[];
-  const title = getTitle(props.manga, router.locale);
+  const title = getTitle(props.manga, { forceNative: true });
 
   if (slug) return null;
 

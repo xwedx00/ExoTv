@@ -40,13 +40,20 @@ const bannerVariants = {
 const transition = [0.33, 1, 0.68, 1];
 
 const HomeBanner: React.FC<HomeBannerProps> = ({ data, isLoading }) => {
+  // Only feature titles that actually have a banner image — skip the rest so the
+  // hero never shows a blank/placeholder background.
+  const slides = useMemo(
+    () => (data || []).filter((media) => isValidUrl(media?.bannerImage)),
+    [data]
+  );
+
   return (
     <React.Fragment>
       <BrowserView>
         {isLoading ? (
           <DesktopHomeBannerSkeleton />
         ) : (
-          <DesktopHomeBanner data={data} />
+          <DesktopHomeBanner data={slides} />
         )}
       </BrowserView>
 
@@ -54,7 +61,7 @@ const HomeBanner: React.FC<HomeBannerProps> = ({ data, isLoading }) => {
         {isLoading ? (
           <MobileHomeBannerSkeleton />
         ) : (
-          <MobileHomeBanner data={data} />
+          <MobileHomeBanner data={slides} />
         )}
       </MobileView>
     </React.Fragment>

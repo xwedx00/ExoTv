@@ -2,136 +2,139 @@
 import Drawer, { DrawerRef } from "@/components/shared/Drawer";
 import Logo from "@/components/shared/Logo";
 import NavItem from "@/components/shared/NavItem";
+import { useSettings } from "@/contexts/SettingsContext";
 import classNames from "classnames";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
-import Section from "../shared/Section";
 
 const routes = [
-  {
-    title: "Anime",
-    href: "/",
-  },
-  {
-    title: "Manga",
-    href: "/manga",
-  },
-  {
-    title: "Anime Themes",
-    href: "/themes",
-  },
-  {
-    title: "Anime Scene Search",
-    href: "/scene-search",
-  },
+  { title: "Anime", href: "/" },
+  { title: "Manga", href: "/manga" },
+  { title: "Anime Themes", href: "/themes" },
+  { title: "Anime Scene Search", href: "/scene-search" },
 ];
 
+const TitleLanguageToggle: React.FC = () => {
+  const { titleLanguage, toggleTitleLanguage } = useSettings();
+
+  return (
+    <button
+      type="button"
+      onClick={toggleTitleLanguage}
+      title="Title language — English / native"
+      aria-label="Toggle title language"
+      className="flex items-center overflow-hidden rounded-full border border-white/10 bg-white/5 text-xs font-semibold"
+    >
+      <span
+        className={classNames(
+          "px-2 py-1 transition-colors",
+          titleLanguage === "english" ? "bg-primary-500 text-white" : "text-white/55"
+        )}
+      >
+        EN
+      </span>
+      <span
+        className={classNames(
+          "px-2 py-1 transition-colors",
+          titleLanguage === "native" ? "bg-primary-500 text-white" : "text-white/55"
+        )}
+      >
+        原
+      </span>
+    </button>
+  );
+};
+
 const Header = () => {
-  const [isTop, setIsTop] = useState(true);
   const drawerRef = useRef<DrawerRef>();
   const router = useRouter();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsTop(window.scrollY === 0);
-    };
-
-    document.addEventListener("scroll", handleScroll);
-  }, []);
 
   const searchUrl = router.asPath.includes("manga")
     ? "/browse?type=manga"
     : "/browse?type=anime";
 
   return (
-    <Section
-      className={classNames(
-        "px-4 md:px-12 flex items-center h-16 fixed top w-full z-50 transition duration-500",
-        !isTop
-          ? "bg-background"
-          : "bg-gradient-to-b from-black/80 via-black/60 to-transparent"
-      )}
-    >
-      <Drawer
-        ref={drawerRef}
-        containerClassName="sm:hidden mr-4"
-        className="flex justify-between flex-col py-8"
-        button={<GiHamburgerMenu className="w-6 h-6" />}
-      >
-        <div>
-          <Logo />
+    <header className="pointer-events-none fixed inset-x-0 top-4 z-50 flex justify-center px-4">
+      <div className="glass-pill pointer-events-auto flex h-12 w-[min(95%,1120px)] items-center gap-3 rounded-full px-3 md:gap-6 md:px-6">
+        {/* Mobile drawer */}
+        <Drawer
+          ref={drawerRef}
+          containerClassName="sm:hidden flex items-center"
+          className="flex flex-col justify-between py-8"
+          button={<GiHamburgerMenu className="h-5 w-5 text-white/80" />}
+        >
+          <div>
+            <Logo />
 
-          <div className="space-y-2">
-            {routes.map((route) => (
-              <div onClick={drawerRef.current?.close} key={route.href}>
-                <NavItem className="block" href={route.href}>
-                  {({ isActive }) => (
-                    <p
-                      className={classNames(
-                        "pl-4 border-l-4 font-semibold text-2xl",
-                        isActive
-                          ? "border-primary-500 text-white"
-                          : "border-background-900 text-typography-secondary"
-                      )}
-                    >
-                      {route.title}
-                    </p>
-                  )}
-                </NavItem>
-              </div>
-            ))}
+            <div className="mt-6 space-y-2">
+              {routes.map((route) => (
+                <div onClick={drawerRef.current?.close} key={route.href}>
+                  <NavItem className="block" href={route.href}>
+                    {({ isActive }) => (
+                      <p
+                        className={classNames(
+                          "border-l-4 pl-4 text-2xl font-semibold",
+                          isActive
+                            ? "border-primary-500 text-white"
+                            : "border-white/10 text-typography-secondary"
+                        )}
+                      >
+                        {route.title}
+                      </p>
+                    )}
+                  </NavItem>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </Drawer>
+        </Drawer>
 
-      <div className="relative h-2/3 w-10 mr-8">
-        <NavItem href="/">{() => <Logo className="!w-full !h-full" />}</NavItem>
-      </div>
-
-      <div className="hidden sm:flex items-center space-x-6 font-semibold text-typography-secondary">
-        {routes.map((route) => (
-          <NavItem href={route.href} key={route.href}>
-            {({ isActive }) => (
-              <p
-                className={classNames(
-                  "hover:text-white transition duration-300",
-                  isActive && "text-primary-300"
-                )}
-              >
-                {route.title}
-              </p>
-            )}
-          </NavItem>
-        ))}
-      </div>
-
-      <div className="flex items-center space-x-4 ml-auto">
-        
-        <NavItem href={searchUrl}>
-          {({ isActive }) => (
-            <AiOutlineSearch
-              className={classNames(
-                "w-7 h-7 font-semibold hover:text-primary-300 transition duration-300",
-                isActive && "text-primary-300"
-              )}
-            />
+        {/* Logo */}
+        <NavItem href="/">
+          {() => (
+            <div className="relative h-7 w-7 shrink-0">
+              <Logo className="!h-full !w-full" />
+            </div>
           )}
         </NavItem>
-      </div>
-    </Section>
-  );
-};
 
-const ContactItem: React.FC<{
-  Icon: React.ComponentType<any>;
-  href: string;
-}> = ({ Icon, href }) => {
-  return (
-    <a href={href} target="_blank" rel="noreferrer">
-      <Icon className="w-6 h-6 hover:text-primary-300 transition duration-300" />
-    </a>
+        {/* Desktop nav */}
+        <nav className="hidden items-center gap-5 text-[15px] font-medium text-white/60 sm:flex">
+          {routes.map((route) => (
+            <NavItem href={route.href} key={route.href}>
+              {({ isActive }) => (
+                <span
+                  className={classNames(
+                    "whitespace-nowrap transition-colors duration-300 hover:text-white",
+                    isActive && "text-white"
+                  )}
+                >
+                  {route.title}
+                </span>
+              )}
+            </NavItem>
+          ))}
+        </nav>
+
+        {/* Right cluster */}
+        <div className="ml-auto flex items-center gap-2 md:gap-3">
+          <TitleLanguageToggle />
+
+          <NavItem href={searchUrl}>
+            {({ isActive }) => (
+              <AiOutlineSearch
+                className={classNames(
+                  "h-5 w-5 text-white/70 transition-colors duration-300 hover:text-white",
+                  isActive && "text-primary-300"
+                )}
+              />
+            )}
+          </NavItem>
+        </div>
+      </div>
+    </header>
   );
 };
 

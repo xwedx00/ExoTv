@@ -17,6 +17,9 @@ export const mediaDefaultFields = `
 id
 type
 title {
+  romaji
+  english
+  native
   userPreferred
 }
 coverImage {
@@ -512,6 +515,9 @@ media {
   type
   id
   title {
+    romaji
+    english
+    native
     userPreferred
   }
   coverImage {

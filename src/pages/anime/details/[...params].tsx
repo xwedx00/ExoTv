@@ -51,7 +51,8 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
     return dayjs.unix(nextAiringSchedule.airingAt).fromNow();
   }, [nextAiringSchedule?.airingAt, locale]);
 
-  const title = useMemo(() => getTitle(anime, locale), [anime, locale]);
+  // Details page always shows the original/canonical name (not the EN/native toggle).
+  const title = useMemo(() => getTitle(anime, { forceNative: true }), [anime]);
   const description = useMemo(
     () => getDescription(anime, locale),
     [anime, locale]
@@ -364,7 +365,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export default withRedirect(DetailsPage, (router, props) => {
   const { params } = router.query;
   const [id, slug] = params as string[];
-  const title = getTitle(props.anime, router.locale);
+  const title = getTitle(props.anime, { forceNative: true });
 
   if (slug) return null;
 
