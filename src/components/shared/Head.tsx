@@ -14,7 +14,7 @@ interface HeadProps {
 const Head: React.FC<HeadProps> = (props) => {
   const {
     title = "ExoTv",
-    description = "Website xem anime hoàn toàn miễn phí, không quảng cáo.",
+    description = "Watch anime and read manga free on ExoTv.",
     image = "https://i.ibb.co/JnDDN9j/localhost-3000-2.png",
   } = props;
 

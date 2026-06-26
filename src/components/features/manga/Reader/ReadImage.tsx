@@ -60,13 +60,11 @@ const ReadImage: React.FC<ReadImageProps> = ({
       {!loaded && (
         <div
           className={classNames(
-            "flex flex-col gap-2 items-center justify-center w-full h-60 text-gray-500",
+            "flex h-72 w-full items-center justify-center bg-gradient-to-r from-white/[0.03] via-white/[0.09] to-white/[0.03] bg-[length:200%_100%] text-white/25 animate-[shimmer_1.4s_infinite_linear]",
             loadingClassName
           )}
         >
-          <BsFillImageFill className="w-8 h-8 animate-pulse" />
-
-          <p>Vui lòng chờ...</p>
+          <BsFillImageFill className="h-8 w-8" />
         </div>
       )}
 
@@ -89,7 +87,7 @@ const ReadImage: React.FC<ReadImageProps> = ({
             fitMode === "height" && "w-auto h-screen",
             className
           )}
-          alt="Đọc truyện tại ExoTv"
+          alt="Manga page"
           src={src}
           onLoad={(e) => {
             setLoaded(true);

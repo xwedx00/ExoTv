@@ -88,13 +88,20 @@ const Select = React.forwardRef<any, Props>(
           control: (provided) => {
             return {
               ...provided,
-              backgroundColor: "#1a1a1a",
+              backgroundColor: "rgba(17,25,40,0.55)",
+              backdropFilter: "blur(16px) saturate(170%)",
+              border: "1px solid rgba(255,255,255,0.1)",
               minWidth: "12rem",
               maxWidth: "14rem",
             };
           },
           menu: (provided) => {
-            return { ...provided, backgroundColor: "#1a1a1a" };
+            return {
+              ...provided,
+              backgroundColor: "rgba(17,25,40,0.88)",
+              backdropFilter: "blur(16px) saturate(170%)",
+              border: "1px solid rgba(255,255,255,0.1)",
+            };
           },
           menuPortal: (provided) => ({ ...provided, zIndex: 9999 }),
           singleValue: (provided) => {

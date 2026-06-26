@@ -145,7 +145,7 @@ const Sidebar = () => {
       animate={isSidebarOpen ? "animate" : "initial"}
       initial="initial"
       className={classNames(
-        "bg-background-800 flex-shrink-0 flex-grow-0",
+        "glass-thick flex-shrink-0 flex-grow-0",
         isMobile && "fixed top-0 w-full min-h-[content] z-50"
       )}
       transition={{ ease: transition, duration: 0.6 }}
@@ -342,7 +342,7 @@ const Sidebar = () => {
         </BrowserView>
 
         <BrowserView renderWithFragment>
-          <ul className="h-full overflow-auto bg-background-900">
+          <ul className="h-full overflow-auto glass-dense">
             {filteredChapters.map((chapter) => {
               const isActive =
                 chapter.sourceChapterId === currentChapter.sourceChapterId;
