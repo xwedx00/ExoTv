@@ -22,9 +22,9 @@ interface MediaWithReadTime extends Media {
 const LIST_LIMIT = 30;
 
 const useReadList = (sourceType: Status) => {
-  return useInfiniteQuery(
-    ["read-list", sourceType],
-    async ({ pageParam = 1 }) => {
+  return useInfiniteQuery({
+    queryKey: ["read-list", sourceType],
+    queryFn: async ({ pageParam = 1 }) => {
       const { from, to } = getPagination(pageParam, LIST_LIMIT);
 
       // All media ids matching the requested read status, newest mediaId first
@@ -72,10 +72,9 @@ const useReadList = (sourceType: Status) => {
         nextPage: hasNextPage ? pageParam + 1 : null,
       };
     },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextPage,
-    }
-  );
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
+  });
 };
 
 export default useReadList;

@@ -23,9 +23,9 @@ interface MediaWithWatchedTime extends Media {
 const LIST_LIMIT = 30;
 
 const useWatchList = (sourceType: Status, user: AdditionalUser) => {
-  return useInfiniteQuery(
-    ["watch-list", user?.id, sourceType],
-    async ({ pageParam = 1 }) => {
+  return useInfiniteQuery({
+    queryKey: ["watch-list", user?.id, sourceType],
+    queryFn: async ({ pageParam = 1 }) => {
       // All media ids that match the status filter (newest-first is preserved by
       // sorting on the locally-stored "updatedAt" of the watched entry below).
       const allIds = watchStatusStore.byStatus(sourceType);
@@ -70,13 +70,12 @@ const useWatchList = (sourceType: Status, user: AdditionalUser) => {
 
       return {
         data: list,
-        nextPage: hasNextPage ? pageParam + 1 : null,
+        nextPage: hasNextPage ? pageParam + 1 : undefined,
       };
     },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextPage,
-    }
-  );
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+  });
 };
 
 export default useWatchList;

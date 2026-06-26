@@ -20,12 +20,15 @@ const useFetchImages = (currentChapter: Chapter, nextChapter?: Chapter) => {
     return { success: true, images: data?.images || [] };
   };
 
-  const getQueryKey = (chapter: Chapter) =>
-    `images-${chapter.sourceId}-${chapter.sourceChapterId}`;
+  const getQueryKey = (chapter?: Chapter) =>
+    chapter
+      ? `images-${chapter.sourceId}-${chapter.sourceChapterId}`
+      : "images-none";
 
   return useQuery({
     queryKey: [getQueryKey(currentChapter)],
     queryFn: () => fetchImages(currentChapter),
+    enabled: !!currentChapter,
   });
 };
 

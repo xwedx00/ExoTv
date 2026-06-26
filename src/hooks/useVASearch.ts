@@ -4,9 +4,9 @@ import { StaffSort } from "@/types/anilist";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 const useVASearch = (keyword: string) => {
-  return useInfiniteQuery(
-    ["va", keyword],
-    async ({ pageParam = 1 }) => {
+  return useInfiniteQuery({
+    queryKey: ["va", keyword],
+    queryFn: async ({ pageParam = 1 }) => {
       const data = await getPageStaff({
         search: keyword,
         page: pageParam,
@@ -16,13 +16,12 @@ const useVASearch = (keyword: string) => {
 
       return data;
     },
-    {
-      getNextPageParam: (lastPage) =>
-        lastPage.pageInfo.hasNextPage
-          ? lastPage.pageInfo.currentPage + 1
-          : null,
-    }
-  );
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageInfo.hasNextPage
+        ? lastPage.pageInfo.currentPage + 1
+        : undefined,
+  });
 };
 
 export default useVASearch;

@@ -9,7 +9,7 @@ import { isMobile } from "react-device-detect";
 
 const useRead = () => {
   return useQuery({
-    queryKey: "read",
+    queryKey: ["read"],
 
     queryFn: async () => {
       const data = readStore.recent(isMobile ? 5 : 10);

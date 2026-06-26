@@ -4,24 +4,23 @@ import { Studio } from "@/types/anilist";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 export const useStudio = (studioId: number, initialData: Studio) => {
-  return useInfiniteQuery<Studio>(
-    ["studio", studioId],
-    async ({ pageParam = 1 }) => {
+  return useInfiniteQuery<Studio>({
+    queryKey: ["studio", studioId],
+    queryFn: async ({ pageParam = 1 }) => {
       return getStudioDetails({
         id: studioId,
         page: pageParam,
         perPage: 50,
       });
     },
-    {
-      getNextPageParam: (lastPage) =>
-        lastPage?.media?.pageInfo?.hasNextPage
-          ? lastPage?.media?.pageInfo?.currentPage + 1
-          : null,
-      initialData: {
-        pages: [initialData],
-        pageParams: [1],
-      },
-    }
-  );
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage?.media?.pageInfo?.hasNextPage
+        ? lastPage?.media?.pageInfo?.currentPage + 1
+        : undefined,
+    initialData: {
+      pages: [initialData],
+      pageParams: [1],
+    },
+  });
 };

@@ -39,9 +39,9 @@ const useBrowse = (options: UseBrowseOptions) => {
     isAdult = false,
   } = options;
 
-  return useInfiniteQuery(
-    ["browse", options],
-    async ({ pageParam = 1 }) => {
+  return useInfiniteQuery({
+    queryKey: ["browse", options],
+    queryFn: async ({ pageParam = 1 }) => {
       // Search anime from Anilist using provided options
       const searchData = await getPageMedia({
         format,
@@ -63,13 +63,12 @@ const useBrowse = (options: UseBrowseOptions) => {
 
       return searchData;
     },
-    {
-      getNextPageParam: (lastPage) =>
-        lastPage.pageInfo.hasNextPage
-          ? lastPage.pageInfo.currentPage + 1
-          : null,
-    }
-  );
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageInfo.hasNextPage
+        ? lastPage.pageInfo.currentPage + 1
+        : undefined,
+  });
 };
 
 export default useBrowse;

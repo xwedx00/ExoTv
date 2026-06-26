@@ -63,9 +63,10 @@ const TimestampSkipButton: React.FC<TimestampSkipButtonProps> = ({
   const { videoEl } = useVideo();
   const { setState } = useCustomVideoState();
   const { data: timestamps, isPending: timestampLoading } = useQuery({
-    queryKey: `timestamps-${episode}-${malId}`,
-    queryFn: () => getTimestamps(episode, malId, videoEl?.duration)
-  }, { enabled: !!videoEl?.duration });
+    queryKey: [`timestamps-${episode}-${malId}`],
+    queryFn: () => getTimestamps(episode, malId, videoEl?.duration),
+    enabled: !!videoEl?.duration,
+  });
   const [timestamp, setTimeStamp] = useState<SkipTimeStamp>(null);
 
   useEffect(() => {

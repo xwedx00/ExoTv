@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useWatched = () => {
   return useQuery({
-    queryKey: "watched",
+    queryKey: ["watched"],
 
     queryFn: async () => {
       const watchedEntries = watchedStore.recent(isMobile ? 5 : 10);

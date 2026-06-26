@@ -57,11 +57,14 @@ export const useFetchSource = (
     };
   };
 
-  const getQueryKey = (episode: Episode) =>
-    `source-${episode.sourceId}-${episode.sourceEpisodeId}`;
+  const getQueryKey = (episode?: Episode) =>
+    episode
+      ? `source-${episode.sourceId}-${episode.sourceEpisodeId}`
+      : "source-none";
 
   return useQuery({
     queryKey: [getQueryKey(currentEpisode)],
     queryFn: () => fetchSource(currentEpisode),
+    enabled: !!currentEpisode,
   });
 };

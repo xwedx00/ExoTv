@@ -4,9 +4,9 @@ import { CharacterSort } from "@/types/anilist";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 const useCharacterSearch = (keyword: string) => {
-  return useInfiniteQuery(
-    ["character", keyword],
-    async ({ pageParam = 1 }) => {
+  return useInfiniteQuery({
+    queryKey: ["character", keyword],
+    queryFn: async ({ pageParam = 1 }) => {
       const data = await getPageCharacters({
         search: keyword,
         page: pageParam,
@@ -16,13 +16,12 @@ const useCharacterSearch = (keyword: string) => {
 
       return data;
     },
-    {
-      getNextPageParam: (lastPage) =>
-        lastPage.pageInfo.hasNextPage
-          ? lastPage.pageInfo.currentPage + 1
-          : null,
-    }
-  );
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageInfo.hasNextPage
+        ? lastPage.pageInfo.currentPage + 1
+        : undefined,
+  });
 };
 
 export default useCharacterSearch;

@@ -33,9 +33,9 @@ const useBrowse = (options: UseBrowseOptions) => {
     isAdult,
   } = options;
 
-  return useInfiniteQuery(
-    ["browse-manga", options],
-    async ({ pageParam = 1 }) => {
+  return useInfiniteQuery({
+    queryKey: ["browse-manga", options],
+    queryFn: async ({ pageParam = 1 }) => {
       const searchData = await getPageMedia({
         type: MediaType.Manga,
         format,
@@ -53,13 +53,12 @@ const useBrowse = (options: UseBrowseOptions) => {
 
       return searchData;
     },
-    {
-      getNextPageParam: (lastPage) =>
-        lastPage.pageInfo.hasNextPage
-          ? lastPage.pageInfo.currentPage + 1
-          : null,
-    }
-  );
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageInfo.hasNextPage
+        ? lastPage.pageInfo.currentPage + 1
+        : undefined,
+  });
 };
 
 export default useBrowse;
