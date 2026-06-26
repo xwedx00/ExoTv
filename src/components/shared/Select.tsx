@@ -62,6 +62,9 @@ const Option: React.ComponentType<
 const Select = React.forwardRef<any, Props>(
   ({ components, styles, ...props }, ref) => {
     const [portalTarget, setPortalTarget] = React.useState<HTMLElement>();
+    // Stable id across SSR + client render to avoid react-select hydration
+    // mismatches (server/client otherwise generate different react-select-N ids).
+    const generatedId = React.useId();
 
     useEffect(() => {
       setPortalTarget(document.body);
@@ -70,6 +73,7 @@ const Select = React.forwardRef<any, Props>(
     return (
       <ReactSelect
         ref={ref}
+        instanceId={generatedId}
         theme={(theme) => ({
           ...theme,
           colors: {
@@ -125,7 +129,7 @@ const Select = React.forwardRef<any, Props>(
           ...styles,
         }}
         hideSelectedOptions={false}
-        noOptionsMessage={() => "Không còn lựa chọn"}
+        noOptionsMessage={() => "No options"}
         components={{ MultiValue, Option, ...components }}
         isClearable
         menuPortalTarget={portalTarget}

@@ -84,6 +84,12 @@ const WatchPlayer: React.FC<WatchPlayerProps> = ({
       crossOrigin
       playsInline
       autoPlay
+      // Silence Vidstack's logger: when a browser blocks autoplay-with-sound,
+      // Vidstack logs the rejection as a rich object whose getters throw when
+      // Next.js 16's dev console-capture (ClientFileLogger) tries to serialize
+      // it ("this.$state[prop] is not a function") — an uncaught error that
+      // tore down the player and halted HLS. Silent logging avoids that path.
+      logLevel="silent"
       className={classNames(
         "h-full w-full bg-black [--media-brand:theme(colors.primary.500)]",
         className

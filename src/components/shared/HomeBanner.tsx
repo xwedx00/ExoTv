@@ -64,6 +64,8 @@ const HomeBanner: React.FC<HomeBannerProps> = ({ data, isLoading }) => {
 const MobileHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
   const { locale } = useRouter();
 
+  if (!data?.length) return <MobileHomeBannerSkeleton />;
+
   return (
     <Swiper
       hideNavigation
@@ -168,6 +170,8 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
   useEffect(() => {
     setShowTrailer(false);
   }, [activeSlide]);
+
+  if (!activeSlide) return <DesktopHomeBannerSkeleton />;
 
   return (
     <React.Fragment>

@@ -20,7 +20,16 @@ function interpolate(str: string, opts?: Record<string, unknown>): string {
 export function useTranslation(ns: string | string[] = "common") {
   const namespace = Array.isArray(ns) ? ns[0] : ns;
   const t = (key: string, opts?: Record<string, unknown>): string => {
-    const value = dict[namespace]?.[key] ?? dict.common?.[key] ?? key;
+    // Support namespace-prefixed keys like "common:search" — strip the "ns:"
+    // prefix and resolve against that namespace (next-i18next syntax).
+    const sep = key.indexOf(":");
+    const keyNs = sep === -1 ? namespace : key.slice(0, sep);
+    const realKey = sep === -1 ? key : key.slice(sep + 1);
+    const value =
+      dict[keyNs]?.[realKey] ??
+      dict[namespace]?.[realKey] ??
+      dict.common?.[realKey] ??
+      realKey;
     return interpolate(value, opts);
   };
   const i18n = { language: "en", changeLanguage: async () => undefined };
