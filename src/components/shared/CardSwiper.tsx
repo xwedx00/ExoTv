@@ -19,11 +19,15 @@ const HOVER_WIDTH = 3;
 const noop = () => {};
 
 const getVisibleIndex = (swiper: SwiperInstance) => {
-  const { slides } = swiper;
+  const slides = Array.from(swiper.slides || []);
 
   const visibleCards = slides
     .map((slide, index) => ({ slide, index }))
     .filter(({ slide }) => slide.classList.contains("swiper-slide-visible"));
+
+  // Swiper v9+ only adds `swiper-slide-visible` when watchSlidesProgress is on;
+  // guard against an empty result so the hover handler never crashes.
+  if (!visibleCards.length) return { first: 0, last: 0 };
 
   return {
     first: visibleCards[0].index,
@@ -91,7 +95,7 @@ const CardSwiper: React.FC<CardSwiperProps> = (props) => {
         const element = document.createElement("div");
         element.className = "swiper-slide swiper-placeholder";
 
-        swiper.$wrapperEl[0].append(element);
+        swiper.wrapperEl.append(element);
 
         swiper.updateSlides();
       }
@@ -192,7 +196,7 @@ const CardSwiper: React.FC<CardSwiperProps> = (props) => {
     currentSlide.classList.remove("swiper-animating");
 
     if (nextSlide?.classList.contains("swiper-placeholder")) {
-      swiper.slides.eq(swiper.slides.length - 1).remove();
+      swiper.slides[swiper.slides.length - 1]?.remove();
       swiper.update();
     }
 
@@ -205,7 +209,7 @@ const CardSwiper: React.FC<CardSwiperProps> = (props) => {
         setSwiper(swiper);
       }}
       speed={500}
-      watchSlidesVisibility
+      watchSlidesProgress
     >
       {data.map((item, index) => {
         let debounceTimeout: NodeJS.Timeout = null;

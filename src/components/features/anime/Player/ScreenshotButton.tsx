@@ -418,7 +418,7 @@ const ScreenshotButton = () => {
                   <div className="flex items-center gap-4">
                     <p className="text-2xl">{index + 1}</p>
 
-                    <div className="shrink-0 w-32 aspect-h-9">
+                    <div className="shrink-0 w-32 aspect-video">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={image.imageUrl}

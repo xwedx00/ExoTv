@@ -30,7 +30,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
     (<Link href={`/wwf/${room.id}`}>
 
       <div className="w-full h-full space-y-4">
-        <div className="relative aspect-w-16 aspect-h-9">
+        <div className="relative relative aspect-video">
           <Image
             src={room.media.bannerImage || room.media.coverImage.extraLarge}
             alt={mediaTitle}

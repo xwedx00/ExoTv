@@ -55,7 +55,7 @@ const GenreSwiper: React.FC<GenresSwiperProps> = ({
             <div
               className={classNames(
                 "group relative w-full",
-                isMobile && "aspect-w-16 aspect-h-9",
+                isMobile && "relative aspect-video",
                 !isMobile && "h-full"
               )}
             >

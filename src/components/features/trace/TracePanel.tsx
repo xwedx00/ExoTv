@@ -68,7 +68,7 @@ const TracePanel: React.FC<TracePanelProps> = ({ data, image }) => {
         ))}
       </div>
       <div className="h-max w-full space-y-4 bg-background-900 md:w-[70%]">
-        <div className="aspect-h-9 aspect-w-16 w-full">
+        <div className="relative aspect-video w-full">
           <video
             src={`${card.video}&size=l`}
             loop

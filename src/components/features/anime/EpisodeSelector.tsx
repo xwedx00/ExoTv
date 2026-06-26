@@ -36,7 +36,7 @@ const EpisodeSelector: React.FC<EpisodeSelectorProps> = (props) => {
         shallow
         {...episodeLinkProps}
         className={classNames(
-          "rounded-md bg-background-800 col-span-1 aspect-w-2 aspect-h-1 group",
+          "rounded-md bg-background-800 col-span-1 relative aspect-[2/1] group",
           episode.sourceEpisodeId === activeEpisode?.sourceEpisodeId &&
             "text-primary-300"
         )}>

@@ -5,7 +5,7 @@ import Skeleton, { SkeletonItem } from "@/components/shared/Skeleton";
 const EpisodeCardSkeleton = () => {
   return (
     <Skeleton>
-      <SkeletonItem className="aspect-w-16 aspect-h-9"></SkeletonItem>
+      <SkeletonItem className="relative aspect-video"></SkeletonItem>
     </Skeleton>
   );
 };

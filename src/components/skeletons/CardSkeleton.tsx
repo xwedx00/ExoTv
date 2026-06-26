@@ -5,7 +5,7 @@ import Skeleton, { SkeletonItem } from "@/components/shared/Skeleton";
 const CardSkeleton = () => {
   return (
     <Skeleton>
-      <SkeletonItem className="aspect-w-9 aspect-h-16"></SkeletonItem>
+      <SkeletonItem className="relative aspect-[9/16]"></SkeletonItem>
     </Skeleton>
   );
 };

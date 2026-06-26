@@ -48,7 +48,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
   const nextAiringScheduleTime = useMemo(() => {
     if (!nextAiringSchedule?.airingAt) return null;
 
-    return dayjs.unix(nextAiringSchedule.airingAt).locale(locale).fromNow();
+    return dayjs.unix(nextAiringSchedule.airingAt).fromNow();
   }, [nextAiringSchedule?.airingAt, locale]);
 
   const title = useMemo(() => getTitle(anime, locale), [anime, locale]);
@@ -110,6 +110,12 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
                 containerClassName="mt-4 mb-8 md:block"
                 className="text-gray-300 hover:text-gray-100 transition duration-300"
               />
+
+              <Link href={`/anime/watch/${anime.id}`}>
+                <Button primary LeftIcon={BsFillPlayFill}>
+                  <p>Watch Now</p>
+                </Button>
+              </Link>
 
               {/* MAL-Sync UI */}
               <div id="mal-sync" className="hidden md:block"></div>

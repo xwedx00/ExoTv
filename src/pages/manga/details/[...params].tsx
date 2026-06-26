@@ -25,7 +25,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
-import { BsFillPlayFill } from "react-icons/bs";
+import { BsBookHalf, BsFillPlayFill } from "react-icons/bs";
 
 interface DetailsPageProps {
   manga: Media;
@@ -81,6 +81,12 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
                 className="text-gray-300 hover:text-gray-100 transition duration-300"
               />
 
+              <Link href={`/manga/read/${manga.id}`}>
+                <Button primary LeftIcon={BsBookHalf}>
+                  <p>Read Now</p>
+                </Button>
+              </Link>
+
               {/* MAL-Sync UI */}
               <div id="mal-sync" className="hidden md:block"></div>
             </div>
@@ -111,6 +117,16 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
           containerClassName="my-4 block md:hidden"
           className="text-gray-300 hover:text-gray-100 transition duration-300"
         />
+
+        <div className="flex md:hidden items-center space-x-2 mb-4">
+          <Link href={`/manga/read/${manga.id}`} className="flex-1">
+            <Button primary LeftIcon={BsBookHalf} className="relative w-full">
+              <p className="!mx-0 absolute left-1/2 -translate-x-1/2">
+                Read Now
+              </p>
+            </Button>
+          </Link>
+        </div>
 
         <div className="md:hidden flex gap-x-8 overflow-x-auto md:gap-x-16 [&>*]:shrink-0">
           <InfoItem

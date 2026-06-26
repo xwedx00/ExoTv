@@ -79,7 +79,7 @@ const MobileHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
           <SwiperSlide key={index}>
             <Link href={createMediaDetailsUrl(slide)}>
 
-              <div className="aspect-w-16 aspect-h-9 relative rounded-md">
+              <div className="relative aspect-video relative rounded-md">
                 {slide.bannerImage && (
                   <Image
                     src={slide.bannerImage}
@@ -133,7 +133,7 @@ const MobileHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
 
 const MobileHomeBannerSkeleton = () => (
   <Skeleton>
-    <SkeletonItem className="aspect-w-16 aspect-h-9 rounded-md" />
+    <SkeletonItem className="relative aspect-video rounded-md" />
   </Skeleton>
 );
 
