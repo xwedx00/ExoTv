@@ -24,7 +24,9 @@ const Home = () => {
   const { data: trendingAnime, isLoading: trendingLoading } = useMedia({
     type: MediaType.Anime,
     sort: [MediaSort.Trending_desc, MediaSort.Popularity_desc],
-    perPage: isMobile ? 10 : 10,
+    // 24 (not 10) so the centered, looping home banner has enough slides to
+    // fill the carousel without gaps at the wrap point.
+    perPage: isMobile ? 10 : 24,
   });
 
   

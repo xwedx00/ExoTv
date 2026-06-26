@@ -2,6 +2,23 @@
 @import "tailwindcss";
 @config "../../tailwind.config.js";
 
+/* ── ExoTv design-system tokens (frosted glass + motion) ──────────────────
+   Phase A of the redesign. Glass surfaces are dark + saturated (saturate is
+   mandatory so blur doesn't grey out anime art). See exotv-redesign-spec. */
+@theme {
+  --radius-chip: 8px;
+  --radius-card: 12px;
+  --radius-panel: 16px;
+  --radius-modal: 20px;
+  --radius-pill: 100vw;
+
+  --ease-out-quart: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-brisk: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-snap: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-accordion: cubic-bezier(0.04, 0.62, 0.23, 0.98);
+}
+
 /* preserve v3 default border color (v4 defaults to currentColor) */
 @layer base {
   *, ::after, ::before, ::backdrop, ::file-selector-button {
@@ -149,4 +166,91 @@ main {
 
 .controls-container .control-button {
   @apply w-8 h-8;
+}
+
+/* ── Frosted-glass surface primitives ─────────────────────────────────────
+   Use as `className="glass-regular"` etc. Tier = z-depth (see spec §1.1). */
+@utility glass-thin {
+  background-color: rgba(17, 25, 40, 0.42);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+@utility glass-regular {
+  background-color: rgba(17, 25, 40, 0.55);
+  backdrop-filter: blur(16px) saturate(170%);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+@utility glass-thick {
+  background-color: rgba(12, 14, 22, 0.75);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+@utility glass-pill {
+  background-color: rgba(12, 14, 22, 0.72);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.48);
+}
+@utility glass-dense {
+  background-color: rgba(17, 25, 40, 0.88);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Skeleton shimmer (replaces animate-pulse on loaders). */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Ambient backdrop behind app content so dark glass is visible (not on the
+   pure-black watch/read/themes pages, which opt out of BaseLayout). */
+.exotv-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(88, 28, 135, 0.4) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(6, 78, 59, 0.32) 0%, transparent 55%),
+    #080b14;
+}
+
+/* Capability + accessibility fallbacks. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass-thin,
+  .glass-regular,
+  .glass-thick,
+  .glass-pill,
+  .glass-dense {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(17, 25, 40, 0.92) !important;
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-thin,
+  .glass-regular,
+  .glass-thick,
+  .glass-pill,
+  .glass-dense {
+    background-color: rgba(17, 25, 40, 0.92);
+  }
 }

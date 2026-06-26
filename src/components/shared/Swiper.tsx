@@ -73,15 +73,20 @@ const Swiper: React.FC<SwiperProps> = ({
         },
       }}
       grabCursor
-      onInit={(swiper) => {
+      navigation={{
+        prevEl: prevButtonRef.current,
+        nextEl: nextButtonRef.current,
+      }}
+      onBeforeInit={(swiper) => {
+        // Bind the custom arrow buttons BEFORE the Navigation module initialises.
+        // The old code did this in onInit — too late, so navigation was wired to
+        // null refs and the arrows did nothing.
         // @ts-ignore
-        // eslint-disable-next-line no-param-reassign
         swiper.params.navigation.prevEl = prevButtonRef.current;
         // @ts-ignore
-        // eslint-disable-next-line no-param-reassign
         swiper.params.navigation.nextEl = nextButtonRef.current;
-        swiper.navigation.update();
-
+      }}
+      onInit={(swiper) => {
         if (defaultActiveSlide) {
           swiper.slideTo(defaultActiveSlide);
         }

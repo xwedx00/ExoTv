@@ -22,6 +22,7 @@ const BannerSwiper: React.FC<BannerSwiperProps> = ({ data, ...props }) => {
       centerInsufficientSlides
       centeredSlides
       loop
+      loopAdditionalSlides={7}
       slidesPerView={2}
       spaceBetween={20}
       breakpoints={{

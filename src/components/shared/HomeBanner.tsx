@@ -147,12 +147,10 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
   const isRanOnce = useRef(false);
   const { locale } = useRouter();
 
-  const activeSlide = useMemo(() => data[index], [data, index]);
+  const activeSlide = useMemo(() => data?.[index], [data, index]);
 
   const handleSlideChange: SwiperProps["onSlideChange"] = useCallback(
     (swiper) => {
-      swiper.loopCreate;
-
       setIndex(swiper.realIndex);
     },
     []
