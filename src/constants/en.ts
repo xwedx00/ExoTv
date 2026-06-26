@@ -7,7 +7,6 @@ import {
   MediaSort,
   MediaStatus,
 } from "@/types/anilist";
-import { I18n } from "netplayer";
 
 export const SEASONS = [
   { value: MediaSeason.Winter, label: "Winter" },
@@ -278,7 +277,7 @@ export const EMOJI_GROUP = {
   recently_used: "Recently used",
 };
 
-export const PLAYER_TRANSLATIONS: I18n = {
+export const PLAYER_TRANSLATIONS = {
   controls: {
     play: "Play ({{shortcut}})",
     pause: "Pause ({{shortcut}})",

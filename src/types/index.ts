@@ -73,7 +73,7 @@ export type Episode = {
   source: Source;
   slug: string;
   thumbnail?: string;
-  video: Video[];
+  video?: Video[];
   published: boolean;
   section: string;
   title?: string;
@@ -88,7 +88,8 @@ export type Chapter = {
   sourceMediaId: string;
   source: Source;
   slug: string;
-  images: {
+  title?: string;
+  images?: {
     images: Attachment[];
   }[];
   published: boolean;

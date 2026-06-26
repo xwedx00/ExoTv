@@ -1,8 +1,5 @@
 //@ts-nocheck
 import enTranslations from "@/constants/en";
-import viTranslations from "@/constants/vi";
-import ruTranslations from "@/constants/ru";
-import esTranslations from "@/constants/es";
 import { Chapter, Episode, Translation as TranslationType } from "@/types";
 import { Media } from "@/types/anilist";
 import { Translation } from "@/lib/i18n";
@@ -32,19 +29,9 @@ type TranslationKeys = [
 ];
 type Translation = Record<TranslationKeys[number], Translate[]>;
 
-export const getConstantTranslation = (locale: string) => {
-  switch (locale) {
-    case "vi":
-      return viTranslations;
-    case "en":
-      return enTranslations;
-    case "ru":
-      return ruTranslations;
-    case "es":
-      return esTranslations;
-    default:
-      return enTranslations;
-  }
+export const getConstantTranslation = (_locale?: string) => {
+  // English-only app; the non-English locale constant files were removed.
+  return enTranslations;
 };
 
 const composeTranslation = (translation: Translation) => {

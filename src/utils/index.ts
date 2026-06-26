@@ -1,5 +1,4 @@
 //@ts-nocheck
-import config from "@/config";
 import dayjs from "@/lib/dayjs";
 import { Proxy } from "@/types";
 import {
@@ -435,10 +434,6 @@ export const createProxyUrl = (
       : "";
 
   return `/api/proxy?url=${encodeURIComponent(url)}${headersParam}`;
-};
-
-export const createAttachmentUrl = (url: string) => {
-  return `${config.nodeServerUrl}/file/${url}`;
 };
 
 export const createMediaDetailsUrl = (media: Media) => {

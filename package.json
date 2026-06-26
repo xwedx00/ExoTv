@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@consumet/extensions": "^1.8.8",
@@ -24,7 +25,6 @@
     "is-hotkey": "^0.2.0",
     "libass-wasm": "^4.1.0",
     "mime": "^4.1.0",
-    "netplayer": "^1.6.6",
     "next": "^16.2.9",
     "next-sitemap": "^4.2.3",
     "nookies": "^2.5.2",
@@ -51,9 +51,6 @@
     "@tailwindcss/postcss": "^4.3.1",
     "@tailwindcss/typography": "^0.5.20",
     "@types/audioworklet": "^0.0.100",
-    "@types/formidable": "^3.5.1",
-    "@types/jsdom": "^28.0.3",
-    "@types/jsoneditor": "^9.9.6",
     "@types/mime": "^4.0.0",
     "@types/node": "^26.0.1",
     "@types/react": "^19.2.17",
