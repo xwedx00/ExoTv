@@ -88,8 +88,8 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
 
   const [
     animeId,
-    sourceId = sortedEpisodes[0].sourceId,
-    episodeId = sortedEpisodes[0].sourceEpisodeId,
+    sourceId = sortedEpisodes[0]?.sourceId,
+    episodeId = sortedEpisodes[0]?.sourceEpisodeId,
   ] = params as string[];
 
   const { data: anime, isLoading: animeLoading } = useMediaDetails({
@@ -165,7 +165,7 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
 
   // Show watched overlay
   useEffect(() => {
-    if (!currentEpisode.sourceEpisodeId) return;
+    if (!currentEpisode?.sourceEpisodeId) return;
 
     if (
       !watchedEpisode ||
@@ -183,7 +183,7 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
 
     setShowWatchedOverlay(true);
   }, [
-    currentEpisode.sourceEpisodeId,
+    currentEpisode?.sourceEpisodeId,
     declinedRewatch,
     isSavedDataError,
     isSavedDataLoading,
@@ -194,6 +194,7 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
     const videoEl = videoRef.current;
 
     if (!videoEl) return;
+    if (!currentEpisode) return;
 
     const handleSaveTime = () => {
       if (saveWatchedInterval.current) {
@@ -257,7 +258,7 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
   // Refetch watched data when episode changes
   useEffect(() => {
     refetchWatchedData();
-  }, [currentEpisode.slug, refetchWatchedData]);
+  }, [currentEpisode?.slug, refetchWatchedData]);
 
   const title = useMemo(
     () => getTitle(anime, router.locale),
@@ -286,9 +287,10 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
   // Player is rendered directly in the page below (no persistent-player indirection).
 
   useEffect(() => {
-    if (!anime) return;
+    if (!anime || !currentEpisode) return;
 
     const syncDataScript = document.querySelector("#syncData");
+    if (!syncDataScript) return;
 
     syncDataScript.textContent = JSON.stringify({
       title: anime.title.userPreferred,
@@ -299,7 +301,7 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
         ? `/anime/watch/${animeId}/${nextEpisode.sourceId}/${nextEpisode.sourceEpisodeId}`
         : null,
     });
-  }, [anime, animeId, currentEpisode.name, nextEpisode]);
+  }, [anime, animeId, currentEpisode?.name, nextEpisode]);
 
   if (animeLoading) {
     return (
@@ -309,11 +311,28 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
     );
   }
 
+  if (!episodes?.length || !currentEpisode) {
+    return (
+      <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4 px-4 text-center">
+        <Head title={`${title} - ExoTv`} />
+        <h1 className="text-2xl font-semibold">No streamable source found</h1>
+        <p className="max-w-md text-gray-400">
+          We couldn&apos;t find any episodes for &ldquo;{title}&rdquo; from the
+          available providers. Some titles (e.g. adult works) aren&apos;t carried by
+          the current anime sources.
+        </p>
+        <Button primary onClick={() => router.back()}>
+          Go back
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <React.Fragment>
       <Head
         title={`${title} (${currentEpisode.name}) - ExoTv`}
-        description={`Xem phim ${title} (${currentEpisode.name}) tại ExoTv. Hoàn toàn miễn phí, không quảng cáo`}
+        description={`Watch ${title} (${currentEpisode.name}) on ExoTv — free, no ads.`}
         image={anime.bannerImage}
       />
 

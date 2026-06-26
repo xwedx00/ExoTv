@@ -138,7 +138,7 @@ const ReadPage: NextPage<ReadPageProps> = ({ chapters }) => {
 
     setShowReadOverlay(true);
   }, [
-    currentChapter.sourceChapterId,
+    currentChapter?.sourceChapterId,
     declinedReread,
     isSavedDataError,
     isSavedDataLoading,
@@ -146,6 +146,8 @@ const ReadPage: NextPage<ReadPageProps> = ({ chapters }) => {
   ]);
 
   useEffect(() => {
+    if (!currentChapter) return;
+
     if (saveReadTimeout.current) {
       clearTimeout(saveReadTimeout.current);
     }
@@ -169,6 +171,23 @@ const ReadPage: NextPage<ReadPageProps> = ({ chapters }) => {
     return (
       <div className="relative w-full min-h-screen">
         <Loading />
+      </div>
+    );
+  }
+
+  if (!chapters?.length || !currentChapter) {
+    return (
+      <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4 px-4 text-center">
+        <Head title={`${title} - ExoTv`} />
+        <h1 className="text-2xl font-semibold">No readable source found</h1>
+        <p className="max-w-md text-gray-400">
+          We couldn&apos;t find chapters for &ldquo;{title}&rdquo; from the current
+          source. Some titles (e.g. adult / doujin works) aren&apos;t available on
+          MangaDex.
+        </p>
+        <Button primary onClick={() => router.back()}>
+          Go back
+        </Button>
       </div>
     );
   }
