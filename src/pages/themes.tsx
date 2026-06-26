@@ -71,7 +71,7 @@ const ThemesPage = ({ slug, type }: ThemesPageProps) => {
     <React.Fragment>
       <Head
         title={
-          !data ? `Themes - Exoexs` : `${data.name} (${data.type}) - Exoexs`
+          !data ? `Themes - ExoTv` : `${data.name} (${data.type}) - ExoTv`
         }
         description="Random Themes and OPs from Animes."
       />

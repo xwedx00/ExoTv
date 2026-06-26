@@ -2,7 +2,7 @@
 import { getMediaDetails } from "@/services/anilist";
 import { Media, MediaArgs } from "@/types/anilist";
 import { AxiosError } from "axios";
-import { useQuery, UseQueryOptions } from "react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 const useMediaDetails = (
   args: MediaArgs,
@@ -11,11 +11,11 @@ const useMediaDetails = (
     "queryKey" | "queryFn"
   >
 ) => {
-  return useQuery<Media>(
-    ["media-details", { args }],
-    () => getMediaDetails(args),
-    options
-  );
+  return useQuery({
+    queryKey: ["media-details", { args }],
+    queryFn: () => getMediaDetails(args),
+    ...options
+  });
 };
 
 export default useMediaDetails;

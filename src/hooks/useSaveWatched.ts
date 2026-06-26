@@ -1,9 +1,6 @@
 //@ts-nocheck
-import { useUser } from "@/contexts/AuthContext";
-import supabaseClient from "@/lib/supabase";
-import { SourceStatus, Watched } from "@/types";
-import { MediaType } from "@/types/anilist";
-import { useMutation, useQueryClient } from "react-query";
+import { watchedStore, watchStatusStore } from "@/lib/storage";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface MutationInput {
   media_id: number;
@@ -13,42 +10,25 @@ interface MutationInput {
 }
 
 const useSaveWatched = () => {
-  const user = useUser();
   const queryClient = useQueryClient();
 
-  return useMutation(async (data: MutationInput) => {
-    if (!user) return;
+  return useMutation({
+    mutationFn: async (data: MutationInput) => {
+      const { episode_id, media_id, watched_time, episode_number } = data;
 
-    const { episode_id, media_id, watched_time, episode_number } = data;
-
-    const sourceStatus = queryClient.getQueryData<
-      SourceStatus<MediaType.Anime>
-    >(["kaguya_watch_status", media_id]);
-
-    if (sourceStatus?.status !== "COMPLETED") {
-      await supabaseClient.from("kaguya_watch_status").upsert({
-        userId: user.id,
+      watchedStore.set({
         mediaId: media_id,
-        status: "WATCHING",
+        episodeId: episode_id,
+        watchedTime: watched_time,
+        episodeNumber: episode_number,
       });
+
+      if (watchStatusStore.get(media_id) !== "COMPLETED") {
+        watchStatusStore.set(media_id, "WATCHING");
+      }
+
+      return true;
     }
-
-    const { error: upsertError } = await supabaseClient
-      .from<Watched>("kaguya_watched")
-      .upsert(
-        {
-          mediaId: media_id,
-          episodeId: episode_id,
-          userId: user.id,
-          watchedTime: watched_time,
-          episodeNumber: episode_number,
-        },
-        { returning: "minimal" }
-      );
-
-    if (upsertError) throw upsertError;
-
-    return true;
   });
 };
 

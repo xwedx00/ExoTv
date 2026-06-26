@@ -7,7 +7,7 @@ import VABrowseList from "@/components/features/va/VABrowseList";
 import Head from "@/components/shared/Head";
 import Select from "@/components/shared/Select";
 import useConstantTranslation from "@/hooks/useConstantTranslation";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
 import Section from "@/components/shared/Section";
@@ -108,8 +108,8 @@ const BrowsePage = ({ query: baseQuery }) => {
   return (
     <Section className="py-20">
       <Head
-        title={`Search ${chosenType.label} - Exoexs`}
-        description={`Search ${chosenType.label} in Exoexs`}
+        title={`Search ${chosenType.label} - ExoTv`}
+        description={`Search ${chosenType.label} in ExoTv`}
       />
 
       <div className="mb-8 flex items-center space-x-2">

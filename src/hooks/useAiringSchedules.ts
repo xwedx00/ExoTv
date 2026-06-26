@@ -2,7 +2,7 @@
 import { getAiringSchedules } from "@/services/anilist";
 import { AiringSchedule, AiringScheduleArgs, PageArgs } from "@/types/anilist";
 import { AxiosError } from "axios";
-import { useQuery, UseQueryOptions } from "react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 const useAiringSchedules = (
   args?: AiringScheduleArgs & PageArgs,
@@ -11,13 +11,15 @@ const useAiringSchedules = (
     "queryKey" | "queryFn"
   >
 ) => {
-  return useQuery<AiringSchedule[]>(
-    ["airingSchedules", { args }],
-    () => {
+  return useQuery({
+    queryKey: ["airingSchedules", { args }],
+
+    queryFn: () => {
       return getAiringSchedules(args);
     },
-    options
-  );
+
+    ...options
+  });
 };
 
 export default useAiringSchedules;

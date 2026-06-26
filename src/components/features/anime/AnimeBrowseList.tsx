@@ -13,7 +13,7 @@ import useBrowse, { UseBrowseOptions } from "@/hooks/useBrowseAnime";
 import useConstantTranslation from "@/hooks/useConstantTranslation";
 import { MediaSort, MediaType } from "@/types/anilist";
 import { debounce } from "@/utils";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { MobileView } from "react-device-detect";

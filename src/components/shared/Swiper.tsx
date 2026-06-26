@@ -4,11 +4,12 @@ import {
   Swiper as ReactSwiper,
   SwiperSlide as ReactSwiperSlide,
 } from "swiper/react";
-import SwiperCore, { Navigation } from "swiper";
-import type SwiperClass from "swiper/types/swiper-class";
+import { Navigation } from "swiper/modules";
+import type { Swiper as SwiperClass } from "swiper";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-import "swiper/swiper.min.css";
+import "swiper/css";
+import "swiper/css/navigation";
 
 import CircleButton from "@/components/shared/CircleButton";
 import classNames from "classnames";
@@ -19,8 +20,6 @@ export interface SwiperProps extends React.ComponentProps<typeof ReactSwiper> {
   isOverflowHidden?: boolean;
   defaultActiveSlide?: number;
 }
-
-SwiperCore.use([Navigation]);
 
 const Swiper: React.FC<SwiperProps> = ({
   children,
@@ -36,6 +35,7 @@ const Swiper: React.FC<SwiperProps> = ({
 
   return (
     <ReactSwiper
+      modules={[Navigation]}
       className={classNames(
         isOverflowHidden ? "!overflow-hidden" : "!overflow-visible",
         className

@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { getPageCharacters } from "@/services/anilist";
 import { CharacterSort } from "@/types/anilist";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 const useCharacterSearch = (keyword: string) => {
   return useInfiniteQuery(

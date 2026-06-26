@@ -1,35 +1,20 @@
 //@ts-nocheck
-import { useUser } from "@/contexts/AuthContext";
-import supabaseClient from "@/lib/supabase";
+import { favoritesStore } from "@/lib/storage";
 
 import { Media, MediaType } from "@/types/anilist";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const useIsSubscribed = <T extends MediaType>(type: T, source: Media) => {
-  const user = useUser();
-  const tableName =
-    type === MediaType.Anime
-      ? "kayuga_anime_subscribers"
-      : "kayuga_manga_subscribers";
-  const queryKey = ["is_subscribed", user.id, source.id];
+  const favoriteType = type === MediaType.Anime ? "anime" : "manga";
+  const queryKey = ["is_subscribed", favoriteType, source.id];
 
-  return useQuery(
-    queryKey,
-    async () => {
-      const { data, error } = await supabaseClient
-        .from(tableName)
-        .select("userId")
-        .eq("userId", user.id)
-        .eq("mediaId", source.id)
-        .limit(1)
-        .single();
+  return useQuery({
+    queryKey: queryKey,
 
-      if (error) return false;
-
-      return !!data;
-    },
-    { enabled: !!user }
-  );
+    queryFn: async () => {
+      return favoritesStore.has(favoriteType, source.id);
+    }
+  });
 };
 
 export default useIsSubscribed;

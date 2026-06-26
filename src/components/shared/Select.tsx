@@ -29,7 +29,7 @@ const MultiValue = ({ index, getValue, ...props }) => {
 
   return index < maxToShow ? (
     // @ts-ignore
-    <components.MultiValue {...props} />
+    (<components.MultiValue {...props} />)
   ) : index === maxToShow ? (
     <MoreSelectedBadge items={overflow} />
   ) : null;

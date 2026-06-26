@@ -2,7 +2,6 @@
 import Button from "@/components/shared/Button";
 import Card from "@/components/shared/Card";
 import CharacterConnectionCard from "@/components/shared/CharacterConnectionCard";
-import CircleButton from "@/components/shared/CircleButton";
 import DetailsBanner from "@/components/shared/DetailsBanner";
 import DetailsSection from "@/components/shared/DetailsSection";
 import DotList from "@/components/shared/DotList";
@@ -10,12 +9,9 @@ import Head from "@/components/shared/Head";
 import InfoItem from "@/components/shared/InfoItem";
 import List from "@/components/shared/List";
 import MediaDescription from "@/components/shared/MediaDescription";
-import NotificationButton from "@/components/shared/NotificationButton";
 import PlainCard from "@/components/shared/PlainCard";
 import Section from "@/components/shared/Section";
-import SourceStatus from "@/components/shared/SourceStatus";
 import { REVALIDATE_TIME } from "@/constants";
-import { useUser } from "@/contexts/AuthContext";
 import withRedirect from "@/hocs/withRedirect";
 import dayjs from "@/lib/dayjs";
 import { getMediaDetails } from "@/services/anilist";
@@ -30,7 +26,6 @@ import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
-import { isMobile } from "react-device-detect";
 import { BsFillPlayFill } from "react-icons/bs";
 
 interface DetailsPageProps {
@@ -38,7 +33,6 @@ interface DetailsPageProps {
 }
 
 const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
-  const user = useUser();
   const { locale } = useRouter();
   
 
@@ -79,7 +73,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
 
   return <>
     <Head
-      title={`${title} - Exoexs`}
+      title={`${title} - ExoTv`}
       description={description}
       image={anime.bannerImage}
     />
@@ -91,13 +85,6 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
         <div className="flex flex-row md:space-x-8">
           <div className="shrink-0 relative md:static md:left-0 md:-translate-x-0 w-[120px] md:w-[186px] -mt-20 space-y-6">
             <PlainCard src={anime.coverImage.extraLarge} alt={title} />
-
-            {user && !isMobile && (
-              <div className="hidden md:flex items-center space-x-1">
-                <SourceStatus type={MediaType.Anime} source={anime} />
-                <NotificationButton type={MediaType.Anime} source={anime} />
-              </div>
-            )}
           </div>
 
           <div className="flex flex-col justify-between md:py-4 ml-4 text-left items-start md:-mt-16 space-y-4">
@@ -174,27 +161,19 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
         />
 
         <div className="flex md:hidden items-center space-x-2 mb-4">
-          {user && isMobile && (
-            <SourceStatus type={MediaType.Anime} source={anime} />
-          )}
-
           <Link
             href={`/anime/watch/${anime.id}`}
-            className={classNames(!user && "flex-1")}>
+            className="flex-1">
 
-            {user ? (
-              <CircleButton secondary LeftIcon={BsFillPlayFill} />
-            ) : (
-              <Button
-                primary
-                LeftIcon={BsFillPlayFill}
-                className="relative w-full"
-              >
-                <p className="!mx-0 absolute left-1/2 -translate-x-1/2">
-                  Watch Now
-                </p>
-              </Button>
-            )}
+            <Button
+              primary
+              LeftIcon={BsFillPlayFill}
+              className="relative w-full"
+            >
+              <p className="!mx-0 absolute left-1/2 -translate-x-1/2">
+                Watch Now
+              </p>
+            </Button>
 
           </Link>
         </div>

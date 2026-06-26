@@ -5,7 +5,7 @@ import ruTranslations from "@/constants/ru";
 import esTranslations from "@/constants/es";
 import { Chapter, Episode, Translation as TranslationType } from "@/types";
 import { Media } from "@/types/anilist";
-import { Translation } from "next-i18next";
+import { Translation } from "@/lib/i18n";
 import { parseNumbersFromString } from ".";
 
 type Translate = { readonly value: string; readonly label: string } & Record<

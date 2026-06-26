@@ -1,12 +1,13 @@
 //@ts-nocheck
 import { getStaff } from "@/services/anilist";
 import { StaffSort } from "@/types/anilist";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const useFavouriteVA = () => {
-  return useQuery(
-    ["voice-actors favourites"],
-    async () => {
+  return useQuery({
+    queryKey: ["voice-actors favourites"],
+
+    queryFn: async () => {
       const data = await getStaff({
         perPage: 30,
         sort: [StaffSort.Favourites_desc],
@@ -14,10 +15,9 @@ const useFavouriteVA = () => {
 
       return data;
     },
-    {
-      retry: 0,
-    }
-  );
+
+    retry: 0
+  });
 };
 
 export default useFavouriteVA;

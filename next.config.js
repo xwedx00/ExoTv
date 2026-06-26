@@ -1,34 +1,18 @@
-const { i18n } = require("./next-i18next.config");
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
-    domains: [
-      "s4.anilist.co",
-      "res.cloudinary.com",
-      "lh3.googleusercontent.com",
-      "platform-lookaside.fbsbx.com",
-      "i.ibb.co",
-      "thumb.tapecontent.net",
-      "emojis.slackmojis.com",
-      "pic-bstarstatic.akamaized.net",
+    remotePatterns: [
+      { protocol: "https", hostname: "s4.anilist.co" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      { protocol: "https", hostname: "platform-lookaside.fbsbx.com" },
+      { protocol: "https", hostname: "i.ibb.co" },
+      { protocol: "https", hostname: "thumb.tapecontent.net" },
+      { protocol: "https", hostname: "emojis.slackmojis.com" },
+      { protocol: "https", hostname: "pic-bstarstatic.akamaized.net" },
     ],
-    minimumCacheTTL: 604800, // a week,
-  },
-  i18n,
-  webpack: (config) => {
-    config.resolve.fallback = { fs: false };
-    return config;
-  },
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-    ];
+    minimumCacheTTL: 604800,
   },
 };
+
+module.exports = nextConfig;

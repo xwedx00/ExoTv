@@ -78,12 +78,12 @@ const Table = <T extends object = {}>({
             // Loop over the header rows
             headerGroups.map((headerGroup, index) => (
               // Apply the header row props
-              <tr key={index} {...headerGroup.getHeaderGroupProps()}>
+              (<tr key={index} {...headerGroup.getHeaderGroupProps()}>
                 {
                   // Loop over the headers in each row
                   headerGroup.headers.map((column, columnIndex) => (
                     // Apply the header cell props
-                    <th
+                    (<th
                       className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
                       key={columnIndex}
                     >
@@ -95,10 +95,10 @@ const Table = <T extends object = {}>({
                           }
                         </p>
                       </div>
-                    </th>
+                    </th>)
                   ))
                 }
-              </tr>
+              </tr>)
             ))
           }
         </thead>
@@ -135,7 +135,6 @@ const Table = <T extends object = {}>({
           }
         </tbody>
       </table>
-
       <div className="ml-auto flex items-center gap-x-8 gap-y-2">
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">

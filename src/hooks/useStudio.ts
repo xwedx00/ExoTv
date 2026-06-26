@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { getPageStudios, getStudioDetails } from "@/services/anilist";
 import { Studio } from "@/types/anilist";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 export const useStudio = (studioId: number, initialData: Studio) => {
   return useInfiniteQuery<Studio>(

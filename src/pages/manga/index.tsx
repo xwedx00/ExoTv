@@ -6,7 +6,6 @@ import ClientOnly from "@/components/shared/ClientOnly";
 import GenreSwiper from "@/components/shared/GenreSwiper";
 import Head from "@/components/shared/Head";
 import HomeBanner from "@/components/shared/HomeBanner";
-import NewestComments from "@/components/shared/NewestComments";
 import Section from "@/components/shared/Section";
 import ShouldWatch from "@/components/shared/ShouldWatch";
 import ListSwiperSkeleton from "@/components/skeletons/ListSwiperSkeleton";
@@ -68,8 +67,8 @@ const Home = () => {
   return (
     <React.Fragment>
       <Head
-        title="(Manga) - Exoexs"
-        description="Read the latest and best managas only on Exoexs"
+        title="(Manga) - ExoTv"
+        description="Read the latest and best managas only on ExoTv"
       />
 
       <ClientOnly>
@@ -97,8 +96,6 @@ const Home = () => {
                 <CardSwiper data={popularManga} />
               </Section>
             )}
-
-            <NewestComments type={MediaType.Manga} />
 
             {favouriteMangaLoading ? (
               <ListSwiperSkeleton />

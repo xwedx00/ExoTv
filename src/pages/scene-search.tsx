@@ -10,7 +10,7 @@ import React, { useCallback, useState } from "react";
 import { CgArrowLongRight } from "react-icons/cg";
 import { MdOutlineRestartAlt } from "react-icons/md";
 import { ImageType } from "react-images-uploading";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import Section from "@/components/shared/Section";
 
 const TracePage = () => {
@@ -39,7 +39,7 @@ const TracePage = () => {
   return (
     <React.Fragment>
       <Head
-        title={`${t("Scene Search")} - Exoexs`}
+        title={`${t("Scene Search")} - ExoTv`}
         description="Anime Scene Search by Image :: It tells you which anime, which episode, and the exact moment this scene appears Using search engine made by trace.moe. Note: Search results are not 100% accurate. Only works with anime scenes."
       />
 

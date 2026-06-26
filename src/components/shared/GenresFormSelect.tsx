@@ -5,7 +5,7 @@ import TAGS from "@/tags.json";
 import { Props } from "react-select";
 import classNames from "classnames";
 import useConstantTranslation from "@/hooks/useConstantTranslation";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 
 const styles = {
   groupHeading: (provided) => {

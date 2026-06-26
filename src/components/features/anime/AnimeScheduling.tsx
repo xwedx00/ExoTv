@@ -9,7 +9,7 @@ import dayjs from "@/lib/dayjs";
 import { AiringSchedule, AiringSort } from "@/types/anilist";
 import { removeArrayOfObjectDup } from "@/utils";
 import classNames from "classnames";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import React, { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";

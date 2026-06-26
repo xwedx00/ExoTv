@@ -7,7 +7,7 @@ function ErrorPage() {
 
   return (
     <div className="relative w-full min-h-screen flex items-center">
-      <Head title="An error has occurred (404) - Exoexs" />
+      <Head title="An error has occurred (404) - ExoTv" />
 
       <div className="fixed z-0 w-full h-full flex items-center justify-center">
         <h1 className="font-bold text-[30vw] text-gray-500">404</h1>

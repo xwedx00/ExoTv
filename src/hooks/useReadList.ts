@@ -1,10 +1,9 @@
 //@ts-nocheck
-import supabaseClient from "@/lib/supabase";
+import { readStatusStore, readStore } from "@/lib/storage";
 import { getMedia } from "@/services/anilist";
-import { AdditionalUser, Read, SourceStatus } from "@/types";
 import { Media, MediaType } from "@/types/anilist";
 import { getPagination, parseNumberFromString } from "@/utils";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 export const STATUS = {
   All: "ALL",
@@ -22,68 +21,40 @@ interface MediaWithReadTime extends Media {
 
 const LIST_LIMIT = 30;
 
-const useReadList = (sourceType: Status, user: AdditionalUser) => {
+const useReadList = (sourceType: Status) => {
   return useInfiniteQuery(
-    ["read-list", user.id, sourceType],
+    ["read-list", sourceType],
     async ({ pageParam = 1 }) => {
       const { from, to } = getPagination(pageParam, LIST_LIMIT);
 
-      const sourceStatusQuery = supabaseClient
-        .from<SourceStatus<MediaType.Manga>>("kaguya_read_status")
-        .select("mediaId, userId, status, created_at")
-        .eq("userId", user.id)
-        .order("mediaId", { ascending: false })
-        .range(from, to);
+      // All media ids matching the requested read status, newest mediaId first
+      // (mirrors the previous `order("mediaId", { ascending: false })`).
+      const allIds = readStatusStore
+        .byStatus(sourceType)
+        .sort((a, b) => b - a);
 
-      if (sourceType !== STATUS.All) {
-        sourceStatusQuery.eq("status", sourceType);
-      }
-
-      const { data: sourceStatus, error } = await sourceStatusQuery;
-
-      if (error) throw error;
-
-      const ids = sourceStatus
-        .filter((s) => {
-          if (sourceType === STATUS.All) return true;
-
-          return s.status === sourceType;
-        })
-        .map((s) => s.mediaId);
+      const ids = allIds.slice(from, to + 1);
 
       const media = await getMedia({
         type: MediaType.Manga,
         id_in: ids,
       });
 
-      const { data: read } = await supabaseClient
-        .from<Read>("kaguya_read")
-        .select("mediaId, chapter:kaguya_chapters!chapterId(name)")
-        .eq("userId", user.id)
-        .in("mediaId", ids)
-        .order("updated_at", { ascending: false });
+      // Local read history for the current page, newest first.
+      const read = ids
+        .map((id) => readStore.get(id))
+        .filter(Boolean)
+        .sort((a, b) => b.updatedAt - a.updatedAt);
 
-      const hasNextPage =
-        sourceStatus?.length && sourceStatus?.length === LIST_LIMIT;
+      const hasNextPage = ids.length === LIST_LIMIT;
 
       const list: MediaWithReadTime[] = media
         .sort((mediaA, mediaB) => {
           const readDataA = read.find((w) => w.mediaId === mediaA.id);
           const readDataB = read.find((w) => w.mediaId === mediaB.id);
-          const sourceStatusA = sourceStatus.find(
-            (s) => s.mediaId === mediaA.id
-          );
-          const sourceStatusB = sourceStatus.find(
-            (s) => s.mediaId === mediaB.id
-          );
 
-          const readUpdatedA =
-            readDataA?.updated_at || sourceStatusA?.created_at;
-          const readUpdatedB =
-            readDataB?.updated_at || sourceStatusB?.created_at;
-
-          const readUpdatedATime = new Date(readUpdatedA).getTime();
-          const readUpdatedBTime = new Date(readUpdatedB).getTime();
+          const readUpdatedATime = readDataA?.updatedAt || 0;
+          const readUpdatedBTime = readDataB?.updatedAt || 0;
 
           return readUpdatedBTime - readUpdatedATime;
         })
@@ -92,7 +63,7 @@ const useReadList = (sourceType: Status, user: AdditionalUser) => {
 
           return {
             ...m,
-            readChapter: parseNumberFromString(readData?.chapter?.name || "0"),
+            readChapter: parseNumberFromString(readData?.chapterName || "0"),
           };
         });
 

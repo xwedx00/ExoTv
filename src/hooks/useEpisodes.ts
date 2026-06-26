@@ -1,35 +1,22 @@
 //@ts-nocheck
-import { AnimeSourceConnection } from "@/types";
+import { Episode } from "@/types";
 import { sortMediaUnit } from "@/utils/data";
-import supabaseClient from "@/lib/supabase";
-import { useQuery } from "react-query";
-
-const query = `
-  *,
-  episodes:kaguya_episodes(
-      *,
-      source:kaguya_sources(
-          *
-      )
-  )
-`;
+import { useQuery } from "@tanstack/react-query";
 
 const useEpisodes = (mediaId: number) => {
-  return useQuery(["episodes", mediaId], async () => {
-    const { data, error } = await supabaseClient
-      .from<AnimeSourceConnection>("kaguya_anime_source")
-      .select(query)
-      .eq("mediaId", mediaId);
+  return useQuery({
+    queryKey: ["episodes", mediaId],
 
-    if (error) throw error;
+    queryFn: async () => {
+      // TODO(Phase 4/5): wire to in-app API route / socket server
+      const episodes: Episode[] = [];
 
-    const episodes = data?.flatMap((connection) => connection.episodes);
+      const sortedEpisodes = sortMediaUnit(
+        episodes.filter((episode) => episode.published)
+      );
 
-    const sortedEpisodes = sortMediaUnit(
-      episodes.filter((episode) => episode.published)
-    );
-
-    return sortedEpisodes;
+      return sortedEpisodes;
+    }
   });
 };
 

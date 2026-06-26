@@ -5,7 +5,7 @@ import ListSwiperSkeleton from "@/components/skeletons/ListSwiperSkeleton";
 import useAnimeRecommendedList from "@/hooks/useAnimeRecommendedList";
 import { Watched } from "@/types";
 import { getTitle } from "@/utils/data";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import { useRouter } from "next/router";
 import React from "react";
 

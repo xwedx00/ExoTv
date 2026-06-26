@@ -1,10 +1,7 @@
 //@ts-nocheck
-import config from "@/config";
 import { Episode, Font, Subtitle, VideoSource } from "@/types";
 import { createProxyUrl } from "@/utils";
-import axios, { AxiosError } from "axios";
-import { useQuery, useQueryClient } from "react-query";
-import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
 
 interface ReturnSuccessType {
   success: true;
@@ -33,40 +30,21 @@ export const useFetchSource = (
   currentEpisode: Episode,
   nextEpisode?: Episode
 ) => {
-  const queryClient = useQueryClient();
-
-  const fetchSource = (episode: Episode) =>
-    axios
-      .get<ReturnSuccessType>(`${config.nodeServerUrl}/source`, {
-        params: {
-          episode_id: episode.sourceEpisodeId,
-          source_media_id: episode.sourceMediaId,
-          source_id: episode.sourceId,
-        },
-      })
-      .then(({ data }) => {
-        data.sources = convertSources(data.sources);
-
-        return data;
-      });
+  // TODO(Phase 4/5): wire to in-app API route / socket server
+  const fetchSource = async (
+    _episode: Episode
+  ): Promise<ReturnSuccessType> => ({
+    success: true,
+    sources: convertSources([] as VideoSource[]),
+    subtitles: [] as Subtitle[],
+    fonts: [] as Font[],
+  });
 
   const getQueryKey = (episode: Episode) =>
     `source-${episode.sourceId}-${episode.sourceEpisodeId}`;
 
-  return useQuery<ReturnSuccessType, AxiosError<ReturnFailType>>(
-    getQueryKey(currentEpisode),
-    () => fetchSource(currentEpisode),
-    {
-      onSuccess: () => {
-        if (!nextEpisode?.sourceEpisodeId) return;
-
-        queryClient.prefetchQuery(getQueryKey(nextEpisode), () =>
-          fetchSource(nextEpisode)
-        );
-      },
-      onError: (error) => {
-        toast.error(error.message);
-      },
-    }
-  );
+  return useQuery({
+    queryKey: [getQueryKey(currentEpisode)],
+    queryFn: () => fetchSource(currentEpisode),
+  });
 };

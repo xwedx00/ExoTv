@@ -4,7 +4,7 @@ import React from "react";
 import WatchedSwiperSkeleton from "@/components/skeletons/WatchedSwiperSkeleton";
 import Section from "@/components/shared/Section";
 import WatchedSwiper from "@/components/features/anime/WatchedSwiper";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 
 const WatchedSection = () => {
   const { data, isLoading, isError } = useWatched();

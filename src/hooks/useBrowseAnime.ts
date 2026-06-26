@@ -1,6 +1,5 @@
 //@ts-nocheck
 import { getPageMedia } from "@/services/anilist";
-import { Translation } from "@/types";
 import {
   MediaFormat,
   MediaSeason,
@@ -8,9 +7,7 @@ import {
   MediaStatus,
   MediaType,
 } from "@/types/anilist";
-import { removeDup } from "@/utils";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 export interface UseBrowseOptions {
   keyword?: string;
@@ -45,25 +42,6 @@ const useBrowse = (options: UseBrowseOptions) => {
   return useInfiniteQuery(
     ["browse", options],
     async ({ pageParam = 1 }) => {
-      let translationMediaIds: number[] = [];
-
-      // Search media from translations
-      if (keyword) {
-        const { data: mediaTranslations } = await supabaseClient
-          .from<Translation>("kaguya_translations")
-          .select("mediaId")
-          .eq("mediaType", MediaType.Anime)
-          .textSearch("title", keyword, {
-            type: "plain",
-          });
-
-        if (mediaTranslations?.length) {
-          translationMediaIds = removeDup(
-            mediaTranslations.map((translation) => translation.mediaId)
-          );
-        }
-      }
-
       // Search anime from Anilist using provided options
       const searchData = await getPageMedia({
         format,
@@ -82,22 +60,6 @@ const useBrowse = (options: UseBrowseOptions) => {
         isAdult:
           isAdult || genres.includes("Hentai") || genres.includes("Ecchi"),
       });
-
-      // If translations are found, search the anime using id_in. Then append to anilist search results.
-      if (translationMediaIds?.length) {
-        const searchDataWithTranslations = await getPageMedia({
-          id_in: translationMediaIds,
-          type: MediaType.Anime,
-        });
-
-        const existingMediaIds = searchData?.media?.map((media) => media.id);
-
-        searchDataWithTranslations?.media.forEach((media) => {
-          if (!existingMediaIds?.includes(media.id)) {
-            searchData?.media?.push(media);
-          }
-        });
-      }
 
       return searchData;
     },

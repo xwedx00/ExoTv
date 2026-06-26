@@ -1,16 +1,15 @@
 //@ts-nocheck
 import useDevice from "@/hooks/useDevice";
-import { Editor } from "@tiptap/react";
 import classNames from "classnames";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import React, { useCallback, useEffect, useRef } from "react";
-import Description, { DescriptionProps } from "./Description";
+import Description from "./Description";
 
-interface MediaDescriptionProps extends DescriptionProps {
+interface MediaDescriptionProps extends React.HTMLAttributes<HTMLDivElement> {
+  description: string;
+  className?: string;
   containerClassName?: string;
 }
-
-const noop = () => {};
 
 const MediaDescription: React.FC<MediaDescriptionProps> = ({
   description,
@@ -21,22 +20,18 @@ const MediaDescription: React.FC<MediaDescriptionProps> = ({
   const [isDescriptionExpanded, setIsDescriptionExpanded] =
     React.useState(false);
   const { t } = useTranslation("common");
-  const ref = useRef<Editor>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const { isMobile } = useDevice();
 
   useEffect(() => {
     if (!ref.current) return;
 
-    const element = ref.current?.options?.element;
-
-    if (!element) return;
-
-    const isClamped = element.scrollHeight > element.clientHeight;
+    const isClamped = ref.current.scrollHeight > ref.current.clientHeight;
 
     if (!isClamped) {
       setIsDescriptionExpanded(true);
     }
-  }, []);
+  }, [description]);
 
   const handleClick = useCallback(() => {
     setIsDescriptionExpanded(true);
@@ -47,13 +42,11 @@ const MediaDescription: React.FC<MediaDescriptionProps> = ({
       <Description
         ref={ref}
         description={description || t("updating") + "..."}
+        onClick={isMobile ? handleClick : undefined}
         className={classNames(
           isDescriptionExpanded ? "line-clamp-none" : "line-clamp-6",
           className
         )}
-        containerProps={{
-          onClick: isMobile ? handleClick : noop,
-        }}
         {...props}
       />
 

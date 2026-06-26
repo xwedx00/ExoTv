@@ -9,7 +9,7 @@ import { UseBrowseOptions } from "@/hooks/useBrowseAnime";
 import useCharacterSearch from "@/hooks/useCharacterSearch";
 import useFavouriteCharacters from "@/hooks/useFavouriteCharacters";
 import { debounce } from "@/utils";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import React, { useMemo, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 

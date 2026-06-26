@@ -1,6 +1,13 @@
 @import './local-fonts.css';
-@import "tailwindcss/base";
-@import "tailwindcss/components";
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+/* preserve v3 default border color (v4 defaults to currentColor) */
+@layer base {
+  *, ::after, ::before, ::backdrop, ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 body {
   font-family: "Manrope", Arial, sans-serif;

@@ -66,7 +66,7 @@ const Home = () => {
   return (
     <React.Fragment>
       <Head
-        title="(Anime) - Exoexs"
+        title="(Anime) - ExoTv"
         description="A website Where you'll be able to watch the latest and best Anime without ads"
       />
 

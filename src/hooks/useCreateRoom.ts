@@ -1,10 +1,7 @@
 //@ts-nocheck
-import { useUser } from "@/contexts/AuthContext";
-import supabaseClient from "@/lib/supabase";
 import { Room } from "@/types";
-import { PostgrestError } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 interface CreateRoomBody {
@@ -15,35 +12,24 @@ interface CreateRoomBody {
 }
 
 const useCreateRoom = () => {
-  const user = useUser();
   const router = useRouter();
 
-  return useMutation<Room, PostgrestError, CreateRoomBody, any>(
-    async (body) => {
-      const { data, error } = await supabaseClient
-        .from<Room>("kaguya_rooms")
-        .insert({
-          hostUserId: user.id,
-          mediaId: body.mediaId,
-          episodeId: body.episodeId,
-          visibility: body.visibility,
-          title: body.title || null,
-        })
-        .single();
-
-      if (error) throw error;
-
-      return data;
+  return useMutation({
+    mutationFn: async (body: CreateRoomBody): Promise<Room | null> => {
+      // TODO(Phase 4/5): wire to in-app API route / socket server
+      return null;
     },
-    {
-      onSuccess: (room) => {
-        router.replace(`/wwf/${room.id}`);
-      },
-      onError: (error) => {
-        toast.error(error);
-      },
-    }
-  );
+
+    onSuccess: (room) => {
+      if (!room) return;
+
+      router.replace(`/wwf/${room.id}`);
+    },
+
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
 };
 
 export default useCreateRoom;

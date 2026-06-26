@@ -4,7 +4,7 @@ import useRead from "@/hooks/useRead";
 import React from "react";
 import CardSwiper from "@/components/shared/CardSwiper";
 import Section from "@/components/shared/Section";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 
 const ReadSection = () => {
   const { data, isLoading, isError } = useRead();

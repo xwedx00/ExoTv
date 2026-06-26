@@ -12,7 +12,7 @@ import useBrowse, { UseBrowseOptions } from "@/hooks/useBrowseManga";
 import useConstantTranslation from "@/hooks/useConstantTranslation";
 import { MediaSort, MediaType } from "@/types/anilist";
 import { debounce } from "@/utils";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";

@@ -13,7 +13,7 @@ interface HeadProps {
 
 const Head: React.FC<HeadProps> = (props) => {
   const {
-    title = "Exoexs",
+    title = "ExoTv",
     description = "Website xem anime hoàn toàn miễn phí, không quảng cáo.",
     image = "https://i.ibb.co/JnDDN9j/localhost-3000-2.png",
   } = props;
@@ -42,8 +42,8 @@ const Head: React.FC<HeadProps> = (props) => {
 
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="application-name" content="Exoexs" />
-      <meta name="apple-mobile-web-app-title" content="Exoexs" />
+      <meta name="application-name" content="ExoTv" />
+      <meta name="apple-mobile-web-app-title" content="ExoTv" />
       <meta name="theme-color" content="#EF4444" />
       <meta name="msapplication-navbutton-color" content="#EF4444" />
       <meta
