@@ -97,8 +97,8 @@ const ReadPage: NextPage<ReadPageProps> = ({ chapters }) => {
         : chapters.find(
             (chapter) =>
               chapter.sourceChapterId ===
-                savedReadData?.chapter.sourceChapterId &&
-              chapter.sourceId === savedReadData?.chapter.sourceId
+                savedReadData?.chapter?.sourceChapterId &&
+              chapter.sourceId === savedReadData?.chapter?.sourceId
           ),
     [chapters, savedReadData, isSavedDataError]
   );
@@ -130,7 +130,7 @@ const ReadPage: NextPage<ReadPageProps> = ({ chapters }) => {
     )
       return;
 
-    if (currentChapter.sourceChapterId === readChapter?.sourceChapterId) {
+    if (currentChapter?.sourceChapterId === readChapter?.sourceChapterId) {
       setDeclinedReread(true);
 
       return;
