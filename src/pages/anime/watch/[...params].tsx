@@ -343,6 +343,11 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
           subtitles={subtitles}
           fonts={fonts}
           thumbnail={data?.thumbnail}
+          intro={data?.intro}
+          outro={data?.outro}
+          onNext={
+            nextEpisode ? () => handleNavigateEpisode(nextEpisode) : undefined
+          }
           className="h-full w-full"
         />
       </div>
@@ -358,10 +363,10 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
           <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 space-y-4">
             <p className="text-4xl font-semibold text-center">｡゜(｀Д´)゜｡</p>
             <p className="text-xl text-center">
-              Đã có lỗi xảy ra ({error?.response?.data?.error})
+              Something went wrong ({error?.response?.data?.error})
             </p>
             <p className="text-lg text-center">
-              Bạn có thể chọn source khác hoặc thử lại sau.
+              Try another server or come back later.
             </p>
           </div>
         </Portal>
@@ -371,11 +376,9 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
           <Portal selector=".netplayer-container">
             <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 space-y-4">
               <p className="text-4xl font-semibold text-center">｡゜(｀Д´)゜｡</p>
-              <p className="text-xl text-center">
-                Đã có lỗi xảy ra (No sources found)
-              </p>
+              <p className="text-xl text-center">No sources found</p>
               <p className="text-lg text-center">
-                Bạn có thể chọn source khác hoặc thử lại sau.
+                Try another server or come back later.
               </p>
             </div>
           </Portal>

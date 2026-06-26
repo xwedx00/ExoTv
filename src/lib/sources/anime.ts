@@ -119,6 +119,8 @@ function toSources(data: any): {
   sources: VideoSource[];
   subtitles: Subtitle[];
   fonts: never[];
+  intro: { start: number; end: number } | null;
+  outro: { start: number; end: number } | null;
 } {
   const headers: Record<string, string> = data?.headers ?? {};
   const sources: VideoSource[] = (data?.sources ?? [])
@@ -142,15 +144,35 @@ function toSources(data: any): {
       language: s.lang ?? "Unknown",
     }));
 
-  return { sources, subtitles, fonts: [] };
+  // AniSkip-style intro/outro times (e.g. from HiAnime/Zoro) drive the player's
+  // Skip Intro / Skip Outro buttons. Not every provider returns them.
+  const seg = (s: any) =>
+    s && typeof s.start === "number" && typeof s.end === "number" && s.end > s.start
+      ? { start: s.start, end: s.end }
+      : null;
+
+  return {
+    sources,
+    subtitles,
+    fonts: [],
+    intro: seg(data?.intro),
+    outro: seg(data?.outro),
+  };
 }
 
 /** Fetch the stream sources for a provider-specific episode id. */
 export async function getSources(
   episodeId: string,
   provider: string
-): Promise<{ sources: VideoSource[]; subtitles: Subtitle[]; fonts: never[] }> {
-  if (!isProvider(provider)) return { sources: [], subtitles: [], fonts: [] };
+): Promise<{
+  sources: VideoSource[];
+  subtitles: Subtitle[];
+  fonts: never[];
+  intro: { start: number; end: number } | null;
+  outro: { start: number; end: number } | null;
+}> {
+  if (!isProvider(provider))
+    return { sources: [], subtitles: [], fonts: [], intro: null, outro: null };
   const data = await withTimeout(
     clientFor(provider).fetchEpisodeSources(episodeId),
     20000
