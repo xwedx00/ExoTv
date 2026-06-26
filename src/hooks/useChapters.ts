@@ -7,8 +7,11 @@ import { useMemo } from "react";
 const useChapters = (mediaId: number) => {
   const { data, isLoading, ...rest } = useQuery({
     queryKey: ["chapters", mediaId],
-    // TODO(Phase 4/5): wire to in-app API route / socket server
-    queryFn: async (): Promise<Chapter[]> => [],
+    queryFn: async (): Promise<Chapter[]> => {
+      const res = await fetch(`/api/manga/chapters?id=${mediaId}`);
+      const data = await res.json();
+      return data?.chapters || [];
+    },
   });
 
   const chapters = useMemo(() => data ?? [], [data]);

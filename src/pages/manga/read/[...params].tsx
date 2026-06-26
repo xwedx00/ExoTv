@@ -11,6 +11,7 @@ import useMediaDetails from "@/hooks/useMediaDetails";
 import useSavedRead from "@/hooks/useSavedRead";
 import useSaveRead from "@/hooks/useSaveRead";
 import { Chapter } from "@/types";
+import { getChapters } from "@/lib/sources/manga";
 import { MediaType } from "@/types/anilist";
 import { getTitle, sortMediaUnit } from "@/utils/data";
 import { GetServerSideProps, NextPage } from "next";
@@ -273,16 +274,18 @@ const ReadPage: NextPage<ReadPageProps> = ({ chapters }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  // TODO(Phase 4/5): wire to in-app API route / socket server
-  // Fetch manga source connections + chapters from the in-app source API.
-  const chapters: Chapter[] = [];
+export const getServerSideProps: GetServerSideProps<ReadPageProps> = async ({
+  params,
+}) => {
+  const parts = (params?.params as string[]) || [];
+  const mangaId = parts[0];
 
-  return {
-    props: {
-      chapters,
-    },
-  };
+  if (!mangaId) return { notFound: true };
+
+  const chapters = await getChapters(mangaId);
+
+  // getServerSideProps props must be JSON-serializable (no `undefined`).
+  return { props: { chapters: JSON.parse(JSON.stringify(chapters)) } };
 };
 
 // @ts-ignore

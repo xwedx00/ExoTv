@@ -8,8 +8,9 @@ const useEpisodes = (mediaId: number) => {
     queryKey: ["episodes", mediaId],
 
     queryFn: async () => {
-      // TODO(Phase 4/5): wire to in-app API route / socket server
-      const episodes: Episode[] = [];
+      const res = await fetch(`/api/anime/episodes?id=${mediaId}`);
+      const data = await res.json();
+      const episodes: Episode[] = data?.episodes || [];
 
       const sortedEpisodes = sortMediaUnit(
         episodes.filter((episode) => episode.published)

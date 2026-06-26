@@ -8,11 +8,17 @@ interface ReturnSuccessType {
 }
 
 const useFetchImages = (currentChapter: Chapter, nextChapter?: Chapter) => {
-  // TODO(Phase 4/5): wire to in-app API route / socket server
-  const fetchImages = async (_chapter: Chapter): Promise<ReturnSuccessType> => ({
-    success: true,
-    images: [] as ImageSource[],
-  });
+  const fetchImages = async (
+    chapter: Chapter
+  ): Promise<ReturnSuccessType> => {
+    const res = await fetch(
+      `/api/manga/images?chapterId=${encodeURIComponent(
+        chapter.sourceChapterId
+      )}`
+    );
+    const data = await res.json();
+    return { success: true, images: data?.images || [] };
+  };
 
   const getQueryKey = (chapter: Chapter) =>
     `images-${chapter.sourceId}-${chapter.sourceChapterId}`;

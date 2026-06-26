@@ -30,15 +30,32 @@ export const useFetchSource = (
   currentEpisode: Episode,
   nextEpisode?: Episode
 ) => {
-  // TODO(Phase 4/5): wire to in-app API route / socket server
   const fetchSource = async (
-    _episode: Episode
-  ): Promise<ReturnSuccessType> => ({
-    success: true,
-    sources: convertSources([] as VideoSource[]),
-    subtitles: [] as Subtitle[],
-    fonts: [] as Font[],
-  });
+    episode: Episode
+  ): Promise<ReturnSuccessType | ReturnFailType> => {
+    const res = await fetch(
+      `/api/anime/sources?episodeId=${encodeURIComponent(
+        episode.sourceEpisodeId
+      )}&provider=${encodeURIComponent(episode.sourceId)}`
+    );
+    const data = await res.json();
+
+    if (!data?.success || !data.sources?.length) {
+      return {
+        success: false,
+        error: data?.error || "no_sources",
+        errorMessage: "No sources found",
+      };
+    }
+
+    return {
+      success: true,
+      sources: convertSources(data.sources),
+      subtitles: data.subtitles || [],
+      fonts: data.fonts || [],
+      thumbnail: data.thumbnail,
+    };
+  };
 
   const getQueryKey = (episode: Episode) =>
     `source-${episode.sourceId}-${episode.sourceEpisodeId}`;

@@ -13,6 +13,7 @@ import useMediaDetails from "@/hooks/useMediaDetails";
 import useSavedWatched from "@/hooks/useSavedWatched";
 import useSaveWatched from "@/hooks/useSaveWatched";
 import { Episode } from "@/types";
+import { getEpisodes } from "@/lib/sources/anime";
 import { parseNumberFromString } from "@/utils";
 import { getDescription, getTitle, sortMediaUnit } from "@/utils/data";
 import { GetServerSideProps, NextPage } from "next";
@@ -436,18 +437,19 @@ const WatchPage: NextPage<WatchPageProps> = ({ episodes }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  WatchPageProps
-> = async () => {
-  // TODO(Phase 4/5): wire to in-app API route / socket server
-  // Real implementation will fetch the anime's episode/source list (in-app
-  // source API) keyed off `params[0]`. For now return an empty, typed shell so
-  // the player page compiles and renders without hitting Supabase.
-  return {
-    props: {
-      episodes: [],
-    },
-  };
+export const getServerSideProps: GetServerSideProps<WatchPageProps> = async ({
+  params,
+}) => {
+  const parts = (params?.params as string[]) || [];
+  const animeId = parts[0];
+  const preferredProvider = parts[1];
+
+  if (!animeId) return { notFound: true };
+
+  const episodes = await getEpisodes(animeId, preferredProvider);
+
+  // getServerSideProps props must be JSON-serializable (no `undefined`).
+  return { props: { episodes: JSON.parse(JSON.stringify(episodes)) } };
 };
 
 // @ts-ignore

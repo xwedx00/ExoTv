@@ -1,5 +1,6 @@
 //@ts-nocheck
 import BaseLayout from "@/components/layouts/BaseLayout";
+import GlobalPlayerContextProvider from "@/contexts/GlobalPlayerContext";
 import "@/styles/index.css";
 import { appWithTranslation } from "@/lib/i18n";
 import { AppProps } from "next/app";
@@ -83,7 +84,9 @@ function App({ Component, pageProps, err }: WorkaroundAppProps) {
                   );
                 }}
               >
-                {getLayout(<Component {...pageProps} err={err} />)}
+                <GlobalPlayerContextProvider>
+                  {getLayout(<Component {...pageProps} err={err} />)}
+                </GlobalPlayerContextProvider>
                 <Analytics />
               </ErrorBoundary>
             
