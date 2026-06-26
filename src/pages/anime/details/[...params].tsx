@@ -19,6 +19,7 @@ import { Media, MediaType } from "@/types/anilist";
 import {
   createStudioDetailsUrl,
   numberWithCommas,
+  removeArrayOfObjectDup,
 } from "@/utils";
 import { convert, getDescription, getTitle } from "@/utils/data";
 import classNames from "classnames";
@@ -248,7 +249,8 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
 
             <InfoItem
               title="Studio"
-              value={anime.studios.nodes.map((studio) => (
+              value={removeArrayOfObjectDup(anime.studios.nodes, "id").map(
+                (studio) => (
                 <p key={studio.id}>
                   <Link
                     href={createStudioDetailsUrl(studio)}

@@ -15,8 +15,6 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({
 }) => {
   return (
     <main>
-      <div className="exotv-ambient" aria-hidden="true" />
-
       {showHeader && <Header />}
 
       <div className="app">{children}</div>

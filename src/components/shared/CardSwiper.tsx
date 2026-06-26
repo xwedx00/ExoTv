@@ -51,10 +51,12 @@ const CardSwiper: React.FC<CardSwiperProps> = (props) => {
   // Please don't touch it
 
   const handleSlideHover = (index: number) => () => {
-    if (!swiper) return;
+    if (!swiper?.slides?.length) return;
 
     const currentSlide = swiper.slides[index] as HTMLElement;
     const nextSlide = swiper.slides[index + 1] as HTMLElement;
+
+    if (!currentSlide) return;
 
     currentSlide.classList.add("swiper-animating");
 
@@ -118,10 +120,12 @@ const CardSwiper: React.FC<CardSwiperProps> = (props) => {
   };
 
   const handleSlideLeave = (index: number) => () => {
-    if (!swiper) return;
+    if (!swiper?.slides?.length) return;
 
     const currentSlide = swiper.slides[index] as HTMLElement;
     const nextSlide = swiper.slides[index + 1] as HTMLElement;
+
+    if (!currentSlide) return;
 
     // @ts-ignore
     const [originalWidth] = swiper.slidesSizesGrid as number[];

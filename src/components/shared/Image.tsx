@@ -12,7 +12,7 @@ const variants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.4, ease: [0.33, 1, 0.68, 1] },
+    transition: { duration: 0.25, ease: [0.33, 1, 0.68, 1] },
   },
 };
 
@@ -42,11 +42,7 @@ const Image: React.FC<ImageProps> = ({ onLoadingComplete, ...props }) => {
       animate={isLoaded ? "visible" : "hidden"}
       className={containerClassName}
     >
-      <NextImage
-        onLoadingComplete={handleLoadingComplete}
-        unoptimized
-        {...props}
-      />
+      <NextImage onLoadingComplete={handleLoadingComplete} {...props} />
     </motion.div>
   );
 };
