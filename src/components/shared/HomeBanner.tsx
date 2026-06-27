@@ -218,7 +218,7 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
             {title}
           </h1>
 
-          <div className="mt-4 flex flex-wrap items-center gap-x-8 text-lg">
+          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-base md:text-lg">
             {activeSlide.averageScore && (
               <TextIcon LeftIcon={MdTagFaces} iconClassName="text-green-300">
                 <p>{activeSlide.averageScore}%</p>
@@ -238,7 +238,7 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
 
           <Description
             description={description}
-            className="text-gray-300 hover:text-gray-100 transition duration-300 line-clamp-4 mb-2"
+            className="mt-4 text-sm text-gray-300/90 hover:text-gray-100 transition duration-300 line-clamp-3 md:line-clamp-4 md:text-base"
           />
         </motion.div>
 
