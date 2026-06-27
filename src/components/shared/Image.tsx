@@ -90,11 +90,13 @@ const Image: React.FC<ImageProps> = ({
         containerClassName
       )}
     >
-      {/* Shimmer skeleton — visible until the image decodes, then fades out. */}
+      {/* Shimmer skeleton — visible until the image decodes, then fades out.
+          No z-index: it's first in the DOM so the image (next) paints over it,
+          and any overlay/text a caller stacks after the image stays on top. */}
       <span
         aria-hidden="true"
         className={classNames(
-          "exotv-img__shimmer pointer-events-none absolute inset-0 z-0 transition-opacity duration-700 ease-out",
+          "exotv-img__shimmer pointer-events-none absolute inset-0 transition-opacity duration-700 ease-out",
           isLoaded ? "opacity-0" : "opacity-100"
         )}
       />
@@ -103,7 +105,7 @@ const Image: React.FC<ImageProps> = ({
           Scale is contained inside `overflow-hidden` so it never shifts the
           card's hover popup. */}
       <motion.div
-        className="relative z-[1] h-full w-full"
+        className="relative h-full w-full"
         initial={false}
         animate={{ opacity: isLoaded ? 1 : 0, scale: isLoaded ? 1 : 1.06 }}
         transition={{ duration: 0.55, ease: REVEAL_EASE }}

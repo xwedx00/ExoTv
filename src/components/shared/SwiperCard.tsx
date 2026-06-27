@@ -12,7 +12,7 @@ import { convert, getTitle } from "@/utils/data";
 import classNames from "classnames";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { MdTagFaces } from "react-icons/md";
 
@@ -22,7 +22,7 @@ interface AnimeCardProps {
   containerEndSlot?: React.ReactNode;
   imageEndSlot?: React.ReactNode;
   redirectUrl?: string;
-  /** legacy prop — hover state is now self-managed, kept for call-site compat */
+  /** legacy prop — hover state is now CSS-driven, kept for call-site compat */
   isExpanded?: boolean;
 }
 
@@ -36,7 +36,6 @@ const Card: React.FC<AnimeCardProps> = (props) => {
   } = props;
 
   const router = useRouter();
-  const [hovered, setHovered] = useState(false);
 
   const primaryColor = useMemo(
     () =>
@@ -52,19 +51,13 @@ const Card: React.FC<AnimeCardProps> = (props) => {
 
   return (
     <Link href={redirectUrl}>
-      <div
-        className="relative cursor-pointer"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
+      <div className="group relative cursor-pointer">
         {/* Poster — lifts, scales and raises above neighbours on hover (no
-            layout push). Info fades in over the art. */}
+            layout push). Info fades in over the art (z-[2], above the image's
+            own z-[1] reveal layer). */}
         <div
           className={classNames(
-            "relative aspect-[2/3] overflow-hidden rounded-card bg-background-900 ring-1 transition-[transform,box-shadow,outline] duration-300 ease-out will-change-transform",
-            hovered
-              ? "z-20 -translate-y-1.5 scale-[1.04] shadow-[0_24px_48px_rgba(0,0,0,0.55)] ring-white/20"
-              : "z-0 shadow-md ring-white/5",
+            "relative aspect-[2/3] overflow-hidden rounded-card bg-background-900 shadow-md ring-1 ring-white/5 transition-[transform,box-shadow] duration-300 ease-out will-change-transform group-hover:z-20 group-hover:-translate-y-1.5 group-hover:scale-[1.04] group-hover:shadow-[0_24px_48px_rgba(0,0,0,0.55)] group-hover:ring-white/25",
             className
           )}
         >
@@ -77,12 +70,7 @@ const Card: React.FC<AnimeCardProps> = (props) => {
 
           {imageEndSlot}
 
-          <div
-            className={classNames(
-              "pointer-events-none absolute inset-0 flex flex-col justify-end gap-2 bg-gradient-to-t from-black/95 via-black/45 to-transparent p-3 transition-opacity duration-300",
-              hovered ? "opacity-100" : "opacity-0"
-            )}
-          >
+          <div className="pointer-events-none absolute inset-0 z-[2] flex flex-col justify-end gap-2 bg-gradient-to-t from-black/95 via-black/45 to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
               {data.averageScore && (
                 <TextIcon LeftIcon={MdTagFaces} iconClassName="text-green-300">
