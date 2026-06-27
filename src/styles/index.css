@@ -62,11 +62,16 @@ main {
 
 @media screen and (min-width: 768px) {
   .banner__overlay {
+    /* Strong left wash for title legibility + a bottom wash (in the page bg
+       colour) so the hero melts into the carousel below instead of cutting off. */
     background-image: linear-gradient(
-      77deg,
-      rgba(0, 0, 0, 0.8) 25%,
-      transparent 85%
-    );
+        90deg,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.62) 30%,
+        rgba(0, 0, 0, 0.15) 62%,
+        transparent 82%
+      ),
+      linear-gradient(0deg, rgba(8, 11, 20, 0.9) 0%, transparent 38%);
 
     background-color: transparent;
   }

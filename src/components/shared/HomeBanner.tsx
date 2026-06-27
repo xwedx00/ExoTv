@@ -190,6 +190,7 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
               initial="initial"
               className="absolute inset-0"
               key={title}
+              transition={{ duration: 0.7, ease: transition }}
             >
               <Image
                 src={activeSlide.bannerImage}
