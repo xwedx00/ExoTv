@@ -9,7 +9,9 @@ import { motion } from "motion/react";
 import React, { useState } from "react";
 import { isMobile } from "react-device-detect";
 
-// Reveal each card right-to-left within the visible row (rightmost first).
+// Reveal each card left-to-right across the row. Animate on mount (not
+// whileInView) so horizontally off-screen swiper slides never get stuck hidden,
+// and opacity-only so the expand-on-hover transform is never disturbed.
 const REVEAL_EASE = [0.33, 1, 0.68, 1];
 const REVEAL_PER_ROW = 7;
 
@@ -247,14 +249,12 @@ const CardSwiper: React.FC<CardSwiperProps> = (props) => {
           >
             <motion.div
               className="h-full w-full"
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{
                 duration: 0.45,
                 ease: REVEAL_EASE,
-                delay:
-                  (REVEAL_PER_ROW - 1 - (index % REVEAL_PER_ROW)) * 0.05,
+                delay: (index % REVEAL_PER_ROW) * 0.05,
               }}
             >
               {onEachCard(item, activeIndex === index)}

@@ -2,7 +2,7 @@
 import classNames from "classnames";
 import { motion } from "motion/react";
 import NextImage from "next/image";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * Shared image primitive.
@@ -10,8 +10,7 @@ import React, { useCallback, useState } from "react";
  * - Uses the modern `next/image` (the old `next/legacy/image` is deprecated and
  *   threw a "position: static parent" warning on every `layout="fill"` image).
  * - Accepts the legacy `layout` / `objectFit` / `objectPosition` props the rest
- *   of the codebase already passes and translates them to the modern API, so no
- *   caller has to change.
+ *   of the codebase already passes and translates them, so no caller changes.
  * - Shows a shimmer skeleton until the bytes decode, then reveals the image with
  *   a smooth fade + settle (motion). Whichever image decodes first reveals first.
  */
@@ -52,6 +51,7 @@ const Image: React.FC<ImageProps> = ({
   ...rest
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const imgRef = useRef(null);
 
   const handleLoad = useCallback(
     (img) => {
@@ -60,6 +60,15 @@ const Image: React.FC<ImageProps> = ({
     },
     [onLoadingComplete]
   );
+
+  // Cached images can finish loading before React wires up `onLoad`, which would
+  // leave the reveal stuck at opacity 0 (a blank/shimmering card forever). Detect
+  // an already-complete image on mount and reveal it immediately.
+  useEffect(() => {
+    setIsLoaded(false);
+    const node = imgRef.current;
+    if (node?.complete && node?.naturalWidth > 0) setIsLoaded(true);
+  }, [src]);
 
   // Legacy `layout="fill"` (or no explicit dimensions) → modern `fill`.
   const isFill = layout === "fill" || (width == null && height == null);
@@ -90,9 +99,11 @@ const Image: React.FC<ImageProps> = ({
         )}
       />
 
-      {/* The image reveals (fade + settle) the instant its own bytes decode. */}
+      {/* The image reveals (fade + settle) the instant its own bytes decode.
+          Scale is contained inside `overflow-hidden` so it never shifts the
+          card's hover popup. */}
       <motion.div
-        className="relative z-10 h-full w-full"
+        className="relative z-[1] h-full w-full"
         initial={false}
         animate={{ opacity: isLoaded ? 1 : 0, scale: isLoaded ? 1 : 1.06 }}
         transition={{ duration: 0.55, ease: REVEAL_EASE }}
@@ -100,6 +111,7 @@ const Image: React.FC<ImageProps> = ({
         {/* eslint-disable-next-line jsx-a11y/alt-text */}
         <NextImage
           {...rest}
+          ref={imgRef}
           src={src}
           alt={alt}
           unoptimized

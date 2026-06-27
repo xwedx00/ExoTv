@@ -5,8 +5,9 @@ import { motion } from "motion/react";
 import React, { useMemo } from "react";
 
 // 2026 entrance: items reveal when they scroll into the viewport, cascading
-// right-to-left across each row (rightmost first), rows top-to-bottom. The grid
-// is at most 7 columns (2xl), so we stagger within groups of 7.
+// left-to-right across each row, rows top-to-bottom. The grid is at most 7
+// columns (2xl), so we stagger within groups of 7. Opacity-only (no transform)
+// so the card's hover popup is never reparented/shifted.
 const REVEAL_EASE = [0.33, 1, 0.68, 1];
 const REVEAL_COLS = 7;
 
@@ -45,13 +46,13 @@ const List = <T extends any[]>({
           <motion.div
             className="col-span-1"
             key={index}
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "0px 0px -8% 0px" }}
             transition={{
               duration: 0.5,
               ease: REVEAL_EASE,
-              delay: ((REVEAL_COLS - 1 - (index % REVEAL_COLS)) * 0.05),
+              delay: (index % REVEAL_COLS) * 0.05,
             }}
           >
             {children(item)}
