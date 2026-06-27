@@ -180,7 +180,7 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
 
   return (
     <React.Fragment>
-      <div className="group relative w-full overflow-hidden md:h-[450px] xl:h-[500px] 2xl:h-[550px]">
+      <div className="group relative mx-4 overflow-hidden rounded-2xl md:mx-8 md:h-[450px] lg:mx-12 xl:h-[500px] 2xl:h-[550px]">
         <AnimatePresence>
           {isValidUrl(activeSlide.bannerImage) && !showTrailer && (
             <motion.div

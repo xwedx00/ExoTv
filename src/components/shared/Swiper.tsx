@@ -11,7 +11,6 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import "swiper/css";
 import "swiper/css/navigation";
 
-import CircleButton from "@/components/shared/CircleButton";
 import classNames from "classnames";
 
 export type SwiperInstance = SwiperClass;
@@ -100,20 +99,24 @@ const Swiper: React.FC<SwiperProps> = ({
       {!hideNavigation && (
         <div
           slot="container-end"
-          className="swiper-navigation absolute right-0 bottom-full mb-4 flex space-x-4"
+          className="swiper-navigation pointer-events-none absolute bottom-full right-0 mb-6 flex gap-2.5"
         >
-          <CircleButton
+          <button
             ref={prevButtonRef}
-            outline
-            LeftIcon={FiChevronLeft}
-            className="swiper-button-prev flex items-center justify-center"
-          />
-          <CircleButton
+            type="button"
+            aria-label="Previous"
+            className="exotv-nav-btn pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/20 backdrop-blur-md transition duration-300 hover:bg-white hover:text-black"
+          >
+            <FiChevronLeft className="h-5 w-5" />
+          </button>
+          <button
             ref={nextButtonRef}
-            outline
-            LeftIcon={FiChevronRight}
-            className="swiper-button-next flex items-center justify-center"
-          />
+            type="button"
+            aria-label="Next"
+            className="exotv-nav-btn pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/20 backdrop-blur-md transition duration-300 hover:bg-white hover:text-black"
+          >
+            <FiChevronRight className="h-5 w-5" />
+          </button>
         </div>
       )}
     </ReactSwiper>

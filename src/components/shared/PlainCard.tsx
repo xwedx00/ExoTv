@@ -5,7 +5,7 @@ import React from "react";
 
 const PlainCard: React.FC<ImageProps> = (props) => {
   return (
-    <div className="relative relative aspect-[2/3]">
+    <div className="relative aspect-[2/3] overflow-hidden rounded-card">
       {/* eslint-disable-next-line jsx-a11y/alt-text */}
       <Image layout="fill" objectFit="cover" {...props} />
     </div>
