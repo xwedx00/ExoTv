@@ -8,16 +8,13 @@ import {
   isColorVisible,
   numberWithCommas,
 } from "@/utils";
-import { convert, getDescription, getTitle } from "@/utils/data";
-import { Options } from "@popperjs/core";
+import { convert, getTitle } from "@/utils/data";
 import classNames from "classnames";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { MdTagFaces } from "react-icons/md";
-import Description from "./Description";
-import Popup from "./Popup";
 
 interface CardProps {
   data: Media;
@@ -27,35 +24,11 @@ interface CardProps {
   redirectUrl?: string;
 }
 
-const popupOptions: Partial<Options> = {
-  strategy: "absolute",
-
-  modifiers: [
-    {
-      name: "sameWidth",
-      enabled: true,
-      fn: ({ state }) => {
-        state.styles.popper.height = `${state.rects.reference.height}px`;
-        state.styles.popper.width = `${state.rects.reference.width * 3}px`;
-      },
-      phase: "beforeWrite",
-      requires: ["computeStyles"],
-      effect({ state }) {
-        const { width, height } =
-          state.elements.reference.getBoundingClientRect();
-
-        state.elements.popper.style.width = `${width * 3}px`;
-
-        state.elements.popper.style.height = `${height}px`;
-      },
-    },
-  ],
-};
-
 const Card: React.FC<CardProps> = (props) => {
   const {
     data,
     className,
+    containerEndSlot,
     imageEndSlot,
     redirectUrl = createMediaDetailsUrl(data),
   } = props;
@@ -74,98 +47,65 @@ const Card: React.FC<CardProps> = (props) => {
     [data, router?.locale]
   );
 
-  const description = useMemo(
-    () => getDescription(data, router.locale),
-    [data, router.locale]
-  );
-
   return (
-    (<Link href={redirectUrl}>
-
-      <Popup
-        reference={
-          <React.Fragment>
-            <div
-              className={classNames(
-                "relative aspect-[2/3]",
-                className
-              )}
-            >
-              <Image
-                src={data.coverImage?.extraLarge}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-sm"
-                alt={title}
-              />
-
-              {imageEndSlot}
-            </div>
-
-            <p
-              className="mt-2 text-base font-semibold line-clamp-2"
-              style={{ color: primaryColor }}
-            >
-              {title}
-            </p>
-          </React.Fragment>
-        }
-        options={popupOptions}
-        offset={[0, 10]}
-        className="relative z-10 overflow-hidden rounded-panel border border-white/10 p-4 shadow-[0_24px_48px_rgba(0,0,0,0.48),0_8px_16px_rgba(0,0,0,0.3)]"
-      >
-        <Image
-          src={data.bannerImage || data.coverImage?.extraLarge}
-          layout="fill"
-          objectFit="cover"
-          className="rounded-sm shadow-2xl"
-          alt={title}
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/25"></div>
-
-        <div className="absolute inset-0 p-6 flex flex-col justify-end">
-          <p
-            className="text-2xl mb-3 font-semibold line-clamp-1"
-            style={{ color: primaryColor }}
-          >
-            {title}
-          </p>
-
-          <Description
-            description={description}
-            className="text-gray-300 hover:text-gray-100 transition duration-300 line-clamp-3 mb-2"
+    <Link href={redirectUrl}>
+      <div className="group relative cursor-pointer">
+        {/* Modern in-place hover (matches SwiperCard): lift + scale, raise above
+            neighbours, fade info in over the art (z-[2], above the image). */}
+        <div
+          className={classNames(
+            "relative aspect-[2/3] overflow-hidden rounded-card bg-background-900 shadow-md ring-1 ring-white/5 transition-[transform,box-shadow] duration-300 ease-out will-change-transform group-hover:z-20 group-hover:-translate-y-1.5 group-hover:scale-[1.04] group-hover:shadow-[0_24px_48px_rgba(0,0,0,0.55)] group-hover:ring-white/25",
+            className
+          )}
+        >
+          <Image
+            src={data.coverImage?.extraLarge}
+            layout="fill"
+            objectFit="cover"
+            alt={title}
           />
 
-          <DotList className="mb-2">
-            {data.genres?.map((genre) => (
-              <span
-                className="text-sm font-semibold"
-                style={{
-                  color: primaryColor,
-                }}
-                key={genre}
-              >
-                {convert(genre, "genre", { locale: router.locale })}
-              </span>
-            ))}
-          </DotList>
+          {imageEndSlot}
 
-          <div className="relative z-50 flex items-center space-x-2">
-            {data.averageScore && (
-              <TextIcon LeftIcon={MdTagFaces} iconClassName="text-green-300">
-                <p>{data.averageScore}%</p>
+          <div className="pointer-events-none absolute inset-0 z-[2] flex flex-col justify-end gap-2 bg-gradient-to-t from-black/95 via-black/45 to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+              {data.averageScore && (
+                <TextIcon LeftIcon={MdTagFaces} iconClassName="text-green-300">
+                  <p>{data.averageScore}%</p>
+                </TextIcon>
+              )}
+
+              <TextIcon LeftIcon={AiFillHeart} iconClassName="text-red-400">
+                <p>{numberWithCommas(data.favourites)}</p>
               </TextIcon>
+            </div>
+
+            {!!data.genres?.length && (
+              <DotList>
+                {data.genres.slice(0, 3).map((genre) => (
+                  <span
+                    className="text-xs font-semibold"
+                    style={{ color: primaryColor }}
+                    key={genre}
+                  >
+                    {convert(genre, "genre", { locale: router.locale })}
+                  </span>
+                ))}
+              </DotList>
             )}
 
-            <TextIcon LeftIcon={AiFillHeart} iconClassName="text-red-400">
-              <p>{numberWithCommas(data.favourites)}</p>
-            </TextIcon>
+            {containerEndSlot}
           </div>
         </div>
-      </Popup>
 
-    </Link>)
+        <p
+          className="mt-2 line-clamp-2 text-base font-semibold"
+          style={{ color: primaryColor }}
+        >
+          {title}
+        </p>
+      </div>
+    </Link>
   );
 };
 
