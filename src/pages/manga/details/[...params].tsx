@@ -1,6 +1,7 @@
 //@ts-nocheck
 import Button from "@/components/shared/Button";
 import Card from "@/components/shared/Card";
+import ChaptersSection from "@/components/features/manga/ChaptersSection";
 import CharacterConnectionCard from "@/components/shared/CharacterConnectionCard";
 import CircleButton from "@/components/shared/CircleButton";
 import DetailsBanner from "@/components/shared/DetailsBanner";
@@ -198,7 +199,8 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ manga }) => {
         </div>
 
         <div className="md:col-span-8 space-y-12">
-          
+
+          <ChaptersSection manga={manga} />
 
           {!!manga?.characters?.edges.length && (
             <DetailsSection

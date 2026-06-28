@@ -7,27 +7,29 @@ interface ReturnSuccessType {
   images: ImageSource[];
 }
 
+// Exported so the details-page Chapters guide can prefetch into the SAME cache
+// (so opening a chapter reads instantly — no page-image wait).
+export const imagesQueryKey = (sourceId: string, sourceChapterId: string) =>
+  `images-${sourceId}-${sourceChapterId}`;
+
+export const fetchImagesData = async (
+  sourceChapterId: string
+): Promise<ReturnSuccessType> => {
+  const res = await fetch(
+    `/api/manga/images?chapterId=${encodeURIComponent(sourceChapterId)}`
+  );
+  const data = await res.json();
+  return { success: true, images: data?.images || [] };
+};
+
 const useFetchImages = (currentChapter: Chapter, nextChapter?: Chapter) => {
-  const fetchImages = async (
-    chapter: Chapter
-  ): Promise<ReturnSuccessType> => {
-    const res = await fetch(
-      `/api/manga/images?chapterId=${encodeURIComponent(
-        chapter.sourceChapterId
-      )}`
-    );
-    const data = await res.json();
-    return { success: true, images: data?.images || [] };
-  };
-
-  const getQueryKey = (chapter?: Chapter) =>
-    chapter
-      ? `images-${chapter.sourceId}-${chapter.sourceChapterId}`
-      : "images-none";
-
   return useQuery({
-    queryKey: [getQueryKey(currentChapter)],
-    queryFn: () => fetchImages(currentChapter),
+    queryKey: [
+      currentChapter
+        ? imagesQueryKey(currentChapter.sourceId, currentChapter.sourceChapterId)
+        : "images-none",
+    ],
+    queryFn: () => fetchImagesData(currentChapter.sourceChapterId),
     enabled: !!currentChapter,
   });
 };
