@@ -72,6 +72,10 @@ const Swiper: React.FC<SwiperProps> = ({
         },
       }}
       grabCursor
+      simulateTouch
+      allowTouchMove
+      threshold={3}
+      touchStartPreventDefault={false}
       navigation={{
         prevEl: prevButtonRef.current,
         nextEl: nextButtonRef.current,

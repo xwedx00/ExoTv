@@ -4,6 +4,7 @@ import Card from "@/components/shared/Card";
 import CharacterConnectionCard from "@/components/shared/CharacterConnectionCard";
 import DetailsBanner from "@/components/shared/DetailsBanner";
 import DetailsSection from "@/components/shared/DetailsSection";
+import EpisodesSection from "@/components/features/anime/EpisodesSection";
 import DotList from "@/components/shared/DotList";
 import Head from "@/components/shared/Head";
 import InfoItem from "@/components/shared/InfoItem";
@@ -300,6 +301,8 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ anime }) => {
           </div>
         </div>
         <div className="space-y-12 md:col-span-8">
+
+          <EpisodesSection anime={anime} />
 
           {!!anime?.characters?.edges?.length && (
             <DetailsSection

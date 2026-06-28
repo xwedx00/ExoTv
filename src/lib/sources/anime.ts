@@ -1,4 +1,5 @@
 import type { Episode, Subtitle, VideoSource } from "@/types";
+import { anilistFetcher } from "@/services/anilist";
 import { cached } from "./cache";
 
 /**
@@ -68,33 +69,15 @@ const proxify = (url: string, headers: Record<string, string>) =>
     JSON.stringify(headers)
   )}`;
 
-function toEpisodes(
-  data: any,
-  anilistId: string | number,
-  provider: ProviderId
-): Episode[] {
-  return (data?.episodes ?? []).map(
-    (ep: any): Episode => ({
-      name: String(ep.number),
-      title: ep.title ?? undefined,
-      thumbnail: ep.image ?? undefined,
-      sourceId: provider,
-      // core keys episodes by number; encode {anilistId}:{number} so getSources
-      // can rebuild the watch path.
-      sourceEpisodeId: `${anilistId}:${ep.number}`,
-      sourceMediaId: String(anilistId),
-      slug: `${provider}__${anilistId}_${ep.number}`,
-      section: "",
-      published: true,
-      source: {
-        id: provider,
-        name: LABELS[provider],
-        locales: [],
-        isCustomSource: false,
-      },
-    })
-  );
-}
+// Strip a leading "Episode N - " / "Episode N: " from AniList streamingEpisodes
+// titles so the card shows the actual episode name.
+const cleanEpTitle = (t: string | undefined, n: number) =>
+  (t || "").replace(/^\s*episode\s*\d+\s*[-:.]?\s*/i, "").trim() || `Episode ${n}`;
+
+// Episode LIST comes from AniList (reliable + rich: title + thumbnail), keyed by
+// number; the streaming SOURCE for a number is fetched from JustAnime later in
+// getSources. So the guide stays intact even when the stream provider is down.
+const EPISODES_QUERY = `query($id:Int){Media(id:$id,type:ANIME){episodes streamingEpisodes{title thumbnail}}}`;
 
 /** Episode list for an AniList id (provider baked into each episode's sourceId). */
 export async function getEpisodes(
@@ -107,10 +90,34 @@ export async function getEpisodes(
     `eps:${anilistId}:${provider}`,
     60 * 60 * 1000,
     async () => {
-      const data = await coreFetch(`/anime/${anilistId}/episodes`).catch(
-        () => null
-      );
-      return toEpisodes(data, anilistId, provider);
+      const data = await anilistFetcher<any>(EPISODES_QUERY, {
+        id: Number(anilistId),
+      }).catch(() => null);
+      const media = data?.Media;
+      const streamEps: any[] = media?.streamingEpisodes || [];
+      const count = Math.max(media?.episodes || 0, streamEps.length);
+      if (!count) return [];
+      return Array.from({ length: count }, (_, i): Episode => {
+        const num = i + 1;
+        const se = streamEps[i];
+        return {
+          name: String(num),
+          title: cleanEpTitle(se?.title, num),
+          thumbnail: se?.thumbnail || undefined,
+          sourceId: provider,
+          sourceEpisodeId: `${anilistId}:${num}`,
+          sourceMediaId: String(anilistId),
+          slug: `${provider}__${anilistId}_${num}`,
+          section: "",
+          published: true,
+          source: {
+            id: provider,
+            name: LABELS[provider],
+            locales: [],
+            isCustomSource: false,
+          },
+        };
+      });
     },
     (episodes) => episodes.length > 0
   );

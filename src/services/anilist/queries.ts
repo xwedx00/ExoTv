@@ -263,6 +263,12 @@ coverImage {
   color
 }
 bannerImage
+streamingEpisodes {
+  title
+  thumbnail
+  url
+  site
+}
 genres
 synonyms
 averageScore

@@ -29,45 +29,54 @@ const convertSources = (sources: VideoSource[]) =>
     return source;
   });
 
+// Exported so the details-page Episodes guide can prefetch into the SAME cache
+// (so clicking an episode plays instantly — no source wait).
+export const sourceQueryKey = (sourceId: string, sourceEpisodeId: string) =>
+  `source-${sourceId}-${sourceEpisodeId}`;
+
+export const fetchSourceData = async (
+  sourceEpisodeId: string,
+  sourceId: string
+): Promise<ReturnSuccessType | ReturnFailType> => {
+  const res = await fetch(
+    `/api/anime/sources?episodeId=${encodeURIComponent(
+      sourceEpisodeId
+    )}&provider=${encodeURIComponent(sourceId)}`
+  );
+  const data = await res.json();
+
+  if (!data?.success || !data.sources?.length) {
+    return {
+      success: false,
+      error: data?.error || "no_sources",
+      errorMessage: "No sources found",
+    };
+  }
+
+  return {
+    success: true,
+    sources: convertSources(data.sources),
+    subtitles: data.subtitles || [],
+    fonts: data.fonts || [],
+    thumbnail: data.thumbnail,
+  };
+};
+
 export const useFetchSource = (
   currentEpisode: Episode,
   nextEpisode?: Episode
 ) => {
-  const fetchSource = async (
-    episode: Episode
-  ): Promise<ReturnSuccessType | ReturnFailType> => {
-    const res = await fetch(
-      `/api/anime/sources?episodeId=${encodeURIComponent(
-        episode.sourceEpisodeId
-      )}&provider=${encodeURIComponent(episode.sourceId)}`
-    );
-    const data = await res.json();
-
-    if (!data?.success || !data.sources?.length) {
-      return {
-        success: false,
-        error: data?.error || "no_sources",
-        errorMessage: "No sources found",
-      };
-    }
-
-    return {
-      success: true,
-      sources: convertSources(data.sources),
-      subtitles: data.subtitles || [],
-      fonts: data.fonts || [],
-      thumbnail: data.thumbnail,
-    };
-  };
-
-  const getQueryKey = (episode?: Episode) =>
-    episode
-      ? `source-${episode.sourceId}-${episode.sourceEpisodeId}`
-      : "source-none";
-
   return useQuery({
-    queryKey: [getQueryKey(currentEpisode)],
-    queryFn: () => fetchSource(currentEpisode),
+    queryKey: [
+      currentEpisode
+        ? sourceQueryKey(currentEpisode.sourceId, currentEpisode.sourceEpisodeId)
+        : "source-none",
+    ],
+    queryFn: () =>
+      fetchSourceData(
+        currentEpisode.sourceEpisodeId,
+        currentEpisode.sourceId
+      ),
     enabled: !!currentEpisode,
   });
 };
