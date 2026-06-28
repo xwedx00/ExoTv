@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "postbuild": "next-sitemap",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@consumet/extensions": "^1.8.8",
@@ -57,7 +58,9 @@
     "@types/react-table": "^7.7.20",
     "babel-loader": "^10.1.1",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
+    "patch-package": "^8.0.1",
     "postcss": "^8.5.15",
+    "postinstall-postinstall": "^2.1.0",
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3"
   },

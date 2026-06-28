@@ -31,17 +31,28 @@ import {
 
 const GRAPHQL_URL = "https://graphql.anilist.co";
 
-export const anilistFetcher = async <T>(query: string, variables: any) => {
-  type Response = {
-    data: T;
-  };
+export const anilistFetcher = async <T>(query: string, variables: any): Promise<T> => {
+  // Use native fetch, NOT axios: axios resolves to its Node http adapter inside
+  // the Turbopack client bundle and hangs in the browser (every catalog/detail
+  // query stalled forever). fetch works in both runtimes. Retry once on 429.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const res = await fetch(GRAPHQL_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ query, variables }),
+    });
 
-  const { data } = await axios.post<Response>(GRAPHQL_URL, {
-    query,
-    variables,
-  });
+    if (res.status === 429) {
+      const retryAfter = Number(res.headers.get("retry-after")) || 1;
+      await new Promise((r) => setTimeout(r, (retryAfter + attempt) * 1000));
+      continue;
+    }
+    if (!res.ok) throw new Error(`AniList ${res.status} for query`);
 
-  return data?.data;
+    const json = await res.json();
+    return json?.data as T;
+  }
+  throw new Error("AniList rate-limited");
 };
 
 export const getPageMedia = async (

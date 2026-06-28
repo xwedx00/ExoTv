@@ -1,74 +1,89 @@
-import { ANIME, META } from "@consumet/extensions";
 import type { Episode, Subtitle, VideoSource } from "@/types";
 import { cached } from "./cache";
 
 /**
- * In-app anime source backend.
+ * In-app anime source backend — JustAnime's backend (core.justanime.to).
  *
- * Uses Consumet's META.Anilist (keeps AniList metadata + auto-maps to a streaming
- * provider). Providers are fragile/region-dependent (sites go down, get DMCA'd),
- * so we try a prioritized list until one responds — this is the "multi-server"
- * resilience. The chosen provider is encoded in each Episode's `sourceId` so the
- * matching provider is used when fetching that episode's stream.
+ * ⚠️  HONEST CAVEAT: this rides JustAnime's PRIVATE backend + the AnimePahe
+ * (owocdn/kwik) and mewstream CDNs. It works only because we send the `Origin`
+ * header their allowlist expects (done server-side here). It is FRAGILE — if
+ * they rotate the allowlist or add auth, it breaks and the watch page shows
+ * "no source". Self-host / personal use only.
+ *
+ * core.justanime.to is AniList-keyed, and ExoTv's metadata is AniList, so the
+ * `anilistId` passed in maps directly — no id translation needed.
+ *   GET /api/anime/{anilistId}/episodes              -> episode list (by number)
+ *   GET /api/watch/{anilistId}/episode/{n}/{provider} -> { sub, dub } HLS sources
+ * Raw m3u8 (owocdn/mewstream) is Referer-walled, so each VideoSource carries the
+ * provider's Referer in `proxy.appendReqHeaders` and is served via /api/proxy.
  */
 
-export type ProviderId =
-  | "hianime"
-  | "animeunity"
-  | "animesaturn"
-  | "animepahe"
-  | "animekai";
+const CORE = "https://core.justanime.to/api";
+const ORIGIN = "https://justanime.to";
+const UA =
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
 
-const FACTORIES: Record<ProviderId, () => any> = {
-  hianime: () => new ANIME.Hianime(),
-  animeunity: () => new ANIME.AnimeUnity(),
-  animesaturn: () => new ANIME.AnimeSaturn(),
-  animepahe: () => new ANIME.AnimePahe(),
-  animekai: () => new ANIME.AnimeKai(),
-};
+export type ProviderId = "megaplay" | "animepahe" | "miruro";
 
 const LABELS: Record<ProviderId, string> = {
-  hianime: "HiAnime",
-  animeunity: "AnimeUnity",
-  animesaturn: "AnimeSaturn",
+  megaplay: "MegaPlay",
   animepahe: "AnimePahe",
-  animekai: "AnimeKai",
+  miruro: "Miruro",
 };
 
-/** Priority order; override with env ANIME_PROVIDERS="animeunity,hianime,...". */
+// Referer each provider's CDN requires to serve the raw m3u8/segments.
+const PROVIDER_REFERER: Record<string, string> = {
+  megaplay: "https://megaplay.buzz/",
+  animepahe: "https://kwik.cx/",
+  miruro: "https://kwik.cx/",
+};
+
+/** Priority order; megaplay first (carries soft subs + intro/outro skip). */
 export const PROVIDER_ORDER: ProviderId[] =
   (process.env.ANIME_PROVIDERS?.split(",").map((s) => s.trim()) as ProviderId[])?.filter(
-    (p) => p in FACTORIES
-  ) ?? ["hianime", "animeunity", "animesaturn", "animepahe", "animekai"];
+    (p) => p in LABELS
+  ) ?? ["megaplay", "animepahe", "miruro"];
 
-export const providers = (Object.keys(FACTORIES) as ProviderId[]).map((id) => ({
+export const providers = (Object.keys(LABELS) as ProviderId[]).map((id) => ({
   id,
   name: LABELS[id],
 }));
 
-const isProvider = (p: string): p is ProviderId => p in FACTORIES;
+const isProvider = (p: string): p is ProviderId => p in LABELS;
 
-function clientFor(provider: ProviderId) {
-  return new META.Anilist(FACTORIES[provider]());
+const isValidUrl = (u: unknown): u is string =>
+  typeof u === "string" && /^https?:\/\//.test(u);
+
+async function coreFetch(path: string) {
+  const res = await fetch(`${CORE}${path}`, {
+    headers: { Origin: ORIGIN, Referer: `${ORIGIN}/`, "User-Agent": UA },
+  });
+  if (!res.ok) throw new Error(`core.justanime ${res.status} for ${path}`);
+  return res.json();
 }
 
-function withTimeout<T>(p: Promise<T>, ms = 15000): Promise<T> {
-  return Promise.race([
-    p,
-    new Promise<T>((_, reject) => setTimeout(() => reject(new Error("timeout")), ms)),
-  ]);
-}
+// Build the /api/proxy url for a referer-walled asset (same shape proxy.ts emits).
+const proxify = (url: string, headers: Record<string, string>) =>
+  `/api/proxy?url=${encodeURIComponent(url)}&headers=${encodeURIComponent(
+    JSON.stringify(headers)
+  )}`;
 
-function toEpisodes(info: any, provider: ProviderId): Episode[] {
-  return (info?.episodes ?? []).map(
+function toEpisodes(
+  data: any,
+  anilistId: string | number,
+  provider: ProviderId
+): Episode[] {
+  return (data?.episodes ?? []).map(
     (ep: any): Episode => ({
-      name: String(ep.number ?? ep.title ?? ""),
+      name: String(ep.number),
       title: ep.title ?? undefined,
       thumbnail: ep.image ?? undefined,
       sourceId: provider,
-      sourceEpisodeId: String(ep.id),
-      sourceMediaId: String(info.id),
-      slug: `${provider}__${ep.id}`,
+      // core keys episodes by number; encode {anilistId}:{number} so getSources
+      // can rebuild the watch path.
+      sourceEpisodeId: `${anilistId}:${ep.number}`,
+      sourceMediaId: String(anilistId),
+      slug: `${provider}__${anilistId}_${ep.number}`,
       section: "",
       published: true,
       source: {
@@ -81,101 +96,84 @@ function toEpisodes(info: any, provider: ProviderId): Episode[] {
   );
 }
 
-/** Try providers in order (preferred first) until one returns a non-empty episode list. */
+/** Episode list for an AniList id (provider baked into each episode's sourceId). */
 export async function getEpisodes(
   anilistId: string | number,
   preferred?: string
 ): Promise<Episode[]> {
+  const provider: ProviderId =
+    preferred && isProvider(preferred) ? preferred : "megaplay";
   return cached(
-    `eps:${anilistId}:${preferred ?? "auto"}`,
+    `eps:${anilistId}:${provider}`,
     60 * 60 * 1000,
     async () => {
-      const order =
-        preferred && isProvider(preferred)
-          ? [preferred, ...PROVIDER_ORDER.filter((p) => p !== preferred)]
-          : PROVIDER_ORDER;
-
-      for (const provider of order) {
-        try {
-          const info = await withTimeout(
-            clientFor(provider).fetchAnimeInfo(String(anilistId))
-          );
-          const episodes = toEpisodes(info, provider);
-          if (episodes.length) return episodes;
-        } catch {
-          // provider down / no match — try the next one
-        }
-      }
-      return [];
+      const data = await coreFetch(`/anime/${anilistId}/episodes`).catch(
+        () => null
+      );
+      return toEpisodes(data, anilistId, provider);
     },
     (episodes) => episodes.length > 0
   );
 }
 
-const isValidUrl = (u: unknown): u is string =>
-  typeof u === "string" && /^https?:\/\//.test(u) && !u.includes(".replace(");
+const seg = (s: any) =>
+  s && typeof s.start === "number" && typeof s.end === "number" && s.end > s.start
+    ? { start: s.start, end: s.end }
+    : null;
 
-function toSources(data: any): {
-  sources: VideoSource[];
-  subtitles: Subtitle[];
-  fonts: never[];
-  intro: { start: number; end: number } | null;
-  outro: { start: number; end: number } | null;
-} {
-  const headers: Record<string, string> = data?.headers ?? {};
-  const sources: VideoSource[] = (data?.sources ?? [])
+function toSources(block: any, provider: ProviderId) {
+  const referer = PROVIDER_REFERER[provider] || "";
+  const headers = referer ? { Referer: referer } : {};
+
+  const sources: VideoSource[] = (block?.sources ?? [])
     .filter((s: any) => isValidUrl(s?.url))
     .map((s: any) => ({
       file: s.url,
       label: s.quality ?? "default",
-      // Always proxy: handles CORS + any hotlink Referer/Origin the source needs.
+      // Raw m3u8 is Referer-walled → always proxy with the provider's Referer.
       useProxy: true,
       proxy: { appendReqHeaders: headers },
     }));
 
-  const subtitles: Subtitle[] = (data?.subtitles ?? [])
+  const subtitles: Subtitle[] = (block?.subtitles ?? [])
     .filter(
       (s: any) =>
-        isValidUrl(s?.url) && (s.lang ?? "").toLowerCase() !== "thumbnails"
+        isValidUrl(s?.file) && (s.kind ?? "").toLowerCase() !== "thumbnails"
     )
     .map((s: any) => ({
-      file: s.url,
-      lang: s.lang ?? "Unknown",
-      language: s.lang ?? "Unknown",
+      // subtitle files can be hotlink-walled too → serve them via the proxy.
+      file: proxify(s.file, headers),
+      lang: s.label ?? s.lang ?? "English",
+      language: s.label ?? s.lang ?? "English",
     }));
-
-  // AniSkip-style intro/outro times (e.g. from HiAnime/Zoro) drive the player's
-  // Skip Intro / Skip Outro buttons. Not every provider returns them.
-  const seg = (s: any) =>
-    s && typeof s.start === "number" && typeof s.end === "number" && s.end > s.start
-      ? { start: s.start, end: s.end }
-      : null;
 
   return {
     sources,
     subtitles,
-    fonts: [],
-    intro: seg(data?.intro),
-    outro: seg(data?.outro),
+    fonts: [] as never[],
+    intro: seg(block?.intro),
+    outro: seg(block?.outro),
   };
 }
 
-/** Fetch the stream sources for a provider-specific episode id. */
-export async function getSources(
-  episodeId: string,
-  provider: string
-): Promise<{
-  sources: VideoSource[];
-  subtitles: Subtitle[];
-  fonts: never[];
-  intro: { start: number; end: number } | null;
-  outro: { start: number; end: number } | null;
-}> {
-  if (!isProvider(provider))
-    return { sources: [], subtitles: [], fonts: [], intro: null, outro: null };
-  const data = await withTimeout(
-    clientFor(provider).fetchEpisodeSources(episodeId),
-    20000
-  );
-  return toSources(data);
+/** Stream sources for a "{anilistId}:{episodeNumber}" id on a given provider. */
+export async function getSources(episodeId: string, provider: string) {
+  const empty = {
+    sources: [],
+    subtitles: [],
+    fonts: [] as never[],
+    intro: null,
+    outro: null,
+  };
+  if (!isProvider(provider)) return empty;
+  const [anilistId, number] = String(episodeId).split(":");
+  if (!anilistId || !number) return empty;
+
+  const data = await coreFetch(
+    `/watch/${anilistId}/episode/${number}/${provider}`
+  ).catch(() => null);
+  // default to sub; dub can be wired later via a type param.
+  const block = data?.sub || data;
+  if (!block?.sources?.length) return empty;
+  return toSources(block, provider);
 }

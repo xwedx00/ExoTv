@@ -1,0 +1,24 @@
+diff --git a/node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js b/node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js
+index f8961fb..c7e8dc4 100644
+--- a/node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js
++++ b/node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js
+@@ -191,6 +191,7 @@ function handleAvailableHash(hash) {
+ }
+ function handleStaticIndicator() {
+     if (process.env.__NEXT_DEV_INDICATOR) {
++        if (!window.next || !window.next.router || !window.next.router.components) return;
+         const routeInfo = window.next.router.components[window.next.router.pathname];
+         const pageComponent = routeInfo?.Component;
+         const appComponent = window.next.router.components['/_app']?.Component;
+diff --git a/node_modules/next/dist/esm/client/dev/hot-reloader/pages/hot-reloader-pages.js b/node_modules/next/dist/esm/client/dev/hot-reloader/pages/hot-reloader-pages.js
+index bc45e4e..9119926 100644
+--- a/node_modules/next/dist/esm/client/dev/hot-reloader/pages/hot-reloader-pages.js
++++ b/node_modules/next/dist/esm/client/dev/hot-reloader/pages/hot-reloader-pages.js
+@@ -164,6 +164,7 @@ function handleAvailableHash(hash) {
+ }
+ export function handleStaticIndicator() {
+     if (process.env.__NEXT_DEV_INDICATOR) {
++        if (!window.next || !window.next.router || !window.next.router.components) return;
+         const routeInfo = window.next.router.components[window.next.router.pathname];
+         const pageComponent = routeInfo?.Component;
+         const appComponent = window.next.router.components['/_app']?.Component;

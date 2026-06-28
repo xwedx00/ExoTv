@@ -21,6 +21,9 @@ const convertSources = (sources: VideoSource[]) =>
   sources.map((source) => {
     if (source.useProxy) {
       source.file = createProxyUrl(source.file, source.proxy);
+      // Already proxied here — clear the flag so the player doesn't double-proxy
+      // it (`/api/proxy?url=/api/proxy?url=...`).
+      source.useProxy = false;
     }
 
     return source;

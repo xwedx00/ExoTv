@@ -1,6 +1,5 @@
 //@ts-nocheck
 import BaseLayout from "@/components/layouts/BaseLayout";
-import GlobalPlayerContextProvider from "@/contexts/GlobalPlayerContext";
 import "@/styles/index.css";
 import { appWithTranslation } from "@/lib/i18n";
 import { AppProps } from "next/app";
@@ -14,7 +13,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { ErrorBoundary } from "react-error-boundary";
 import { AppErrorFallback } from "@/components/shared/AppErrorFallback";
 import { Analytics } from '@vercel/analytics/react';
+import axios from "axios";
 
+// Force axios onto its native-fetch adapter. Its default XHR/Node-http adapter
+// hangs forever inside the Turbopack client bundle (themes, scene-search, etc.);
+// the fetch adapter works in both browser and Node.
+axios.defaults.adapter = "fetch";
 
 Router.events.on("routeChangeStart", NProgress.start);
 Router.events.on("routeChangeComplete", NProgress.done);
@@ -50,7 +54,6 @@ function App({ Component, pageProps, err }: WorkaroundAppProps) {
   };
   const [errorInfo, setErrorInfo] = useState<React.ErrorInfo>(null);
 
-
   const getLayout =
     // @ts-ignore
     Component.getLayout || ((page) => <BaseLayout>{page}</BaseLayout>);
@@ -84,9 +87,7 @@ function App({ Component, pageProps, err }: WorkaroundAppProps) {
                   );
                 }}
               >
-                <GlobalPlayerContextProvider>
-                  {getLayout(<Component {...pageProps} err={err} />)}
-                </GlobalPlayerContextProvider>
+                {getLayout(<Component {...pageProps} err={err} />)}
                 <Analytics />
               </ErrorBoundary>
             
