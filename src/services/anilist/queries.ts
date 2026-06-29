@@ -287,6 +287,29 @@ tags {
   userId
 }
 relations {
+  edges {
+    relationType
+    node {
+      id
+      idMal
+      type
+      format
+      seasonYear
+      episodes
+      chapters
+      title {
+        romaji
+        english
+        native
+        userPreferred
+      }
+      coverImage {
+        extraLarge
+        large
+        color
+      }
+    }
+  }
   nodes {
     ${mediaDefaultFields}
   }

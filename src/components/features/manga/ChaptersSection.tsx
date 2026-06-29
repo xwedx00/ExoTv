@@ -1,10 +1,13 @@
 //@ts-nocheck
+import RangePicker from "@/components/shared/RangePicker";
 import useChapters from "@/hooks/useChapters";
 import { fetchImagesData, imagesQueryKey } from "@/hooks/useFetchImages";
 import { Media } from "@/types/anilist";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+
+const CHUNK = 100;
 
 /**
  * Chapters guide on the manga details page (above the Characters section).
@@ -17,6 +20,14 @@ const ChaptersSection: React.FC<{ manga: Media }> = ({ manga }) => {
   const queryClient = useQueryClient();
   const id = manga?.id;
   const { data: chapters, isLoading } = useChapters(id);
+  const [range, setRange] = useState(0);
+
+  useEffect(() => setRange(0), [id]);
+
+  const visibleChapters = useMemo(
+    () => (chapters || []).slice(range * CHUNK, range * CHUNK + CHUNK),
+    [chapters, range]
+  );
 
   const prefetch = (chapter: any) => {
     queryClient.prefetchQuery({
@@ -28,12 +39,25 @@ const ChaptersSection: React.FC<{ manga: Media }> = ({ manga }) => {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-semibold">
-        Chapters
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="text-2xl font-semibold">
+          Chapters
+          {!isLoading && chapters?.length ? (
+            <span className="text-lg text-gray-500"> ({chapters.length})</span>
+          ) : null}
+        </h2>
         {!isLoading && chapters?.length ? (
-          <span className="text-lg text-gray-500"> ({chapters.length})</span>
+          <RangePicker
+            total={chapters.length}
+            chunkSize={CHUNK}
+            value={range}
+            onChange={setRange}
+            labelFor={(start, end) =>
+              `#${chapters[start]?.name} – #${chapters[Math.min(end, chapters.length) - 1]?.name}`
+            }
+          />
         ) : null}
-      </h2>
+      </div>
 
       {isLoading ? (
         <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
@@ -50,8 +74,8 @@ const ChaptersSection: React.FC<{ manga: Media }> = ({ manga }) => {
           external-only series on MangaDex).
         </p>
       ) : (
-        <div className="grid max-h-[640px] grid-cols-2 gap-2 overflow-y-auto pr-1 md:grid-cols-3">
-          {chapters.map((ch: any) => (
+        <div className="grid max-h-[660px] grid-cols-2 gap-2 overflow-y-auto pr-1 md:grid-cols-3">
+          {visibleChapters.map((ch: any) => (
             <Link
               key={ch.sourceChapterId}
               href={`/manga/read/${id}/${ch.sourceId}/${ch.sourceChapterId}`}
