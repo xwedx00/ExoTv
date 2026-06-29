@@ -55,7 +55,7 @@ const BrowseList: React.FC<BrowseListProps> = ({ defaultQuery }) => {
     <div className="min-h-screen">
       <form className="space-y-4">
         <Input
-          containerInputClassName="border border-white/80"
+          containerInputClassName="min-h-[46px] rounded-xl border border-white/10 bg-[rgba(17,25,40,0.55)] backdrop-blur-md transition focus-within:border-primary-500/60 focus-within:ring-2 focus-within:ring-primary-500/15"
           LeftIcon={AiOutlineSearch}
           onChange={handleInputChange}
           defaultValue={keyword}
