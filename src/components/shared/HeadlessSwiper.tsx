@@ -3,9 +3,8 @@ import classNames from "classnames";
 import React, { MutableRefObject, useEffect } from "react";
 import Swiper from "swiper";
 import { SwiperSlide as ReactSwiperSlide } from "swiper/react";
-import "swiper/swiper.min.css";
-import type SwiperClass from "swiper/types/swiper-class";
-import type { SwiperOptions } from "swiper/types/swiper-options";
+import "swiper/css";
+import type { Swiper as SwiperClass, SwiperOptions } from "swiper";
 
 export type SwiperInstance = SwiperClass;
 

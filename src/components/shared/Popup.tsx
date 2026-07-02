@@ -3,7 +3,7 @@ import Portal from "@/components/shared/Portal";
 import useDevice from "@/hooks/useDevice";
 import { Modifier, Options, Placement } from "@popperjs/core";
 import classNames from "classnames";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "motion/react";
 import React, { useCallback, useMemo, useState } from "react";
 import { usePopper } from "react-popper";
 

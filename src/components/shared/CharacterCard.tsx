@@ -14,7 +14,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character }) => {
     (<Link href={createCharacterDetailsUrl(character)}>
 
       <div className="space-y-2">
-        <div className="aspect-w-9 aspect-h-16 space-y-2">
+        <div className="relative aspect-[9/16] space-y-2">
           <Image
             src={character.image.large}
             alt={character.name.userPreferred}

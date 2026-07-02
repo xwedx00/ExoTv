@@ -39,7 +39,7 @@ const WatchedSwiperSkeleton = () => {
           {[...new Array(breakpoint.items)].map((_, index) => (
             <SkeletonItem
               key={index}
-              className="w-full col-span-1 aspect-w-16 aspect-h-9"
+              className="w-full col-span-1 relative aspect-video"
               container
             >
               <EpisodeCardSkeleton />

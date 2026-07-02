@@ -14,7 +14,7 @@ const VACard: React.FC<VACardProps> = ({ voiceActor }) => {
     (<Link href={createVoiceActorDetailsUrl(voiceActor)}>
 
       <div className="space-y-2">
-        <div className="aspect-w-9 aspect-h-16 space-y-2">
+        <div className="relative aspect-[9/16] space-y-2">
           <Image
             src={voiceActor.image.large}
             alt={voiceActor.name.userPreferred}

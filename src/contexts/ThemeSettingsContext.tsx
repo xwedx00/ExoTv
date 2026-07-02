@@ -22,7 +22,7 @@ const defaultSettings: Settings = {
   endMode: "repeat",
 };
 
-const LOCAL_STORAGE_KEY = "Exoexs_theme_settings";
+const LOCAL_STORAGE_KEY = "ExoTv_theme_settings";
 
 export const ThemeSettingsContextProvider: React.FC = ({ children }) => {
   const [settings, setSettings] = React.useState<Settings>(defaultSettings);

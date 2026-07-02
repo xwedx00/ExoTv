@@ -1,28 +1,17 @@
 //@ts-nocheck
-import { useUser } from "@/contexts/AuthContext";
-import { useSupabaseSingleQuery } from "@/utils/supabase";
-import supabaseClient from "@/lib/supabase";
-
-import { Read } from "@/types";
+import { readStore } from "@/lib/storage";
+import { useQuery } from "@tanstack/react-query";
 
 const useSavedRead = (mangaId: number) => {
-  const user = useUser();
-
-  return useSupabaseSingleQuery(
-    ["read", mangaId],
-    () =>
-      supabaseClient
-        .from<Read>("kaguya_read")
-        .select("chapter:chapterId(*)")
-        .eq("mediaId", mangaId)
-        .eq("userId", user.id)
-        .limit(1)
-        .single(),
-    {
-      enabled: !!user,
-      retry: 0,
-    }
-  );
+  return useQuery({
+    queryKey: ["read", mangaId],
+    queryFn: () => {
+      const entry = readStore.get(mangaId);
+      // Mirror the old joined shape the read page expects (savedReadData.chapter.*)
+      return entry ? { ...entry, chapter: entry } : null;
+    },
+    retry: 0
+  });
 };
 
 export default useSavedRead;

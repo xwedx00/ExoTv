@@ -3,21 +3,20 @@ import classNames from "classnames";
 import React, { useRef, useState } from "react";
 import { BiArrowToLeft, BiArrowToRight } from "react-icons/bi";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import SwiperCore, { Navigation } from "swiper";
+import type { Swiper as SwiperClass } from "swiper";
+import { Navigation } from "swiper/modules";
 import {
   Swiper as ReactSwiper,
   SwiperSlide as ReactSwiperSlide,
 } from "swiper/react";
-import "swiper/swiper.min.css";
-import type SwiperClass from "swiper/types/swiper-class";
+import "swiper/css";
+import "swiper/css/navigation";
 
 export type SwiperInstance = SwiperClass;
 export interface SwiperProps extends React.ComponentProps<typeof ReactSwiper> {
   isOverflowHidden?: boolean;
   defaultActiveSlide?: number;
 }
-
-SwiperCore.use([Navigation]);
 
 const breakpoints = {
   1280: {
@@ -64,6 +63,7 @@ const ArrowSwiper: React.FC<SwiperProps> = ({
 
   return (
     <ReactSwiper
+      modules={[Navigation]}
       spaceBetween={20}
       className={classNames(
         isOverflowHidden ? "!overflow-hidden" : "!overflow-visible",

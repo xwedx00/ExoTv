@@ -1,15 +1,15 @@
 //@ts-nocheck
 import { SkeletonProps } from "@/components/shared/Skeleton";
-import { SupabaseQueryFunction, SupabaseQueryOptions } from "@/utils/supabase";
-import { User } from "@supabase/gotrue-js";
-import { QueryKey } from "react-query";
+import { QueryKey } from "@tanstack/react-query";
 import { Media, MediaTitle as ALMediaTitle, MediaType } from "./anilist";
 
 export interface MediaTitle extends Partial<ALMediaTitle> {
   [key: string]: string;
 }
 
-export type AdditionalUser = User & {
+export type AdditionalUser = {
+  id: string;
+  email?: string;
   authRole: string;
   isVerified: boolean;
   avatarUrl: string;
@@ -21,12 +21,86 @@ export type AdditionalUser = User & {
 
 export type MediaDescription = Record<string, string>;
 
+export type SourceConnection = {
+  id: string;
+  sourceId: string;
+  sourceMediaId: string;
+  mediaId: number;
+  source: Source;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export interface AnimeSourceConnection extends SourceConnection {
+  episodes: Episode[];
+}
+
+export interface MangaSourceConnection extends SourceConnection {
+  chapters: Chapter[];
+}
+
+export type Source = {
+  id: string;
+  name: string;
+  locales: string[];
+  addedUserId?: string;
+  addedUser?: AdditionalUser;
+  isCustomSource: boolean;
+};
+
+export type Video = {
+  fonts: Attachment[];
+  subtitles: Attachment[];
+  video: FileInfo;
+  episodeId: string;
+  userId: string;
+  hostingId: string;
+};
+
+export type Hosting = {
+  id: string;
+  name: string;
+  supportedUrlFormats: string[];
+};
+
+export type Episode = {
+  name: string;
+  sourceConnectionId?: string;
+  sourceConnection?: AnimeSourceConnection;
+  sourceId: string;
+  sourceEpisodeId: string;
+  sourceMediaId: string;
+  source: Source;
+  slug: string;
+  thumbnail?: string;
+  video?: Video[];
+  published: boolean;
+  section: string;
+  title?: string;
+};
+
+export type Chapter = {
+  name: string;
+  sourceConnectionId?: string;
+  sourceConnection?: MangaSourceConnection;
+  sourceId: string;
+  sourceChapterId: string;
+  sourceMediaId: string;
+  source: Source;
+  slug: string;
+  title?: string;
+  images?: {
+    images: Attachment[];
+  }[];
+  published: boolean;
+};
+
 export interface Section<T> {
   title: string;
   query?: {
     key: QueryKey;
-    queryFn: SupabaseQueryFunction<T>;
-    options?: SupabaseQueryOptions<T>;
+    queryFn: (...args: any[]) => Promise<T[]> | T[];
+    options?: Record<string, any>;
   };
   skeleton: React.ComponentType<SkeletonProps>;
   render: (data: T[]) => React.ReactNode;
@@ -104,7 +178,29 @@ export interface Comment {
   mentioned_user_ids?: string[];
 }
 
+export type Subtitle = {
+  file: string;
+  lang: string;
+  language: string;
+};
 
+export type Font = {
+  file: string;
+};
+
+export type VideoSource = {
+  file: string;
+  label?: string;
+  useProxy?: boolean;
+  usePublicProxy?: boolean;
+  proxy?: Proxy;
+};
+
+export type ImageSource = {
+  image: string;
+  useProxy?: boolean;
+  proxy?: Proxy;
+};
 
 export type BasicRoomUser = {
   name?: string | null;
@@ -122,7 +218,13 @@ export type RoomUser = {
   useVoiceChat: boolean;
 } & BasicRoomUser;
 
-
+export type Translation = {
+  locale: string;
+  title: string;
+  description: string;
+  mediaId?: number;
+  mediaType?: string;
+};
 
 export type Room = {
   id: number;
@@ -137,6 +239,7 @@ export type Room = {
   title?: string;
   episodes: Episode[];
   visibility: "public" | "private";
+  translations: Translation[];
 };
 
 export type Chat = {
@@ -175,7 +278,7 @@ export type SourceStatus<T> = (T extends MediaType.Anime
       media?: Media;
     }) & {
   userId?: string;
-  user?: User;
+  user?: AdditionalUser;
   updated_at?: string;
   created_at?: string;
 };
@@ -205,6 +308,16 @@ export interface AnimeTheme {
   anilistId?: number;
 }
 
+export interface Proxy {
+  ignoreReqHeaders?: boolean;
+  followRedirect?: boolean;
+  redirectWithProxy?: boolean;
+  decompress?: boolean;
+  appendReqHeaders?: Record<string, string>;
+  appendResHeaders?: Record<string, string>;
+  deleteReqHeaders?: string[];
+  deleteResHeaders?: string[];
+}
 
 export type NotificationUser = {
   id: number;

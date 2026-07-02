@@ -4,7 +4,7 @@ import dayjs from "@/lib/dayjs";
 const START_YEAR = 1940;
 const CURRENT_YEAR = dayjs().year();
 
-export const WEBSITE_URL = "https://www.exoexs.com";
+export const WEBSITE_URL = "https://www.exotv.com";
 export const REVALIDATE_TIME = 86_400; // 24 hours
 export const SKIP_TIME = 90; // 1m30s
 

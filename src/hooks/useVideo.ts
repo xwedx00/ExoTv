@@ -2,7 +2,7 @@
 import { getMedia } from "@/services/anilist";
 import { Media, MediaArgs, PageArgs } from "@/types/anilist";
 import { AxiosError } from "axios";
-import { useQuery, UseQueryOptions } from "react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 const useVideo = () => {};
 

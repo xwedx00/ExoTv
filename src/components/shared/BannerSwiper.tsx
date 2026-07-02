@@ -4,7 +4,7 @@ import Swiper, { SwiperProps, SwiperSlide } from "@/components/shared/Swiper";
 import useDevice from "@/hooks/useDevice";
 import { Media } from "@/types/anilist";
 import { getTitle } from "@/utils/data";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -21,7 +21,10 @@ const BannerSwiper: React.FC<BannerSwiperProps> = ({ data, ...props }) => {
       slidesPerGroup={1}
       centerInsufficientSlides
       centeredSlides
-      loop
+      // Loop needs more slides than the widest slidesPerView (7); enabling it on
+      // a short list triggers Swiper's "not enough slides for loop" warning.
+      loop={(data?.length ?? 0) > 8}
+      loopAdditionalSlides={7}
       slidesPerView={2}
       spaceBetween={20}
       breakpoints={{

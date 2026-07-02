@@ -17,6 +17,9 @@ export const mediaDefaultFields = `
 id
 type
 title {
+  romaji
+  english
+  native
   userPreferred
 }
 coverImage {
@@ -260,6 +263,12 @@ coverImage {
   color
 }
 bannerImage
+streamingEpisodes {
+  title
+  thumbnail
+  url
+  site
+}
 genres
 synonyms
 averageScore
@@ -278,6 +287,29 @@ tags {
   userId
 }
 relations {
+  edges {
+    relationType
+    node {
+      id
+      idMal
+      type
+      format
+      seasonYear
+      episodes
+      chapters
+      title {
+        romaji
+        english
+        native
+        userPreferred
+      }
+      coverImage {
+        extraLarge
+        large
+        color
+      }
+    }
+  }
   nodes {
     ${mediaDefaultFields}
   }
@@ -512,6 +544,9 @@ media {
   type
   id
   title {
+    romaji
+    english
+    native
     userPreferred
   }
   coverImage {

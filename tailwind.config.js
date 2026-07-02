@@ -1,7 +1,6 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  mode: "jit",
   content: [
     "./src/components/**/*.{ts,tsx,js,jsx}",
     "./src/pages/**/*.{ts,tsx,js,jsx}",
@@ -31,7 +30,6 @@ module.exports = {
   },
 
   plugins: [
-    require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/typography"),
   ],
 };

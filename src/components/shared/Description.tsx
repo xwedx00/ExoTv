@@ -1,20 +1,27 @@
 //@ts-nocheck
+import { sanitizeHtml } from "@/utils/sanitize";
+import classNames from "classnames";
 import React from "react";
-import Editor, { EditorProps } from "../features/comment/Editor";
-import { Editor as EditorType } from "@tiptap/react";
 
-export interface DescriptionProps extends EditorProps {
+export interface DescriptionProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   description: string;
 }
 
-const Description = React.forwardRef<EditorType, DescriptionProps>(
-  ({ description, ...props }, ref) => {
+/**
+ * Renders an AniList HTML description. Previously this wrapped a read-only tiptap
+ * editor; tiptap has been removed, so it now renders sanitized HTML directly.
+ */
+const Description = React.forwardRef<HTMLDivElement, DescriptionProps>(
+  ({ description, className, ...props }, ref) => {
     return (
-      <Editor
+      <div
         ref={ref}
-        readOnly
-        defaultContent={description}
-        editorClassName="text-base text-gray-300 hover:text-gray-100"
+        className={classNames(
+          "text-base text-gray-300 hover:text-gray-100 [&_a]:text-primary-300 [&_a]:underline",
+          className
+        )}
+        dangerouslySetInnerHTML={{ __html: sanitizeHtml(description || "") }}
         {...props}
       />
     );

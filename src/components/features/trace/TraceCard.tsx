@@ -3,7 +3,7 @@ import { TraceImageResult } from "@/hooks/useTraceImage";
 import { parseTime } from "@/utils";
 import { getTitle } from "@/utils/data";
 import classNames from "classnames";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import { useRouter } from "next/router";
 import React from "react";
 

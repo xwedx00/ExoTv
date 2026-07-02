@@ -1,11 +1,9 @@
 //@ts-nocheck
-import supabaseClient from "@/lib/supabase";
-
 import { getMedia } from "@/services/anilist";
 import { Media, MediaType } from "@/types/anilist";
 import axios from "axios";
 import { ImageType } from "react-images-uploading";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 interface RawTraceImageResult {
@@ -75,8 +73,8 @@ const composeData = (
 };
 
 export const useTraceImage = () => {
-  return useMutation<TraceImageResponse, Error, ImageType, any>(
-    async (image) => {
+  return useMutation({
+    mutationFn: async (image) => {
       let data: RawTraceImageResponse;
 
       if (image?.file) {
@@ -110,12 +108,11 @@ export const useTraceImage = () => {
 
       return newData;
     },
-    {
-      onError: (error) => {
-        toast.error(error.message);
-      },
+
+    onError: (error) => {
+      toast.error(error.message);
     }
-  );
+  });
 };
 
 export default useTraceImage;

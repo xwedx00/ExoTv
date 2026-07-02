@@ -1,0 +1,19 @@
+{
+  "name": "ExoTv",
+  "short_name": "ExoTv",
+  "description": "Stream anime and read manga on ExoTv.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#100f0f",
+  "theme_color": "#ef4444",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

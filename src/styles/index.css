@@ -1,6 +1,30 @@
 @import './local-fonts.css';
-@import "tailwindcss/base";
-@import "tailwindcss/components";
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+/* ── ExoTv design-system tokens (frosted glass + motion) ──────────────────
+   Phase A of the redesign. Glass surfaces are dark + saturated (saturate is
+   mandatory so blur doesn't grey out anime art). See exotv-redesign-spec. */
+@theme {
+  --radius-chip: 8px;
+  --radius-card: 12px;
+  --radius-panel: 16px;
+  --radius-modal: 20px;
+  --radius-pill: 100vw;
+
+  --ease-out-quart: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-brisk: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-snap: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-accordion: cubic-bezier(0.04, 0.62, 0.23, 0.98);
+}
+
+/* preserve v3 default border color (v4 defaults to currentColor) */
+@layer base {
+  *, ::after, ::before, ::backdrop, ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 body {
   font-family: "Manrope", Arial, sans-serif;
@@ -38,11 +62,16 @@ main {
 
 @media screen and (min-width: 768px) {
   .banner__overlay {
+    /* Strong left wash for title legibility + a bottom wash (in the page bg
+       colour) so the hero melts into the carousel below instead of cutting off. */
     background-image: linear-gradient(
-      77deg,
-      rgba(0, 0, 0, 0.8) 25%,
-      transparent 85%
-    );
+        90deg,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.62) 30%,
+        rgba(0, 0, 0, 0.15) 62%,
+        transparent 82%
+      ),
+      linear-gradient(0deg, rgba(8, 11, 20, 0.9) 0%, transparent 38%);
 
     background-color: transparent;
   }
@@ -116,6 +145,12 @@ main {
   transform: rotate(3deg) translate(0px, -4px);
 }
 
+/* Swiper's default nav color is iOS blue (#007aff) — make the arrows white. */
+:root {
+  --swiper-navigation-color: #ffffff;
+  --swiper-theme-color: #ffffff;
+}
+
 .swiper-button {
   @apply flex items-center justify-center p-2 text-white transition duration-300 border-2 border-white rounded-full cursor-pointer hover:bg-white hover:text-black;
 }
@@ -142,4 +177,107 @@ main {
 
 .controls-container .control-button {
   @apply w-8 h-8;
+}
+
+/* ── Frosted-glass surface primitives ─────────────────────────────────────
+   Use as `className="glass-regular"` etc. Tier = z-depth (see spec §1.1). */
+@utility glass-thin {
+  background-color: rgba(17, 25, 40, 0.42);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+@utility glass-regular {
+  background-color: rgba(17, 25, 40, 0.55);
+  backdrop-filter: blur(16px) saturate(170%);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+@utility glass-thick {
+  background-color: rgba(12, 14, 22, 0.75);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+@utility glass-pill {
+  background-color: rgba(12, 14, 22, 0.72);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.48);
+}
+@utility glass-dense {
+  background-color: rgba(17, 25, 40, 0.88);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Skeleton shimmer (replaces animate-pulse on loaders). */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Shimmer fill used by the shared <Image> while bytes decode. Sits behind the
+   image and fades out on load. Dark base + a travelling highlight sweep. */
+.exotv-img__shimmer {
+  background-color: rgba(255, 255, 255, 0.035);
+  background-image: linear-gradient(
+    110deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.08) 55%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+/* Ambient backdrop behind app content so dark glass is visible (not on the
+   pure-black watch/read/themes pages, which opt out of BaseLayout). */
+.exotv-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(88, 28, 135, 0.4) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(6, 78, 59, 0.32) 0%, transparent 55%),
+    #080b14;
+}
+
+/* Capability + accessibility fallbacks. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass-thin,
+  .glass-regular,
+  .glass-thick,
+  .glass-pill,
+  .glass-dense {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(17, 25, 40, 0.92) !important;
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-thin,
+  .glass-regular,
+  .glass-thick,
+  .glass-pill,
+  .glass-dense {
+    background-color: rgba(17, 25, 40, 0.92);
+  }
 }

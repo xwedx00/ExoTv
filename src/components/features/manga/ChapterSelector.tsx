@@ -5,7 +5,7 @@ import Select from "@/components/shared/Select";
 import { Chapter } from "@/types";
 import { groupBy, sortObjectByValue } from "@/utils";
 import classNames from "classnames";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";

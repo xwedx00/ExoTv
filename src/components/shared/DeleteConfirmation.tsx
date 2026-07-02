@@ -1,6 +1,6 @@
 //@ts-nocheck
 import classNames from "classnames";
-import { Trans, Translation, useTranslation } from "next-i18next";
+import { Trans, Translation, useTranslation } from "@/lib/i18n";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import Button from "./Button";

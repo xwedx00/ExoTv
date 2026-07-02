@@ -7,7 +7,7 @@ import { Read } from "@/types";
 import { getTitle } from "@/utils/data";
 import React from "react";
 import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 
 const composeData = (data: Read, locale?: string) => {
   const title = getTitle(data.media, locale);

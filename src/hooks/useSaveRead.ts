@@ -1,9 +1,6 @@
 //@ts-nocheck
-import { useUser } from "@/contexts/AuthContext";
-import supabaseClient from "@/lib/supabase";
-import { Read, SourceStatus } from "@/types";
-import { MediaType } from "@/types/anilist";
-import { useMutation, useQueryClient } from "react-query";
+import { readStatusStore, readStore } from "@/lib/storage";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface MutationInput {
   media_id: number;
@@ -11,40 +8,32 @@ interface MutationInput {
 }
 
 const useSaveRead = () => {
-  const user = useUser();
   const queryClient = useQueryClient();
 
-  return useMutation(async (data: MutationInput) => {
-    if (!user) return;
+  return useMutation({
+    mutationFn: async (data: MutationInput) => {
+      const { chapter_id, media_id } = data;
 
-    const { chapter_id, media_id } = data;
-
-    const sourceStatus = queryClient.getQueryData<
-      SourceStatus<MediaType.Manga>
-    >(["kaguya_read_status", media_id]);
-
-    if (sourceStatus?.status !== "COMPLETED") {
-      await supabaseClient.from("kaguya_read_status").upsert({
-        userId: user.id,
+      readStore.set({
         mediaId: media_id,
-        status: "READING",
+        chapterId: chapter_id,
+      });
+
+      if (readStatusStore.get(media_id) !== "COMPLETED") {
+        readStatusStore.set(media_id, "READING");
+      }
+
+      return true;
+    },
+
+    onSuccess: (_, { media_id }) => {
+      queryClient.invalidateQueries({
+        queryKey: ["read", media_id]
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["kaguya_read_status", media_id]
       });
     }
-
-    const { error: upsertError } = await supabaseClient
-      .from<Read>("kaguya_read")
-      .upsert(
-        {
-          mediaId: media_id,
-          userId: user.id,
-          chapterId: chapter_id,
-        },
-        { returning: "minimal" }
-      );
-
-    if (upsertError) throw upsertError;
-
-    return true;
   });
 };
 

@@ -1,11 +1,8 @@
 //@ts-nocheck
 import enTranslations from "@/constants/en";
-import viTranslations from "@/constants/vi";
-import ruTranslations from "@/constants/ru";
-import esTranslations from "@/constants/es";
 import { Chapter, Episode, Translation as TranslationType } from "@/types";
 import { Media } from "@/types/anilist";
-import { Translation } from "next-i18next";
+import { Translation } from "@/lib/i18n";
 import { parseNumbersFromString } from ".";
 
 type Translate = { readonly value: string; readonly label: string } & Record<
@@ -32,19 +29,9 @@ type TranslationKeys = [
 ];
 type Translation = Record<TranslationKeys[number], Translate[]>;
 
-export const getConstantTranslation = (locale: string) => {
-  switch (locale) {
-    case "vi":
-      return viTranslations;
-    case "en":
-      return enTranslations;
-    case "ru":
-      return ruTranslations;
-    case "es":
-      return esTranslations;
-    default:
-      return enTranslations;
-  }
+export const getConstantTranslation = (_locale?: string) => {
+  // English-only app; the non-English locale constant files were removed.
+  return enTranslations;
 };
 
 const composeTranslation = (translation: Translation) => {
@@ -103,28 +90,38 @@ export const convert = (
   return constant[index].label;
 };
 
-export const getTitle = (data: Media, locale?: string) => {
-  const translations = data?.translations || [];
+// English-only titles. The second arg may be a legacy `locale` string (ignored)
+// or `{ forceNative }`. Default returns the official English title (instead of
+// AniList's romaji `userPreferred`); details pages pass forceNative to keep the
+// original/canonical name.
+type TitleOptions = string | { forceNative?: boolean } | undefined;
 
-  const translation = translations.find((trans) => trans.locale === locale);
+const titleOptions = (opts: TitleOptions) =>
+  opts && typeof opts === "object" ? opts : {};
 
-  if (!translation) {
-    return data?.title?.userPreferred;
+export const getTitle = (data: Media, opts?: TitleOptions) => {
+  if (!data) return "";
+
+  const title = data.title || ({} as any);
+
+  if (titleOptions(opts).forceNative) {
+    return (
+      title.userPreferred || title.native || title.romaji || title.english || ""
+    );
   }
 
-  return translation.title || data?.title?.userPreferred;
+  // English (default)
+  return (
+    title.english || title.userPreferred || title.romaji || title.native || ""
+  );
 };
 
-export const getDescription = (data: Media, locale?: string) => {
-  const translations = data?.translations || [];
+export const getDescription = (data: Media) => {
+  if (!data) return "";
 
-  const translation = translations.find((trans) => trans.locale === locale);
-
-  if (!translation) {
-    return data?.description;
-  }
-
-  return translation.description || data?.description;
+  const translations = data.translations || [];
+  const en = translations.find((t) => t.locale === "en");
+  return en?.description || data.description || "";
 };
 
 export const sortMediaUnit = <T extends Chapter | Episode>(data: T[]) => {

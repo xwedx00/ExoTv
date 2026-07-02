@@ -8,7 +8,7 @@ import TextIcon from "@/components/shared/TextIcon";
 import { Media } from "@/types/anilist";
 import { createMediaDetailsUrl, isValidUrl, numberWithCommas } from "@/utils";
 import { convert, getDescription, getTitle } from "@/utils/data";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, {
@@ -40,13 +40,20 @@ const bannerVariants = {
 const transition = [0.33, 1, 0.68, 1];
 
 const HomeBanner: React.FC<HomeBannerProps> = ({ data, isLoading }) => {
+  // Only feature titles that actually have a banner image — skip the rest so the
+  // hero never shows a blank/placeholder background.
+  const slides = useMemo(
+    () => (data || []).filter((media) => isValidUrl(media?.bannerImage)),
+    [data]
+  );
+
   return (
     <React.Fragment>
       <BrowserView>
         {isLoading ? (
           <DesktopHomeBannerSkeleton />
         ) : (
-          <DesktopHomeBanner data={data} />
+          <DesktopHomeBanner data={slides} />
         )}
       </BrowserView>
 
@@ -54,7 +61,7 @@ const HomeBanner: React.FC<HomeBannerProps> = ({ data, isLoading }) => {
         {isLoading ? (
           <MobileHomeBannerSkeleton />
         ) : (
-          <MobileHomeBanner data={data} />
+          <MobileHomeBanner data={slides} />
         )}
       </MobileView>
     </React.Fragment>
@@ -63,6 +70,8 @@ const HomeBanner: React.FC<HomeBannerProps> = ({ data, isLoading }) => {
 
 const MobileHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
   const { locale } = useRouter();
+
+  if (!data?.length) return <MobileHomeBannerSkeleton />;
 
   return (
     <Swiper
@@ -79,7 +88,7 @@ const MobileHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
           <SwiperSlide key={index}>
             <Link href={createMediaDetailsUrl(slide)}>
 
-              <div className="aspect-w-16 aspect-h-9 relative rounded-md">
+              <div className="relative aspect-video relative rounded-md">
                 {slide.bannerImage && (
                   <Image
                     src={slide.bannerImage}
@@ -133,7 +142,7 @@ const MobileHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
 
 const MobileHomeBannerSkeleton = () => (
   <Skeleton>
-    <SkeletonItem className="aspect-w-16 aspect-h-9 rounded-md" />
+    <SkeletonItem className="relative aspect-video rounded-md" />
   </Skeleton>
 );
 
@@ -145,12 +154,10 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
   const isRanOnce = useRef(false);
   const { locale } = useRouter();
 
-  const activeSlide = useMemo(() => data[index], [data, index]);
+  const activeSlide = useMemo(() => data?.[index], [data, index]);
 
   const handleSlideChange: SwiperProps["onSlideChange"] = useCallback(
     (swiper) => {
-      swiper.loopCreate;
-
       setIndex(swiper.realIndex);
     },
     []
@@ -169,9 +176,11 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
     setShowTrailer(false);
   }, [activeSlide]);
 
+  if (!activeSlide) return <DesktopHomeBannerSkeleton />;
+
   return (
     <React.Fragment>
-      <div className="group relative w-full overflow-hidden md:h-[450px] xl:h-[500px] 2xl:h-[550px]">
+      <div className="group relative mx-4 overflow-hidden rounded-2xl md:mx-8 md:h-[450px] lg:mx-12 xl:h-[500px] 2xl:h-[550px]">
         <AnimatePresence>
           {isValidUrl(activeSlide.bannerImage) && !showTrailer && (
             <motion.div
@@ -179,8 +188,9 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
               animate="animate"
               exit="exit"
               initial="initial"
-              className="h-0 w-full"
+              className="absolute inset-0"
               key={title}
+              transition={{ duration: 0.7, ease: transition }}
             >
               <Image
                 src={activeSlide.bannerImage}
@@ -188,6 +198,7 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
                 objectFit="cover"
                 objectPosition="50% 35%"
                 alt={title}
+                priority
               />
             </motion.div>
           )}
@@ -207,7 +218,7 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
             {title}
           </h1>
 
-          <div className="mt-4 flex flex-wrap items-center gap-x-8 text-lg">
+          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-base md:text-lg">
             {activeSlide.averageScore && (
               <TextIcon LeftIcon={MdTagFaces} iconClassName="text-green-300">
                 <p>{activeSlide.averageScore}%</p>
@@ -227,7 +238,7 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
 
           <Description
             description={description}
-            className="text-gray-300 hover:text-gray-100 transition duration-300 line-clamp-4 mb-2"
+            className="mt-4 text-sm text-gray-300/90 hover:text-gray-100 transition duration-300 line-clamp-3 md:line-clamp-4 md:text-base"
           />
         </motion.div>
 
@@ -236,7 +247,7 @@ const DesktopHomeBanner: React.FC<HomeBannerProps> = ({ data }) => {
           <CircleButton
             LeftIcon={AiFillPlayCircle}
             outline
-            className="absolute left-2/3 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 md:block"
+            className="absolute left-2/3 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 transition-transform duration-300 group-hover:scale-110 md:block"
             iconClassName="w-16 h-16"
           />
 

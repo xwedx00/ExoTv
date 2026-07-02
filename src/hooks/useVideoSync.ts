@@ -1,7 +1,9 @@
 //@ts-nocheck
 // https://github.com/hoangvu12/video-sync/blob/main/public/index.js
 
-import { useUser } from "@/contexts/AuthContext";
+// TODO(Phase 4/5): wire to in-app API route / socket server
+// `useUser` previously came from the deleted `@/contexts/AuthContext` (Supabase auth).
+// Stubbed to `null` until in-app auth lands so host detection can be re-wired.
 import { useRoomInfo } from "@/contexts/RoomContext";
 import { sleep } from "@/utils";
 import { useEffect, useMemo, useRef } from "react";
@@ -44,7 +46,9 @@ const median = (values: number[]) => {
 const useVideoSync = () => {
   const { room, socket } = useRoomInfo();
   const playerRef = useRef<HTMLVideoElement>();
-  const user = useUser();
+  // TODO(Phase 4/5): wire to in-app API route / socket server
+  // Replace with real authenticated user once in-app auth exists.
+  const user: { id: string } | null = null;
   const overEstimates = useRef<number[]>([]);
   const underEstimates = useRef<number[]>([]);
   const overEstimate = useRef<number>(0);

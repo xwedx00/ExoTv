@@ -1,34 +1,17 @@
-const { i18n } = require("./next-i18next.config");
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: false,
+  // Next 16.2 (Turbopack) dev "static indicator" crashes its HMR handler on the
+  // `isrManifest` message ("Cannot read properties of undefined (reading
+  // 'components')"), which breaks Fast Refresh. Disable it.
+  devIndicators: false,
   images: {
-    domains: [
-      "s4.anilist.co",
-      "res.cloudinary.com",
-      "lh3.googleusercontent.com",
-      "platform-lookaside.fbsbx.com",
-      "i.ibb.co",
-      "thumb.tapecontent.net",
-      "emojis.slackmojis.com",
-      "pic-bstarstatic.akamaized.net",
+    remotePatterns: [
+      { protocol: "https", hostname: "**" },
+      { protocol: "http", hostname: "**" },
     ],
-    minimumCacheTTL: 604800, // a week,
-  },
-  i18n,
-  webpack: (config) => {
-    config.resolve.fallback = { fs: false };
-    return config;
-  },
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-    ];
+    minimumCacheTTL: 604800,
   },
 };
+
+module.exports = nextConfig;

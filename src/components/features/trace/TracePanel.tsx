@@ -8,7 +8,7 @@ import TextIcon from "@/components/shared/TextIcon";
 import { TraceImageResponse } from "@/hooks/useTraceImage";
 import { createMediaDetailsUrl, numberWithCommas } from "@/utils";
 import { convert, getDescription, getTitle } from "@/utils/data";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useCallback, useMemo, useState } from "react";
@@ -68,7 +68,7 @@ const TracePanel: React.FC<TracePanelProps> = ({ data, image }) => {
         ))}
       </div>
       <div className="h-max w-full space-y-4 bg-background-900 md:w-[70%]">
-        <div className="aspect-h-9 aspect-w-16 w-full">
+        <div className="relative aspect-video w-full">
           <video
             src={`${card.video}&size=l`}
             loop

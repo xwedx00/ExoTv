@@ -4,13 +4,13 @@ import {
   Swiper as ReactSwiper,
   SwiperSlide as ReactSwiperSlide,
 } from "swiper/react";
-import SwiperCore, { Navigation } from "swiper";
-import type SwiperClass from "swiper/types/swiper-class";
+import { Navigation } from "swiper/modules";
+import type { Swiper as SwiperClass } from "swiper";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-import "swiper/swiper.min.css";
+import "swiper/css";
+import "swiper/css/navigation";
 
-import CircleButton from "@/components/shared/CircleButton";
 import classNames from "classnames";
 
 export type SwiperInstance = SwiperClass;
@@ -19,8 +19,6 @@ export interface SwiperProps extends React.ComponentProps<typeof ReactSwiper> {
   isOverflowHidden?: boolean;
   defaultActiveSlide?: number;
 }
-
-SwiperCore.use([Navigation]);
 
 const Swiper: React.FC<SwiperProps> = ({
   children,
@@ -36,6 +34,7 @@ const Swiper: React.FC<SwiperProps> = ({
 
   return (
     <ReactSwiper
+      modules={[Navigation]}
       className={classNames(
         isOverflowHidden ? "!overflow-hidden" : "!overflow-visible",
         className
@@ -73,15 +72,24 @@ const Swiper: React.FC<SwiperProps> = ({
         },
       }}
       grabCursor
-      onInit={(swiper) => {
+      simulateTouch
+      allowTouchMove
+      threshold={3}
+      touchStartPreventDefault={false}
+      navigation={{
+        prevEl: prevButtonRef.current,
+        nextEl: nextButtonRef.current,
+      }}
+      onBeforeInit={(swiper) => {
+        // Bind the custom arrow buttons BEFORE the Navigation module initialises.
+        // The old code did this in onInit — too late, so navigation was wired to
+        // null refs and the arrows did nothing.
         // @ts-ignore
-        // eslint-disable-next-line no-param-reassign
         swiper.params.navigation.prevEl = prevButtonRef.current;
         // @ts-ignore
-        // eslint-disable-next-line no-param-reassign
         swiper.params.navigation.nextEl = nextButtonRef.current;
-        swiper.navigation.update();
-
+      }}
+      onInit={(swiper) => {
         if (defaultActiveSlide) {
           swiper.slideTo(defaultActiveSlide);
         }
@@ -95,20 +103,24 @@ const Swiper: React.FC<SwiperProps> = ({
       {!hideNavigation && (
         <div
           slot="container-end"
-          className="swiper-navigation absolute right-0 bottom-full mb-4 flex space-x-4"
+          className="swiper-navigation pointer-events-none absolute bottom-full right-0 mb-6 flex gap-2.5"
         >
-          <CircleButton
+          <button
             ref={prevButtonRef}
-            outline
-            LeftIcon={FiChevronLeft}
-            className="swiper-button-prev flex items-center justify-center"
-          />
-          <CircleButton
+            type="button"
+            aria-label="Previous"
+            className="exotv-nav-btn pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/20 backdrop-blur-md transition duration-300 hover:bg-white hover:text-black"
+          >
+            <FiChevronLeft className="h-5 w-5" />
+          </button>
+          <button
             ref={nextButtonRef}
-            outline
-            LeftIcon={FiChevronRight}
-            className="swiper-button-next flex items-center justify-center"
-          />
+            type="button"
+            aria-label="Next"
+            className="exotv-nav-btn pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/20 backdrop-blur-md transition duration-300 hover:bg-white hover:text-black"
+          >
+            <FiChevronRight className="h-5 w-5" />
+          </button>
         </div>
       )}
     </ReactSwiper>

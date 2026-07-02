@@ -4,7 +4,7 @@ import CircleButton from "@/components/shared/CircleButton";
 import Input from "@/components/shared/Input";
 import { isValidUrl } from "@/utils";
 import classNames from "classnames";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import React, { useState } from "react";
 import { AiOutlineCloudUpload, AiOutlineSearch } from "react-icons/ai";
 import { MdOutlineDelete, MdOutlineRestartAlt } from "react-icons/md";

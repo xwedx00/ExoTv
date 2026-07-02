@@ -7,7 +7,7 @@ import VABrowseList from "@/components/features/va/VABrowseList";
 import Head from "@/components/shared/Head";
 import Select from "@/components/shared/Select";
 import useConstantTranslation from "@/hooks/useConstantTranslation";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
 import Section from "@/components/shared/Section";
@@ -26,33 +26,48 @@ const convertQueryToArray = <T,>(query: T[]) => {
 };
 
 const typeSelectStyles = {
-  control: (provided) => {
-    return {
-      ...provided,
-      backgroundColor: "#1a1a1a",
-      border: 0,
-      boxShadow: "none",
-      padding: "0.25rem",
-    };
-  },
-  singleValue: (provided) => {
-    return {
-      ...provided,
-      fontSize: "2.25rem",
-      lineHeight: "2.5rem",
-      color: "white",
-      fontWeight: 600,
-    };
-  },
-  placeholder: (provided) => {
-    return {
-      ...provided,
-      fontSize: "2.25rem",
-      lineHeight: "2.5rem",
-      color: "white",
-      fontWeight: 600,
-    };
-  },
+  control: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused
+      ? "rgba(255,255,255,0.08)"
+      : "rgba(255,255,255,0.04)",
+    border: 0,
+    boxShadow: "none",
+    borderRadius: "0.85rem",
+    padding: "0 0.35rem",
+    cursor: "pointer",
+    transition: "background-color 200ms",
+    ":hover": { backgroundColor: "rgba(255,255,255,0.08)" },
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    fontSize: "2.25rem",
+    lineHeight: "2.5rem",
+    color: "white",
+    fontWeight: 600,
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    fontSize: "2.25rem",
+    lineHeight: "2.5rem",
+    color: "white",
+    fontWeight: 600,
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    color: "rgba(255,255,255,0.55)",
+    ":hover": { color: "#fff" },
+  }),
+  menu: (provided) => ({
+    ...provided,
+    backgroundColor: "rgba(17,25,40,0.92)",
+    backdropFilter: "blur(16px) saturate(170%)",
+    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: "0.75rem",
+    overflow: "hidden",
+    minWidth: "13rem",
+    boxShadow: "0 16px 40px rgba(0,0,0,0.5)",
+  }),
 };
 
 const BrowsePage = ({ query: baseQuery }) => {
@@ -108,8 +123,8 @@ const BrowsePage = ({ query: baseQuery }) => {
   return (
     <Section className="py-20">
       <Head
-        title={`Search ${chosenType.label} - Exoexs`}
-        description={`Search ${chosenType.label} in Exoexs`}
+        title={`Search ${chosenType.label} - ExoTv`}
+        description={`Search ${chosenType.label} in ExoTv`}
       />
 
       <div className="mb-8 flex items-center space-x-2">

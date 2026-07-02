@@ -1,33 +1,25 @@
 //@ts-nocheck
 import { getMediaDetails } from "@/services/anilist";
 import { mediaDefaultFields } from "@/services/anilist/queries";
+import { readStore } from "@/lib/storage";
 import { Read } from "@/types";
 import { MediaType } from "@/types/anilist";
-import supabaseClient from "@/lib/supabase";
 
-import { useUser } from "@/contexts/AuthContext";
 import { isMobile } from "react-device-detect";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const useMangaRecommendedList = () => {
-  const user = useUser();
+  return useQuery({
+    queryKey: ["manga", "recommended"],
 
-  return useQuery<Read>(
-    ["manga", "recommended"],
-    async () => {
-      const { data, error } = await supabaseClient
-        .from<Read>("kaguya_read")
-        .select("mediaId")
-        .eq("userId", user.id)
-        .order("updated_at", { ascending: false })
-        .limit(1)
-        .single();
+    queryFn: async () => {
+      const mediaId = readStore.recent(1)[0]?.mediaId;
 
-      if (error) throw error;
+      if (!mediaId) return null;
 
       const media = await getMediaDetails(
         {
-          id: data.mediaId,
+          id: mediaId,
           perPage: 1,
           type: MediaType.Manga,
         },
@@ -51,12 +43,11 @@ const useMangaRecommendedList = () => {
       );
 
       return {
-        ...data,
+        mediaId,
         media,
       };
-    },
-    { enabled: !!user }
-  );
+    }
+  });
 };
 
 export default useMangaRecommendedList;

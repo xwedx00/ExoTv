@@ -15,7 +15,17 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({
 }) => {
   return (
     <main>
-      {showHeader && <Header />}
+      {showHeader && (
+        <>
+          {/* Top scrim so scrolling content fades out cleanly behind the
+              floating pill header instead of bleeding raw up to the edge. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none fixed inset-x-0 top-0 z-40 h-24 bg-gradient-to-b from-background via-background/55 to-transparent"
+          />
+          <Header />
+        </>
+      )}
 
       <div className="app">{children}</div>
 

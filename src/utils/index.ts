@@ -1,5 +1,4 @@
 //@ts-nocheck
-import config from "@/config";
 import dayjs from "@/lib/dayjs";
 import { Proxy } from "@/types";
 import {
@@ -422,37 +421,19 @@ export const createFileFromUrl = async (url: string, filename: string) => {
 
 export const createProxyUrl = (
   url: string,
-  proxy: Proxy,
+  proxy?: Proxy,
   isPublicProxy?: boolean
 ) => {
   if (isPublicProxy) return `https://corsproxy.io/?${encodeURIComponent(url)}`;
 
-  const composeHeaders = (
-    headers: Record<string, string>
-  ): [string, string][] => {
-    return Object.entries(headers).map(([key, value]) => [key, value]);
-  };
+  // Route through the in-app /api/proxy (CORS + Referer/Origin injection).
+  const reqHeaders = proxy?.appendReqHeaders;
+  const headersParam =
+    reqHeaders && Object.keys(reqHeaders).length
+      ? `&headers=${encodeURIComponent(JSON.stringify(reqHeaders))}`
+      : "";
 
-  const { appendReqHeaders = {}, appendResHeaders = {}, ...rest } = proxy;
-
-  const modifiedAppendReqHeaders = JSON.stringify(
-    composeHeaders(appendReqHeaders)
-  );
-  const modifiedAppendResHeaders = JSON.stringify(
-    composeHeaders(appendResHeaders)
-  );
-
-  const params = stringify({
-    appendReqHeaders: modifiedAppendReqHeaders,
-    appendResHeaders: modifiedAppendResHeaders,
-    ...rest,
-  });
-
-  return `${config.proxyServerUrl}/?url=${encodeURIComponent(url)}&${params}`;
-};
-
-export const createAttachmentUrl = (url: string) => {
-  return `${config.nodeServerUrl}/file/${url}`;
+  return `/api/proxy?url=${encodeURIComponent(url)}${headersParam}`;
 };
 
 export const createMediaDetailsUrl = (media: Media) => {

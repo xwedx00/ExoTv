@@ -78,7 +78,7 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ voiceActor }) => {
   return (
     <>
       <Head
-        title={`${voiceActor.name.userPreferred} - Exoexs`}
+        title={`${voiceActor.name.userPreferred} - ExoTv`}
         image={voiceActor.image.large}
       />
 

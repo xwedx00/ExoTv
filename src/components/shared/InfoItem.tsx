@@ -12,9 +12,9 @@ const InfoItem: React.FC<InfoItemProps> = ({ title, value, className }) => {
   return value ? (
     <div className={classNames("text-gray-400", className)}>
       <p className="font-semibold">{title}</p>
-      <p className="whitespace-pre-line flex flex-row md:flex-col gap-2">
+      <div className="whitespace-pre-line flex flex-row md:flex-col gap-2">
         {value}
-      </p>
+      </div>
     </div>
   ) : null;
 };

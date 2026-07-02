@@ -38,7 +38,7 @@ const CommentsSwiperSkeleton = () => {
           {[...new Array(breakpoint.items)].map((_, index) => (
             <SkeletonItem
               key={index}
-              className="col-span-1 w-full rounded-lg aspect-w-1 aspect-h-1"
+              className="col-span-1 w-full rounded-lg relative aspect-square"
             />
           ))}
         </SkeletonItem>

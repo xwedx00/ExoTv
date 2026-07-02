@@ -1,28 +1,34 @@
 //@ts-nocheck
-import { useUser } from "@/contexts/AuthContext";
-import supabaseClient from "@/lib/supabase";
+import { watchedStore } from "@/lib/storage";
 
-import { Watched } from "@/types";
-import { useSupabaseSingleQuery } from "@/utils/supabase";
+import { useQuery } from "@tanstack/react-query";
 
 const useSavedWatched = (animeId: number) => {
-  const user = useUser();
+  return useQuery({
+    queryKey: ["watched", animeId],
 
-  return useSupabaseSingleQuery(
-    ["watched", animeId],
-    () =>
-      supabaseClient
-        .from<Watched>("kaguya_watched")
-        .select("episode:episodeId(*), watchedTime, episodeNumber")
-        .eq("mediaId", animeId)
-        .eq("userId", user.id)
-        .limit(1)
-        .single(),
-    {
-      enabled: !!user,
-      refetchOnMount: true,
-    }
-  );
+    queryFn: () => {
+      const entry = watchedStore.get(animeId);
+
+      if (!entry) return null;
+
+      // Reconstruct the previously-joined `episode` shape from the locally
+      // stored fields so consumers reading `data?.episode?.sourceEpisodeId`
+      // (and friends) keep working unchanged.
+      return {
+        episode: {
+          id: entry.episodeId,
+          sourceEpisodeId: entry.sourceEpisodeId,
+          name: entry.episodeName,
+          sourceId: entry.sourceId,
+        },
+        watchedTime: entry.watchedTime,
+        episodeNumber: entry.episodeNumber,
+      };
+    },
+
+    refetchOnMount: true
+  });
 };
 
 export default useSavedWatched;

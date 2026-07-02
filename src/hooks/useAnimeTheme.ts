@@ -3,7 +3,7 @@ import { AnimeTheme } from "@/types";
 import { randomElement } from "@/utils";
 import axios, { AxiosError } from "axios";
 import { useRef } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 declare module AnimeThemeAPI {
   export interface Song {
@@ -154,18 +154,18 @@ interface UseAnimeThemeProps {
 }
 
 export const useAnimeTheme = ({ slug, type }: UseAnimeThemeProps) => {
-  return useQuery<AnimeTheme, AxiosError>(
-    ["anime-themes", slug, type],
-    async ({ queryKey: [_, slug, type] }) =>
+  return useQuery({
+    queryKey: ["anime-themes", slug, type],
+
+    queryFn: async ({ queryKey: [_, slug, type] }) =>
       fetchThemeByAnime(slug as string, type as string),
-    {
-      enabled: !!slug,
-      cacheTime: 0,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchInterval: 0,
-      refetchIntervalInBackground: false,
-    }
-  );
+
+    enabled: !!slug,
+    gcTime: 0,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchInterval: 0,
+    refetchIntervalInBackground: false
+  });
 };

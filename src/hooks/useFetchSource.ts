@@ -1,10 +1,7 @@
 //@ts-nocheck
-import config from "@/config";
 import { Episode, Font, Subtitle, VideoSource } from "@/types";
 import { createProxyUrl } from "@/utils";
-import axios, { AxiosError } from "axios";
-import { useQuery, useQueryClient } from "react-query";
-import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
 
 interface ReturnSuccessType {
   success: true;
@@ -24,49 +21,62 @@ const convertSources = (sources: VideoSource[]) =>
   sources.map((source) => {
     if (source.useProxy) {
       source.file = createProxyUrl(source.file, source.proxy);
+      // Already proxied here — clear the flag so the player doesn't double-proxy
+      // it (`/api/proxy?url=/api/proxy?url=...`).
+      source.useProxy = false;
     }
 
     return source;
   });
 
+// Exported so the details-page Episodes guide can prefetch into the SAME cache
+// (so clicking an episode plays instantly — no source wait).
+export const sourceQueryKey = (sourceId: string, sourceEpisodeId: string) =>
+  `source-${sourceId}-${sourceEpisodeId}`;
+
+export const fetchSourceData = async (
+  sourceEpisodeId: string,
+  sourceId: string
+): Promise<ReturnSuccessType | ReturnFailType> => {
+  const res = await fetch(
+    `/api/anime/sources?episodeId=${encodeURIComponent(
+      sourceEpisodeId
+    )}&provider=${encodeURIComponent(sourceId)}`
+  );
+  const data = await res.json();
+
+  if (!data?.success || !data.sources?.length) {
+    return {
+      success: false,
+      error: data?.error || "no_sources",
+      errorMessage: "No sources found",
+    };
+  }
+
+  return {
+    success: true,
+    sources: convertSources(data.sources),
+    subtitles: data.subtitles || [],
+    fonts: data.fonts || [],
+    thumbnail: data.thumbnail,
+  };
+};
+
 export const useFetchSource = (
   currentEpisode: Episode,
   nextEpisode?: Episode
 ) => {
-  const queryClient = useQueryClient();
-
-  const fetchSource = (episode: Episode) =>
-    axios
-      .get<ReturnSuccessType>(`${config.nodeServerUrl}/source`, {
-        params: {
-          episode_id: episode.sourceEpisodeId,
-          source_media_id: episode.sourceMediaId,
-          source_id: episode.sourceId,
-        },
-      })
-      .then(({ data }) => {
-        data.sources = convertSources(data.sources);
-
-        return data;
-      });
-
-  const getQueryKey = (episode: Episode) =>
-    `source-${episode.sourceId}-${episode.sourceEpisodeId}`;
-
-  return useQuery<ReturnSuccessType, AxiosError<ReturnFailType>>(
-    getQueryKey(currentEpisode),
-    () => fetchSource(currentEpisode),
-    {
-      onSuccess: () => {
-        if (!nextEpisode?.sourceEpisodeId) return;
-
-        queryClient.prefetchQuery(getQueryKey(nextEpisode), () =>
-          fetchSource(nextEpisode)
-        );
-      },
-      onError: (error) => {
-        toast.error(error.message);
-      },
-    }
-  );
+  return useQuery({
+    queryKey: [
+      currentEpisode
+        ? sourceQueryKey(currentEpisode.sourceId, currentEpisode.sourceEpisodeId)
+        : "source-none",
+    ],
+    queryFn: () =>
+      fetchSourceData(
+        currentEpisode.sourceEpisodeId,
+        currentEpisode.sourceId
+      ),
+    enabled: !!currentEpisode,
+  });
 };

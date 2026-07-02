@@ -1,7 +1,7 @@
 //@ts-nocheck
 import locales from "@/locales.json";
 import classNames from "classnames";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";

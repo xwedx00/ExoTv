@@ -6,7 +6,7 @@ import {
   motion,
   useMotionValue,
   Variants,
-} from "framer-motion";
+} from "motion/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, {
@@ -118,29 +118,20 @@ const GlobalPlayerContextProvider: React.FC = ({ children }) => {
       ></div>
 
       {!!playerState?.sources ? (
-        <AnimatePresence initial={false}>
-          <div
-            className={classNames(
-              "fixed shadow-2xl",
-              shouldPlayInBackground && "bottom-4 right-4 z-[9999]"
-            )}
-          >
-            <motion.div
-              dragElastic={0}
-              drag={shouldPlayInBackground}
-              dragMomentum={false}
-              dragConstraints={constraintsRef}
-              style={{
-                width: playerSize.width,
-                height: playerSize.height,
-                x,
-                y,
-              }}
-            >
-              <ForwardRefPlayer {...playerState} />
-            </motion.div>
-          </div>
-        </AnimatePresence>
+        <div
+          className={classNames(
+            "fixed shadow-2xl",
+            shouldPlayInBackground
+              ? "bottom-4 right-4 z-[9999]"
+              : "inset-0 z-[9999]"
+          )}
+          style={{
+            width: playerSize.width,
+            height: playerSize.height,
+          }}
+        >
+          <ForwardRefPlayer {...playerState} />
+        </div>
       ) : null}
     </PlayerContext.Provider>
   );

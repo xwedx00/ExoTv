@@ -13,7 +13,7 @@ import useBrowse, { UseBrowseOptions } from "@/hooks/useBrowseAnime";
 import useConstantTranslation from "@/hooks/useConstantTranslation";
 import { MediaSort, MediaType } from "@/types/anilist";
 import { debounce } from "@/utils";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "@/lib/i18n";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { MobileView } from "react-device-detect";
@@ -120,7 +120,7 @@ const BrowseList: React.FC<BrowseListProps> = ({
         <div className="flex flex-col md:flex-row md:items-end gap-6 lg:flex-wrap lg:justify-between lg:space-x-0">
           <Input
             {...register("keyword")}
-            containerInputClassName="border border-white/80"
+            containerInputClassName="min-h-[46px] rounded-xl border border-white/10 bg-[rgba(17,25,40,0.55)] backdrop-blur-md transition focus-within:border-primary-500/60 focus-within:ring-2 focus-within:ring-primary-500/15"
             LeftIcon={AiOutlineSearch}
             onChange={handleInputChange}
             defaultValue={defaultValues.keyword}
@@ -131,7 +131,7 @@ const BrowseList: React.FC<BrowseListProps> = ({
           <div className="snap-x overflow-x-auto flex items-center gap-6">
             <Input
               {...register("keyword")}
-              containerInputClassName="border border-white/80"
+              containerInputClassName="min-h-[46px] rounded-xl border border-white/10 bg-[rgba(17,25,40,0.55)] backdrop-blur-md transition focus-within:border-primary-500/60 focus-within:ring-2 focus-within:ring-primary-500/15"
               LeftIcon={AiOutlineSearch}
               onChange={handleInputChange}
               defaultValue={defaultValues.keyword}

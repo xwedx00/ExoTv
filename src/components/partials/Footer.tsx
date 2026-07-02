@@ -21,7 +21,7 @@ const Footer = () => {
 
       <p className="text-sm text-gray-300 text-center">Disclaimer</p>
 
-      <p className="text-sm text-gray-300 text-center">© Exoexs</p>
+      <p className="text-sm text-gray-300 text-center">© ExoTv</p>
     </div>
   );
 };

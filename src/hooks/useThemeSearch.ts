@@ -1,6 +1,6 @@
 //@ts-nocheck
 import axios, { AxiosError } from "axios";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export declare module AnimeThemeAPI {
   export interface Song {
@@ -46,9 +46,10 @@ export declare module AnimeThemeAPI {
 }
 
 const useThemeSearch = (keyword: string, enabled: boolean) => {
-  return useQuery<AnimeThemeAPI.Response, AxiosError>(
-    ["themeSearch", keyword],
-    async () => {
+  return useQuery({
+    queryKey: ["themeSearch", keyword],
+
+    queryFn: async () => {
       const res = await axios.get<AnimeThemeAPI.Response>(
         `https://api.animethemes.moe/search?q=${encodeURIComponent(
           keyword
@@ -56,10 +57,9 @@ const useThemeSearch = (keyword: string, enabled: boolean) => {
       );
       return res.data;
     },
-    {
-      enabled,
-    }
-  );
+
+    enabled
+  });
 };
 
 export default useThemeSearch;

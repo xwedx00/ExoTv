@@ -29,7 +29,7 @@ const MultiValue = ({ index, getValue, ...props }) => {
 
   return index < maxToShow ? (
     // @ts-ignore
-    <components.MultiValue {...props} />
+    (<components.MultiValue {...props} />)
   ) : index === maxToShow ? (
     <MoreSelectedBadge items={overflow} />
   ) : null;
@@ -44,8 +44,9 @@ const Option: React.ComponentType<
     <div
       ref={innerRef}
       className={classNames(
-        "cursor-pointer relative px-3 py-2 transition duration-300",
-        props.isFocused && "bg-white/20 text-primary-300",
+        "relative cursor-pointer rounded-lg px-3 py-2 transition duration-200",
+        props.isFocused && "bg-white/10 text-primary-300",
+        props.isSelected && "text-primary-300",
         className
       )}
       {...divProps}
@@ -62,6 +63,9 @@ const Option: React.ComponentType<
 const Select = React.forwardRef<any, Props>(
   ({ components, styles, ...props }, ref) => {
     const [portalTarget, setPortalTarget] = React.useState<HTMLElement>();
+    // Stable id across SSR + client render to avoid react-select hydration
+    // mismatches (server/client otherwise generate different react-select-N ids).
+    const generatedId = React.useId();
 
     useEffect(() => {
       setPortalTarget(document.body);
@@ -70,6 +74,7 @@ const Select = React.forwardRef<any, Props>(
     return (
       <ReactSelect
         ref={ref}
+        instanceId={generatedId}
         theme={(theme) => ({
           ...theme,
           colors: {
@@ -81,17 +86,50 @@ const Select = React.forwardRef<any, Props>(
           },
         })}
         styles={{
-          control: (provided) => {
+          control: (provided, state) => {
             return {
               ...provided,
-              backgroundColor: "#1a1a1a",
-              minWidth: "12rem",
+              backgroundColor: "rgba(17,25,40,0.55)",
+              backdropFilter: "blur(16px) saturate(170%)",
+              border: state.isFocused
+                ? "1px solid rgba(239,68,68,0.6)"
+                : "1px solid rgba(255,255,255,0.1)",
+              borderRadius: "0.75rem",
+              minHeight: "46px",
+              minWidth: "11rem",
               maxWidth: "14rem",
+              boxShadow: state.isFocused
+                ? "0 0 0 3px rgba(239,68,68,0.15)"
+                : "none",
+              cursor: "pointer",
+              transition: "border-color 200ms, box-shadow 200ms",
+              ":hover": {
+                borderColor: "rgba(255,255,255,0.25)",
+              },
             };
           },
           menu: (provided) => {
-            return { ...provided, backgroundColor: "#1a1a1a" };
+            return {
+              ...provided,
+              backgroundColor: "rgba(17,25,40,0.92)",
+              backdropFilter: "blur(16px) saturate(170%)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: "0.75rem",
+              overflow: "hidden",
+              boxShadow: "0 16px 40px rgba(0,0,0,0.5)",
+            };
           },
+          menuList: (provided) => ({ ...provided, padding: "0.25rem" }),
+          placeholder: (provided) => ({
+            ...provided,
+            color: "rgba(255,255,255,0.4)",
+          }),
+          dropdownIndicator: (provided) => ({
+            ...provided,
+            color: "rgba(255,255,255,0.4)",
+            ":hover": { color: "rgba(255,255,255,0.8)" },
+          }),
+          indicatorSeparator: () => ({ display: "none" }),
           menuPortal: (provided) => ({ ...provided, zIndex: 9999 }),
           singleValue: (provided) => {
             return { ...provided, color: "#fff" };
@@ -125,7 +163,7 @@ const Select = React.forwardRef<any, Props>(
           ...styles,
         }}
         hideSelectedOptions={false}
-        noOptionsMessage={() => "Không còn lựa chọn"}
+        noOptionsMessage={() => "No options"}
         components={{ MultiValue, Option, ...components }}
         isClearable
         menuPortalTarget={portalTarget}
