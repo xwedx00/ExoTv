@@ -49,20 +49,20 @@
   },
   "devDependencies": {
     "@babel/core": "^8.0.1",
-    "@tailwindcss/postcss": "^4.3.1",
+    "@tailwindcss/postcss": "^4.3.2",
     "@tailwindcss/typography": "^0.5.20",
     "@types/audioworklet": "^0.0.100",
     "@types/mime": "^4.0.0",
-    "@types/node": "^26.0.1",
+    "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
     "@types/react-table": "^7.7.20",
     "babel-loader": "^10.1.1",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
     "patch-package": "^8.0.1",
-    "postcss": "^8.5.15",
+    "postcss": "^8.5.19",
     "postinstall-postinstall": "^2.1.0",
     "tailwindcss": "^4.3.1",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "config": {
     "commitizen": {
